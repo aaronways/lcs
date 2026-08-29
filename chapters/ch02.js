@@ -16,6 +16,7 @@ registerChapter({
   guide: [
     {
       title: "What this chapter is for",
+      example: "2-05",
       sec: "2.1",
       body: `
 Every physical system you will control is described, at bottom, by a differential
@@ -49,6 +50,7 @@ with a shortcut (impedances) that skips the middle step entirely once you trust 
     },
     {
       title: "Why the Laplace transform works at all",
+      example: "2-01",
       sec: "2.2",
       body: `
 Most courses present the transform as a definition to be accepted. It is worth
@@ -103,6 +105,7 @@ you must work out the conditions just after.`
     },
     {
       title: "Reading $F(s)$ before you compute anything",
+      example: "2-04",
       sec: "2.2",
       body: `
 A rational function
@@ -152,6 +155,7 @@ fractions on those questions is wasted work.`
     },
     {
       title: "The transform pairs: derive two, recognize the rest",
+      example: "2-02",
       sec: "2.2",
       body: `
 You should be able to derive the first few from the definition; the rest follow by
@@ -204,6 +208,7 @@ back is the system's own behaviour, uncontaminated by the input.
     },
     {
       title: "The theorems, and the one that matters most",
+      example: "2-12",
       sec: "2.2",
       body: `
 | Theorem | Statement |
@@ -250,6 +255,7 @@ allowed**: never the reverse.`
     },
     {
       title: "Partial fractions as modal decomposition",
+      example: "2-07",
       sec: "2.2",
       body: `
 Getting back to $c(t)$ means splitting $C(s)$ into pieces the table recognizes. But the
@@ -325,6 +331,7 @@ invisible. This is the entire basis of the dominance arguments in Chapter 4.`
     },
     {
       title: "The transfer function: separating the system from the experiment",
+      example: "2-06",
       sec: "2.3",
       body: `
 Take the general linear, time-invariant equation with output $c$ and input $r$:
@@ -367,6 +374,7 @@ Linearity is required, and time-invariance is required. That is the price, and S
     },
     {
       title: "Impedance: why algebra replaces calculus",
+      example: "2-13",
       sec: "2.4",
       body: `
 Ohm's law $v=Ri$ is easy because a resistor has **no memory**: the voltage right now
@@ -421,6 +429,7 @@ voltage is dropped across $R$ or $L$.`
     },
     {
       title: "Writing network equations by inspection",
+      example: "2-14",
       sec: "2.4",
       body: `
 For more than one loop, do not derive equations element by element. Use the pattern.
@@ -472,6 +481,7 @@ visible.`
     },
     {
       title: "Mechanical systems, and the analogy that unifies everything",
+      example: "2-18",
       sec: "2.5",
       body: `
 Translational mechanics has three passive elements. Two store energy; one dissipates it.
@@ -538,6 +548,7 @@ input to the output.`
     },
     {
       title: "Operational amplifiers",
+      example: "2-16",
       sec: "2.4",
       body: `
 An ideal op-amp has infinite input impedance (no current enters the input terminals),
@@ -577,6 +588,7 @@ formula.`
     },
     {
       title: "Linearity: the assumption everything rests on",
+      example: "2-20",
       sec: "2.10",
       body: `
 A system is linear if and only if it satisfies **both**:
@@ -621,6 +633,7 @@ small excursion about an operating point.** That observation is the entire next 
     },
     {
       title: "Linearization: buying linearity locally",
+      example: "2-23",
       sec: "2.11",
       body: `
 If the excursions about a point $A=(x_{0},f(x_{0}))$ are small, replace the curve by its
@@ -672,6 +685,7 @@ These are just the Taylor formula evaluated at $\\theta_{0}=0$.`
     },
     {
       title: "The chapter in one picture",
+      example: "2-24",
       sec: "2.1",
       body: `
 $$\\underbrace{\\text{hardware}}_{\\text{circuit / masses}}
@@ -710,21 +724,31 @@ why this chapter is worth genuine mastery rather than familiarity.`
 
   formulas: [
     { latex: "G(s)=\\dfrac{C(s)}{R(s)}",
-      note: "Zero initial conditions. $G$ is a property of the system, not of one experiment." },
+      note: "Zero initial conditions. $G$ belongs to the system, not to one experiment." },
     { latex: "K_m=\\big[(s+p_m)F(s)\\big]_{s\\to -p_m}",
       note: "Cover-up residue at a simple pole $s=-p_m$." },
     { latex: "K_i=\\dfrac{1}{(i-1)!}\\left.\\dfrac{d^{i-1}}{ds^{i-1}}\\big[(s+p_1)^{r}F(s)\\big]\\right|_{s=-p_1}",
       note: "Repeated pole of order $r$. Index $i=1$ is the highest power." },
     { latex: "s^{2}+as+b=\\left(s+\\dfrac{a}{2}\\right)^{2}+\\left(b-\\dfrac{a^{2}}{4}\\right)",
-      note: "Complete the square. Keep an irreducible quadratic whole; do not factor complex poles." },
-    { latex: "Z_R=R,\quad Z_L=Ls,\quad Z_C=\\dfrac{1}{Cs}",
-      note: "Electrical impedances $Z(s)=V(s)/I(s)$." },
-    { latex: "Z_K=K,\quad Z_{f_v}=f_v s,\quad Z_M=Ms^{2}",
-      note: "Mechanical impedances $Z_M(s)=F(s)/X(s)$." },
-    { latex: "\\dfrac{V_o}{V_i}=-\\dfrac{Z_2}{Z_1}\qquad \\dfrac{V_o}{V_i}=\\dfrac{Z_1+Z_2}{Z_1}",
-      note: "Ideal op-amp: inverting, then noninverting." },
+      note: "Complete the square. Leave an irreducible quadratic whole." },
+    { latex: "Z_R=R",
+      note: "Electrical resistance. $Z(s)=V(s)/I(s)$." },
+    { latex: "Z_L=Ls",
+      note: "Electrical inductance." },
+    { latex: "Z_C=\\dfrac{1}{Cs}",
+      note: "Electrical capacitance." },
+    { latex: "Z_K=K",
+      note: "Mechanical spring. $Z_M(s)=F(s)/X(s)$." },
+    { latex: "Z_{f_v}=f_v s",
+      note: "Viscous damper." },
+    { latex: "Z_M=Ms^{2}",
+      note: "Mass." },
+    { latex: "\\dfrac{V_o}{V_i}=-\\dfrac{Z_2}{Z_1}",
+      note: "Ideal inverting op-amp." },
+    { latex: "\\dfrac{V_o}{V_i}=\\dfrac{Z_1+Z_2}{Z_1}",
+      note: "Ideal noninverting op-amp." },
     { latex: "\\delta f \\approx \\left.\\dfrac{df}{dx}\\right|_{x_0}\\delta x",
-      note: "Linearization about an operating point. The transfer function that follows relates deviations, not absolute values." }
+      note: "Linearization about an operating point. The $G(s)$ that follows relates deviations." }
   ],
 
   problems: [
@@ -3168,6 +3192,133 @@ damping the resonance and isolating at high frequency is the central design prob
 vibration mounting, and Chapter 10 gives you the frequency-response tools to reason about
 it properly.
 `
+    },
+
+    {
+      id: "2-26", difficulty: "challenge", topic: "Partial fractions",
+      sec: "2.2",
+      prompt: `Without computing a single residue, write the *form* of $f(t)$ if
+
+$$F(s)=\\frac{s+8}{s(s+2)^{2}(s^{2}+4s+13)}.$$`,
+      hint: "Poles at $0$, a repeated $-2$, and $-2\\pm j3$. Zeros do not add terms.",
+      answer: "$$f(t)=A+ (B+Ct)e^{-2t}+ e^{-2t}(D\\cos 3t+E\\sin 3t),\\quad t\\ge 0.$$",
+      expert: `
+**First glance:** four kinds of pole, four kinds of term. The zero at $-8$ only changes $A,B,C,D,E$.
+
+**Discard:** a term $e^{-8t}$. That would require a pole at $-8$.
+
+**Path:** $s^{2}+4s+13=(s+2)^{2}+9$. Same real part as the repeated pole, different imaginary part. That is allowed and common.
+`,
+      solution: `
+Poles:
+
+- $s=0$ → constant $A$
+- $s=-2$ repeated twice → $(B+Ct)e^{-2t}$
+- $s=-2\\pm j3$ → $e^{-2t}(D\\cos 3t+E\\sin 3t)$
+
+A proper rational $F$ has no impulse. The numerator degree is less than the denominator degree, so there is no $\\delta(t)$ either.
+
+The zero at $-8$ is invisible in the *list of terms*. It is visible only after the residues are computed.
+`
+    },
+    {
+      id: "2-27", difficulty: "challenge", topic: "Transfer functions",
+      sec: "2.3",
+      prompt: `A lab partner writes
+
+$$\\frac{C(s)}{R(s)}=\\frac{2}{s+3}+\\frac{c(0)}{R(s)}.$$
+
+They measured $c(0)\\neq 0$ and want to keep it in "$G(s)$."
+
+What is $G(s)$, and why is the second term not part of it?`,
+      hint: "The definition of $G$ forces zero initial conditions.",
+      answer: "$G(s)=2/(s+3)$. The term with $c(0)$ is an initial-condition contribution. It belongs to the response of this experiment, not to the system.",
+      expert: `
+**First glance:** $G$ is what multiplies $R$ when the plant is at rest. Anything over $R(s)$ that still contains $c(0)$ is bookkeeping, not a transfer function.
+
+**Path:** the Laplace of $\\dot c+3c=2r$ is $(s+3)C-c(0)=2R$, so $C=2R/(s+3)+c(0)/(s+3)$. Only the first coefficient is $G$.
+`,
+      solution: `
+From $\\dot c+3c=2r$,
+
+$$(s+3)C(s)-c(0)=2R(s),\\qquad
+C(s)=\\frac{2}{s+3}R(s)+\\frac{c(0)}{s+3}.$$
+
+$G(s)$ is the coefficient of $R(s)$ at rest: $2/(s+3)$.
+
+$c(0)/(s+3)$ does not scale with $R$. Dividing it by $R(s)$ does not make it a property of the plant. Two experiments with the same $r(t)$ and different $c(0)$ produce different $C/R$ and the same $G$.
+`
+    },
+    {
+      id: "2-28", difficulty: "challenge", topic: "Electrical networks",
+      sec: "2.4",
+      prompt: `Two isolated stages are $G_1=1/(s+1)$ and $G_2=1/(s+1)$. Cascaded with an isolating amplifier of gain $1$, $T=1/(s+1)^{2}$.
+
+Soldered directly together as two identical series-$R$, shunt-$C$ stages with $RC=1$, the connected $T$ is **not** $1/(s+1)^{2}$.
+
+Which coefficient in the denominator changes, and why is that not a contradiction of "cascade means multiply"?`,
+      hint: "Loading adds a cross term. Cascade-as-product assumes no loading.",
+      answer: "The $s$ coefficient becomes $3$ rather than $2$. The product rule assumes the first stage's output is unchanged by connecting the second. Direct soldering violates that.",
+      expert: `
+**First glance:** same $G_1$, same $G_2$, different $T$. The missing hypothesis is "no loading."
+
+**Path:** two $RC$ sections share a node. The second resistor draws current from the first capacitor. That extra path is the $1/(R_2 C_1)$ term.
+`,
+      solution: `
+Isolated, each stage is $1/(RCs+1)=1/(s+1)$. The product is $1/(s^{2}+2s+1)$.
+
+Connected without a buffer, node equations add the current into the second $R$ off the first $C$. The extra damping term is $1/(R_2C_1)=1$. The denominator becomes $s^{2}+3s+1$.
+
+Cascade-as-product is not a law of circuits. It is a law of **unloaded** blocks. An op-amp buffer restores the product.
+`
+    },
+    {
+      id: "2-29", difficulty: "challenge", topic: "Mechanical systems",
+      sec: "2.5",
+      prompt: `A mass $M$ slides with viscous friction $f_v$. A spring $K$ connects the mass to a *moving* wall whose position is $x_i(t)$. The output is $x(t)$, the mass position.
+
+Write $G(s)=X(s)/X_i(s)$ by impedances. Then state the DC gain and what it means.`,
+      hint: "The spring sees the *difference* $X_i-X$. The damper and mass see $X$ to ground.",
+      answer: "$$G(s)=\\dfrac{K}{Ms^{2}+f_v s+K},\\qquad G(0)=1.$$ At DC the mass sits still and the spring is unstretched only if $x=x_i$.",
+      expert: `
+**First glance:** moving wall, not a force source. The input enters through $K$.
+
+**Discard:** $G=1/(Ms^{2}+f_v s+K)$. That would be $X/F$ for a force on the mass, missing the $K$ in the numerator.
+
+**Check:** $G(0)=1$. A slow wall displacement must be followed exactly once transients die.
+`,
+      solution: `
+Force in the spring: $K(X_i-X)$. On the mass, $Ms^{2}X+f_v s X=K(X_i-X)$.
+
+$$(Ms^{2}+f_v s+K)X=KX_i,\\qquad
+G(s)=\\frac{K}{Ms^{2}+f_v s+K}.$$
+
+$G(0)=1$: a constant wall move becomes a constant mass position, same number, because a static spring with no force is unstretched.
+`
+    },
+    {
+      id: "2-30", difficulty: "challenge", topic: "Linearization",
+      sec: "2.11",
+      prompt: `A valve flow is $q=c\\sqrt{p}$ with $c>0$, $p>0$. An operating point is $p_0=16$, $q_0=4$.
+
+Write the linearized map from $\\delta p$ to $\\delta q$. If someone uses $q\\approx (c/2\\sqrt{p_0})p$ (no $\\delta$, no offset), what experiment will they mispredict?`,
+      hint: "Linearization is about deviations. The tangent line need not pass through the origin.",
+      answer: "$$\\delta q=\\dfrac{c}{2\\sqrt{p_0}}\\delta p=\\dfrac{1}{2}\\delta p$$ since $c=q_0/\\sqrt{p_0}=1$. Dropping the offset mispredicts any experiment whose $p$ is not a small move about $16$. In particular it gets the DC flow at $p=16$ wrong: the tangent line is $q=4+\\tfrac12(p-16)$, not $q=p/2$.",
+      expert: `
+**First glance:** $dq/dp=c/(2\\sqrt{p})$. At $p_0=16$, slope $1/2$. The line is $q-4=(1/2)(p-16)$.
+
+**Discard:** writing $G(s)=1/2$ from $p$ to $q$ as absolute variables. That $G$ maps $\\delta P$ to $\\delta Q$.
+`,
+      solution: `
+$c=q_0/\\sqrt{p_0}=4/4=1$.
+
+$$\\left.\\frac{dq}{dp}\\right|_{16}=\\frac{1}{2\\sqrt{16}}=\\frac18\\cdot 4=\\frac12.$$
+
+So $\\delta q=\\tfrac12\\delta p$, or $q=4+\\tfrac12(p-16)$.
+
+The origin-forced line $q=p/2$ passes through $(16,8)$, not $(16,4)$. It is the wrong tangent and the wrong operating flow. Small-signal $G(s)$ built on that slope would happen to have the right *slope* and the wrong *meaning* for the symbols $Q(s)$ and $P(s)$.
+`
     }
+
   ]
 });

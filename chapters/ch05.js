@@ -12,6 +12,7 @@ registerChapter({
   guide: [
     {
       title: "What this chapter is for",
+      example: "5-01",
       sec: "5.1",
       body: `
 Chapters 2 and 4 gave you one block: $G(s)$, then the time response of that $G(s)$.
@@ -27,38 +28,41 @@ Signal-flow graphs and Mason's rule are 5.4–5.5. They are not in this cut.
     },
     {
       title: "The four marks on the page",
+      example: "5-01",
       sec: "5.2",
       body: `
 A linear block diagram is built from four marks.
 
-<svg viewBox="0 0 720 168" class="nx-fig" aria-label="Four block-diagram elements">
-  <defs>
-    <marker id="n5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
-  </defs>
-  <text x="78" y="18" text-anchor="middle" font-size="12" opacity=".6">signal</text>
-  <line x1="18" y1="48" x2="138" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <text x="78" y="72" text-anchor="middle" font-size="13">R(s)</text>
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" class="nx-fig">
+  <defs><marker id="nx0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="170" y="28" text-anchor="middle" font-size="13" opacity=".65">Signal</text>
+  <line x1="50" y1="72" x2="290" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <text x="170" y="100" text-anchor="middle">R(s)</text>
 
-  <text x="268" y="18" text-anchor="middle" font-size="12" opacity=".6">block</text>
-  <line x1="178" y1="48" x2="214" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <rect x="214" y="26" width="110" height="44" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="269" y="53" text-anchor="middle" font-size="14">G(s)</text>
-  <line x1="324" y1="48" x2="360" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
+  <text x="510" y="28" text-anchor="middle" font-size="13" opacity=".65">Block</text>
+  <line x1="380" y1="72" x2="424" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <rect x="424" y="50" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="484" y="77" text-anchor="middle">G(s)</text>
+  <line x1="544" y1="72" x2="630" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
 
-  <text x="478" y="18" text-anchor="middle" font-size="12" opacity=".6">summing junction</text>
-  <line x1="392" y1="48" x2="430" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <circle cx="448" cy="48" r="16" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="448" y="53" text-anchor="middle" font-size="14">+</text>
-  <line x1="448" y1="92" x2="448" y2="66" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <text x="466" y="96" font-size="13">-\\,B</text>
-  <line x1="464" y1="48" x2="510" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
+  <text x="170" y="168" text-anchor="middle" font-size="13" opacity=".65">Summing junction</text>
+  <line x1="50" y1="220" x2="118" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <circle cx="138" cy="220" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="138" y="226" text-anchor="middle" font-size="16">Σ</text>
+  <text x="112" y="212" font-size="13">+</text>
+  <line x1="138" y1="286" x2="138" y2="242" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <text x="150" y="282" font-size="13">− B(s)</text>
+  <line x1="158" y1="220" x2="290" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
 
-  <text x="628" y="18" text-anchor="middle" font-size="12" opacity=".6">pickoff</text>
-  <line x1="546" y1="48" x2="700" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <circle cx="620" cy="48" r="3.2" fill="currentColor"/>
-  <line x1="620" y1="48" x2="620" y2="118" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5a)"/>
-  <text x="636" y="92" font-size="13">same R</text>
+  <text x="510" y="168" text-anchor="middle" font-size="13" opacity=".65">Pickoff</text>
+  <line x1="380" y1="220" x2="630" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <circle cx="510" cy="220" r="3.5" fill="currentColor"/>
+  <line x1="510" y1="220" x2="510" y2="286" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
+  <text x="524" y="262" font-size="13">same R(s)</text>
 </svg>
+<figcaption>Four marks. A pickoff copies a signal. A summer adds them.</figcaption>
+</figure>
 
 - A **signal** is a Laplace transform, not a wire gauge.
 - A **block** multiplies. $C=RG$.
@@ -73,29 +77,35 @@ are different.
     },
     {
       title: "Cascade, parallel, feedback",
+      example: "5-04",
       sec: "5.2",
       body: `
 Three topologies. Draw them until the equivalent $T(s)$ is automatic.
 
 ### Cascade
 
-<svg viewBox="0 0 680 86" class="nx-fig" aria-label="Cascade equivalent">
-  <defs><marker id="n5b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="8" y="48" font-size="13">R</text>
-  <line x1="28" y1="44" x2="58" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5b)"/>
-  <rect x="58" y="24" width="88" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="102" y="49" text-anchor="middle">G_1</text>
-  <line x1="146" y1="44" x2="176" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5b)"/>
-  <rect x="176" y="24" width="88" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="220" y="49" text-anchor="middle">G_2</text>
-  <line x1="264" y1="44" x2="294" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5b)"/>
-  <text x="308" y="49">C</text>
-  <text x="370" y="49" font-size="18">=</text>
-  <line x1="404" y1="44" x2="434" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5b)"/>
-  <rect x="434" y="24" width="130" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="499" y="49" text-anchor="middle">G_2G_1</text>
-  <line x1="564" y1="44" x2="594" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5b)"/>
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 110" class="nx-fig">
+  <defs><marker id="nx1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="8" y="60">R</text>
+  <line x1="28" y1="54" x2="62" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
+  <rect x="62" y="32" width="88" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="106" y="59" text-anchor="middle">G₁</text>
+  <line x1="150" y1="54" x2="184" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
+  <rect x="184" y="32" width="88" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="228" y="59" text-anchor="middle">G₂</text>
+  <line x1="272" y1="54" x2="306" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
+  <text x="314" y="60">C</text>
+  <text x="368" y="60" font-size="20">≡</text>
+  <text x="402" y="60">R</text>
+  <line x1="422" y1="54" x2="456" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
+  <rect x="456" y="32" width="130" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="521" y="59" text-anchor="middle">G₂ G₁</text>
+  <line x1="586" y1="54" x2="624" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
+  <text x="632" y="60">C</text>
 </svg>
+<figcaption>Cascade. Equivalent transfer function is the product, if there is no loading.</figcaption>
+</figure>
 
 $$T = G_2G_1$$
 
@@ -110,32 +120,69 @@ $1/(R_2C_1)$ in the damping. An isolating amplifier between them restores the pr
 
 Same input, outputs summed.
 
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" class="nx-fig">
+  <defs><marker id="nxp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="8" y="116">R</text>
+  <line x1="28" y1="110" x2="90" y2="110" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="90" cy="110" r="3.5" fill="currentColor"/>
+  <line x1="90" y1="40" x2="90" y2="180" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="90" y1="40" x2="150" y2="40" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
+  <line x1="90" y1="110" x2="150" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
+  <line x1="90" y1="180" x2="150" y2="180" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
+  <rect x="150" y="18" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="200" y="45" text-anchor="middle">G₁</text>
+  <rect x="150" y="88" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="200" y="115" text-anchor="middle">G₂</text>
+  <rect x="150" y="158" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="200" y="185" text-anchor="middle">G₃</text>
+  <line x1="250" y1="40" x2="340" y2="40" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="250" y1="110" x2="340" y2="110" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="250" y1="180" x2="340" y2="180" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="340" y1="40" x2="340" y2="180" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="340" y1="110" x2="378" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
+  <circle cx="398" cy="110" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="398" y="116" text-anchor="middle" font-size="16">Σ</text>
+  <text x="352" y="36" font-size="13">+</text>
+  <text x="352" y="106" font-size="13">−</text>
+  <text x="352" y="176" font-size="13">+</text>
+  <line x1="418" y1="110" x2="500" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
+  <text x="512" y="116">C</text>
+</svg>
+<figcaption>Parallel. Same input; the summer writes the signs.</figcaption>
+</figure>
+
 $$T = \\pm G_1 \\pm G_2 \\pm G_3$$
 
 The signs are the signs at the summer.
 
 ### Feedback
 
-<svg viewBox="0 0 640 168" class="nx-fig" aria-label="Negative feedback loop">
-  <defs><marker id="n5c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="10" y="52" font-size="13">R</text>
-  <line x1="32" y1="48" x2="70" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5c)"/>
-  <circle cx="86" cy="48" r="16" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="86" y="44" text-anchor="middle" font-size="12">+</text>
-  <text x="86" y="62" text-anchor="middle" font-size="12">-</text>
-  <line x1="102" y1="48" x2="150" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5c)"/>
-  <text x="118" y="38" font-size="12">E</text>
-  <rect x="150" y="28" width="100" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="200" y="53" text-anchor="middle">G</text>
-  <line x1="250" y1="48" x2="360" y2="48" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5c)"/>
-  <text x="372" y="52" font-size="13">C</text>
-  <circle cx="300" cy="48" r="3" fill="currentColor"/>
-  <line x1="300" y1="48" x2="300" y2="120" stroke="currentColor" stroke-width="1.6"/>
-  <rect x="150" y="100" width="100" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="200" y="125" text-anchor="middle">H</text>
-  <line x1="150" y1="120" x2="86" y2="120" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="86" y1="120" x2="86" y2="66" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5c)"/>
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 210" class="nx-fig">
+  <defs><marker id="nx2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="6" y="58">R</text>
+  <line x1="26" y1="52" x2="70" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
+  <circle cx="90" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="90" y="58" text-anchor="middle" font-size="16">Σ</text>
+  <text x="64" y="44" font-size="13">+</text>
+  <text x="98" y="86" font-size="13">−</text>
+  <line x1="110" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
+  <text x="132" y="42" font-size="13">E</text>
+  <rect x="168" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="228" y="57" text-anchor="middle">G</text>
+  <line x1="288" y1="52" x2="430" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
+  <text x="444" y="58">C</text>
+  <circle cx="360" cy="52" r="3.5" fill="currentColor"/>
+  <line x1="360" y1="52" x2="360" y2="150" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="360" y1="150" x2="228" y2="150" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
+  <rect x="168" y="128" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="228" y="155" text-anchor="middle">H</text>
+  <line x1="168" y1="150" x2="90" y2="150" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="90" y1="150" x2="90" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
 </svg>
+<figcaption>Negative feedback. E = R − HC and C = EG give T = G / (1 + GH).</figcaption>
+</figure>
 
 $$E = R - HC,\\qquad C = EG
 \\quad\\Longrightarrow\\quad
@@ -149,6 +196,7 @@ Unity feedback is $H=1$, so $T=G/(1+G)$. Almost every 5.3 design problem is that
     },
     {
       title: "Moving a block past a summer or a pickoff",
+      example: "5-06",
       sec: "5.2",
       body: `
 Cascade, parallel, and feedback are not always sitting on the page. A pickoff taken
@@ -160,39 +208,43 @@ both sides and require the same expression.
 
 ### Past a summing junction
 
-<svg viewBox="0 0 700 200" class="nx-fig" aria-label="Move G past a summing junction">
-  <defs><marker id="n5d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="0" y="16" font-size="12" opacity=".65">Move G left through the summer: X must also meet G.</text>
-  <text x="8" y="64" font-size="13">R</text>
-  <line x1="28" y1="60" x2="58" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <circle cx="74" cy="60" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="74" y="65" text-anchor="middle" font-size="14">+</text>
-  <line x1="88" y1="60" x2="118" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <rect x="118" y="40" width="72" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="154" y="65" text-anchor="middle">G</text>
-  <line x1="190" y1="60" x2="230" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <text x="238" y="64" font-size="13">C</text>
-  <text x="74" y="112" text-anchor="middle" font-size="13">X</text>
-  <line x1="74" y1="100" x2="74" y2="76" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" class="nx-fig">
+  <defs><marker id="nx3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="20" y="24" font-size="13" opacity=".65">G after the summer</text>
+  <text x="8" y="78">R</text>
+  <line x1="26" y1="72" x2="70" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <circle cx="88" cy="72" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="88" y="77" text-anchor="middle" font-size="15">Σ</text>
+  <line x1="106" y1="72" x2="148" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <rect x="148" y="50" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="188" y="77" text-anchor="middle">G</text>
+  <line x1="228" y1="72" x2="280" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <text x="288" y="78">C</text>
+  <text x="70" y="128">X</text>
+  <line x1="88" y1="116" x2="88" y2="92" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
 
-  <text x="300" y="65" font-size="18">=</text>
+  <text x="360" y="78" font-size="22">≡</text>
 
-  <text x="340" y="64" font-size="13">R</text>
-  <line x1="360" y1="60" x2="390" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <rect x="390" y="40" width="72" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="426" y="65" text-anchor="middle">G</text>
-  <line x1="462" y1="60" x2="492" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <circle cx="508" cy="60" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="508" y="65" text-anchor="middle" font-size="14">+</text>
-  <line x1="522" y1="60" x2="562" y2="60" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <text x="570" y="64" font-size="13">C</text>
-  <rect x="390" y="118" width="72" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="426" y="143" text-anchor="middle">G</text>
-  <text x="360" y="144" font-size="13">X</text>
-  <line x1="376" y1="138" x2="390" y2="138" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
-  <line x1="462" y1="138" x2="508" y2="138" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="508" y1="138" x2="508" y2="76" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5d)"/>
+  <text x="420" y="24" font-size="13" opacity=".65">G before the summer</text>
+  <text x="400" y="78">R</text>
+  <line x1="418" y1="72" x2="458" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <rect x="458" y="50" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="498" y="77" text-anchor="middle">G</text>
+  <line x1="538" y1="72" x2="578" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <circle cx="596" cy="72" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="596" y="77" text-anchor="middle" font-size="15">Σ</text>
+  <line x1="614" y1="72" x2="660" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <text x="666" y="78">C</text>
+  <text x="400" y="168">X</text>
+  <line x1="418" y1="162" x2="458" y2="162" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
+  <rect x="458" y="140" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="498" y="167" text-anchor="middle">G</text>
+  <line x1="538" y1="162" x2="596" y2="162" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="596" y1="162" x2="596" y2="92" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
 </svg>
+<figcaption>Moving G left through a summer. X must also pass through G, or C changes.</figcaption>
+</figure>
 
 Left side: $C=(R\\pm X)G = RG\\pm XG$.  
 Right side: both inputs pass through $G$ before they add. Same $C$.
@@ -214,6 +266,7 @@ a factor. That missing factor is the $G$ or $1/G$ you add.
     },
     {
       title: "How to reduce a diagram that is not already a named form",
+      example: "5-08",
       sec: "5.2",
       body: `
 A working order. Not a ritual: if a feedback pair is already isolated, take it first.
@@ -236,6 +289,7 @@ the inner loop first. Its $T_{\\text{inner}}$ becomes a block in the outer forwa
     },
     {
       title: "Closed-loop poles move when the gain moves",
+      example: "5-11",
       sec: "5.3",
       body: `
 Section 5.3 is Chapter 4 applied to $T(s)$ after the diagram has collapsed.
@@ -243,23 +297,27 @@ Section 5.3 is Chapter 4 applied to $T(s)$ after the diagram has collapsed.
 The standard plant in this section is a gain times a type-1 second-order piece,
 unity feedback:
 
-<svg viewBox="0 0 560 100" class="nx-fig" aria-label="Unity-feedback second-order loop">
-  <defs><marker id="n5e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="6" y="42" font-size="13">R</text>
-  <line x1="28" y1="38" x2="58" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5e)"/>
-  <circle cx="74" cy="38" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="74" y="34" text-anchor="middle" font-size="11">+</text>
-  <text x="74" y="50" text-anchor="middle" font-size="11">-</text>
-  <line x1="88" y1="38" x2="130" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5e)"/>
-  <rect x="130" y="18" width="150" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="205" y="43" text-anchor="middle">K/[s(s+a)]</text>
-  <line x1="280" y1="38" x2="360" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5e)"/>
-  <text x="370" y="42" font-size="13">C</text>
-  <circle cx="320" cy="38" r="3" fill="currentColor"/>
-  <line x1="320" y1="38" x2="320" y2="84" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="320" y1="84" x2="74" y2="84" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="74" y1="84" x2="74" y2="54" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5e)"/>
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" class="nx-fig">
+  <defs><marker id="nx4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="6" y="58">R</text>
+  <line x1="26" y1="52" x2="70" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
+  <circle cx="90" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="90" y="58" text-anchor="middle" font-size="16">Σ</text>
+  <text x="64" y="44" font-size="13">+</text>
+  <text x="98" y="86" font-size="13">−</text>
+  <line x1="110" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
+  <rect x="168" y="28" width="160" height="48" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="248" y="57" text-anchor="middle">K / [s(s + a)]</text>
+  <line x1="328" y1="52" x2="430" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
+  <text x="444" y="58">C</text>
+  <circle cx="360" cy="52" r="3.5" fill="currentColor"/>
+  <line x1="360" y1="52" x2="360" y2="140" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="360" y1="140" x2="90" y2="140" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="90" y1="140" x2="90" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
 </svg>
+<figcaption>Unity feedback around K / [s(s + a)]. Closed-loop T = K / (s² + a s + K).</figcaption>
+</figure>
 
 $$T(s)=\\frac{K}{s^{2}+as+K}$$
 
@@ -287,15 +345,15 @@ $\\%OS$ independently. That limitation is why later chapters add a compensator.
 
   formulas: [
     { latex: "T=G_2G_1",
-      note: "Cascade, no loading. Connecting $G_2$ must not change the output of $G_1$." },
+      note: "Cascade, no loading." },
     { latex: "T=\\pm G_1\\pm G_2",
-      note: "Parallel. Signs are the signs at the summing junction." },
+      note: "Parallel. Signs are the signs at the summer." },
     { latex: "T=\\dfrac{G}{1+GH}",
-      note: "Negative feedback. Positive feedback replaces the $+$ with $-$. $GH$ is the loop gain." },
+      note: "Negative feedback. Positive feedback uses $1-GH$. $GH$ is the loop gain." },
     { latex: "T=\\dfrac{K}{s^{2}+as+K}",
       note: "Unity feedback around $K/[s(s+a)]$. Then $\\omega_n=\\sqrt{K}$ and $\\zeta=a/(2\\sqrt{K})$." },
-    { latex: "(R\\pm X)G \\;\\equiv\\; RG\\pm XG",
-      note: "Identity for moving $G$ left through a summer: copy $G$ onto the $X$ path." }
+    { latex: "(R\\pm X)G \\equiv RG\\pm XG",
+      note: "Moving $G$ left through a summer: copy $G$ onto the $X$ path." }
   ],
 
   problems: [
@@ -422,28 +480,33 @@ The sign at the summer is the sign that appears, flipped, in the denominator.
       prompt: `Unity-gain prefilter $G_1=2$, then a negative-feedback loop with forward $G_2=1/(s+1)$
 and feedback $H=s$. Find $T=C/R$.
 
-<svg viewBox="0 0 620 150" class="nx-fig" aria-label="Prefilter and inner loop">
-  <defs><marker id="n5f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="4" y="42" font-size="13">R</text>
-  <line x1="24" y1="38" x2="50" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5f)"/>
-  <rect x="50" y="18" width="70" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="85" y="43" text-anchor="middle">2</text>
-  <line x1="120" y1="38" x2="160" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5f)"/>
-  <circle cx="176" cy="38" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="176" y="34" text-anchor="middle" font-size="11">+</text>
-  <text x="176" y="50" text-anchor="middle" font-size="11">-</text>
-  <line x1="190" y1="38" x2="230" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5f)"/>
-  <rect x="230" y="18" width="100" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="280" y="43" text-anchor="middle">1/(s+1)</text>
-  <line x1="330" y1="38" x2="410" y2="38" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5f)"/>
-  <text x="420" y="42" font-size="13">C</text>
-  <circle cx="360" cy="38" r="3" fill="currentColor"/>
-  <line x1="360" y1="38" x2="360" y2="110" stroke="currentColor" stroke-width="1.6"/>
-  <rect x="230" y="90" width="70" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="265" y="115" text-anchor="middle">s</text>
-  <line x1="230" y1="110" x2="176" y2="110" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="176" y1="110" x2="176" y2="54" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5f)"/>
-</svg>`,
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" class="nx-fig">
+  <defs><marker id="nx5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="6" y="58">R</text>
+  <line x1="24" y1="52" x2="58" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+  <rect x="58" y="30" width="64" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="90" y="57" text-anchor="middle">2</text>
+  <line x1="122" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+  <circle cx="188" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="188" y="58" text-anchor="middle" font-size="16">Σ</text>
+  <text x="162" y="44" font-size="13">+</text>
+  <text x="196" y="86" font-size="13">−</text>
+  <line x1="208" y1="52" x2="256" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+  <rect x="256" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="316" y="57" text-anchor="middle">1 / (s + 1)</text>
+  <line x1="376" y1="52" x2="490" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+  <text x="504" y="58">C</text>
+  <circle cx="430" cy="52" r="3.5" fill="currentColor"/>
+  <line x1="430" y1="52" x2="430" y2="140" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="430" y1="140" x2="256" y2="140" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+  <rect x="196" y="118" width="60" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="226" y="145" text-anchor="middle">s</text>
+  <line x1="196" y1="140" x2="188" y2="140" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="188" y1="140" x2="188" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
+</svg>
+<figcaption>Problem 5-05. The block 2 sits outside the loop.</figcaption>
+</figure>`,
       hint: "Inner loop first. Then multiply by the cascade 2.",
       answer: "$$T=\\dfrac{2}{2s+1}$$",
       expert: `
@@ -527,38 +590,43 @@ Feedback from $C$ through $H_1=1$ (negative) into that summer.
 A second feedback from $C$ through $H_2=3$ (negative) into a summer *in front of*
 $G_1$, where it subtracts from $R$.
 
-<svg viewBox="0 0 680 190" class="nx-fig" aria-label="Minor and major loops">
-  <defs><marker id="n5g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-  <text x="4" y="50" font-size="13">R</text>
-  <line x1="24" y1="46" x2="54" y2="46" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <circle cx="70" cy="46" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="70" y="42" text-anchor="middle" font-size="11">+</text>
-  <text x="70" y="58" text-anchor="middle" font-size="11">-</text>
-  <line x1="84" y1="46" x2="120" y2="46" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <rect x="120" y="26" width="60" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="150" y="51" text-anchor="middle">1</text>
-  <line x1="180" y1="46" x2="220" y2="46" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <circle cx="236" cy="46" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="236" y="42" text-anchor="middle" font-size="11">+</text>
-  <text x="236" y="58" text-anchor="middle" font-size="11">-</text>
-  <line x1="250" y1="46" x2="286" y2="46" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <rect x="286" y="26" width="100" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="336" y="51" text-anchor="middle">2/(s+2)</text>
-  <line x1="386" y1="46" x2="470" y2="46" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <text x="480" y="50" font-size="13">C</text>
-  <circle cx="430" cy="46" r="3" fill="currentColor"/>
-  <line x1="430" y1="46" x2="430" y2="100" stroke="currentColor" stroke-width="1.6"/>
-  <rect x="286" y="84" width="50" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="311" y="105" text-anchor="middle">1</text>
-  <line x1="286" y1="100" x2="236" y2="100" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="236" y1="100" x2="236" y2="62" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-  <line x1="430" y1="100" x2="430" y2="150" stroke="currentColor" stroke-width="1.6"/>
-  <rect x="120" y="134" width="50" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <text x="145" y="155" text-anchor="middle">3</text>
-  <line x1="430" y1="150" x2="170" y2="150" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="120" y1="150" x2="70" y2="150" stroke="currentColor" stroke-width="1.6"/>
-  <line x1="70" y1="150" x2="70" y2="62" stroke="currentColor" stroke-width="1.6" marker-end="url(#n5g)"/>
-</svg>`,
+<figure class="nx-frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 230" class="nx-fig">
+  <defs><marker id="nx6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
+  <text x="4" y="58">R</text>
+  <line x1="22" y1="52" x2="58" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <circle cx="78" cy="52" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="78" y="57" text-anchor="middle" font-size="15">Σ</text>
+  <text x="54" y="44" font-size="12">+</text>
+  <line x1="96" y1="52" x2="132" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <rect x="132" y="30" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="160" y="57" text-anchor="middle">1</text>
+  <line x1="188" y1="52" x2="230" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <circle cx="248" cy="52" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="248" y="57" text-anchor="middle" font-size="15">Σ</text>
+  <text x="224" y="44" font-size="12">+</text>
+  <line x1="266" y1="52" x2="304" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <rect x="304" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="364" y="57" text-anchor="middle">2 / (s + 2)</text>
+  <line x1="424" y1="52" x2="560" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <text x="572" y="58">C</text>
+  <circle cx="500" cy="52" r="3.5" fill="currentColor"/>
+  <line x1="500" y1="52" x2="500" y2="120" stroke="currentColor" stroke-width="1.8"/>
+  <rect x="304" y="98" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="332" y="125" text-anchor="middle">1</text>
+  <line x1="304" y1="120" x2="248" y2="120" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="248" y1="120" x2="248" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <text x="256" y="92" font-size="12">−</text>
+  <line x1="500" y1="120" x2="500" y2="188" stroke="currentColor" stroke-width="1.8"/>
+  <rect x="132" y="166" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
+  <text x="160" y="193" text-anchor="middle">3</text>
+  <line x1="500" y1="188" x2="188" y2="188" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="132" y1="188" x2="78" y2="188" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="78" y1="188" x2="78" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
+  <text x="86" y="92" font-size="12">−</text>
+</svg>
+<figcaption>Problem 5-08. Inner loop first, then the outer loop.</figcaption>
+</figure>`,
       hint: "Inner loop $G_2$ with $H_1=1$ first. That block then sits in the outer loop with $H_2=3$.",
       answer: "$$T=\\dfrac{2}{s+10}$$",
       expert: `
@@ -702,6 +770,278 @@ To move $\\sigma_d$ you change $a$ (a different motor, or rate feedback that
 enlarges the $s$ coefficient) or you leave this architecture. That is the argument
 for Chapter 9.
 `
+    },
+
+    {
+      id: "5-13", difficulty: "challenge", topic: "Loading",
+      sec: "5.2",
+      prompt: `A diagram prints two cascaded blocks and $T=G_2G_1$. The hardware is two passive $RC$ stages soldered together. Is the printed $T$ the hardware $T$? What block would make the diagram honest?`,
+      hint: "Cascade-as-product assumes no loading.",
+      answer: "No. Insert an isolating amplifier between the stages.",
+      expert: `
+**First glance:** a product on paper is a claim about impedances, not a soldering diagram.
+`,
+      solution: `
+Connecting the second $RC$ stage draws current from the first capacitor and adds a cross term to the damping. The product $G_2G_1$ is then false.
+
+A buffer with high input impedance and low output impedance restores the unloaded stages, and the product holds.
+`
+    },
+    {
+      id: "5-14", difficulty: "challenge", topic: "Feedback formula",
+      sec: "5.2",
+      prompt: `The summer is $E=R+HC$ with $H\\neq 1$, and $C=EG$. Find $T=C/R$ and name the sign of the loop.`,
+      answer: "$$T=\\dfrac{G}{1-GH}.$$ Positive feedback.",
+      expert: `
+**Path:** $C=G(R+HC)$ rearranges to $C-GHC=GR$.
+`,
+      solution: `
+$$C=G(R+HC)=GR+GHC,\\qquad C(1-GH)=GR,\\qquad T=\\frac{G}{1-GH}.$$
+
+A plus at the summer is a minus in the denominator.
+`
+    },
+    {
+      id: "5-15", difficulty: "challenge", topic: "Moving blocks",
+      sec: "5.2",
+      prompt: `A pickoff *before* $G$ currently feeds $H$. You slide $G$ left, past that pickoff. What belongs on the branch to $H$?`,
+      answer: "$1/G$. The pickoff now carries $RG$; $H$ used to receive $R$.",
+      expert: `
+**Discard:** putting $G$ on the branch. That restores $RG$ when $H$ already wanted $R$.
+`,
+      solution: `
+Before the move, the node is $R$ and $H$ sees $R$.
+
+After $G$ sits to the left of the pickoff, the node is $RG$. The branch must undo $G$, so it carries $1/G$.
+`
+    },
+    {
+      id: "5-16", difficulty: "core", topic: "Block diagram reduction",
+      sec: "5.2",
+      prompt: `Forward path $G=2/(s+2)$ in negative unity feedback. A prefilter $F=s+2$ sits *outside* the loop, in cascade with $R$. Find $T=C/R$.`,
+      hint: "Close the loop on $G$ alone, then multiply by $F$.",
+      answer: "$$T=\\dfrac{2(s+2)}{s+4}.$$",
+      expert: `
+**First glance:** $F$ is not inside $G$. Do not cancel $s+2$ before applying the feedback formula.
+`,
+      solution: `
+$$T_{\\text{cl}}=\\frac{G}{1+G}=\\frac{2/(s+2)}{1+2/(s+2)}=\\frac{2}{s+4}.$$
+
+$$T=F\\,T_{\\text{cl}}=\\frac{2(s+2)}{s+4}.$$
+
+The cancelled-looking factor survives as a zero of $T$.
+`
+    },
+    {
+      id: "5-17", difficulty: "core", topic: "Block diagram reduction",
+      sec: "5.2",
+      prompt: `Negative feedback, $G=1/s$, $H=2$. Find $T$ and the closed-loop time constant.`,
+      answer: "$$T=\\dfrac{1}{s+2},\\qquad \\tau=\\dfrac12.$$",
+      expert: `
+**Path:** an integrator in a loop with constant $H$ becomes a real pole at $-H$.
+`,
+      solution: `
+$$T=\\frac{1/s}{1+2/s}=\\frac{1}{s+2}.$$
+
+Pole at $-2$, so $\\tau=1/2$. Feedback turned an integrator into a lag.
+`
+    },
+    {
+      id: "5-18", difficulty: "challenge", topic: "Block diagram reduction",
+      sec: "5.2",
+      prompt: `Two parallel forward blocks $G_1=1$ and $G_2=1/s$ add ($+$ and $+$). That sum is then the forward path of a negative unity-feedback loop. Find $T=C/R$.`,
+      hint: "Parallel first, then the feedback formula.",
+      answer: "$$T=\\dfrac{s+1}{2s+1}.$$",
+      expert: `
+**Path:** $G_e=(s+1)/s$, then $T=G_e/(1+G_e)$.
+`,
+      solution: `
+$$G_e=1+\\frac{1}{s}=\\frac{s+1}{s},\\qquad
+1+G_e=\\frac{2s+1}{s},\\qquad
+T=\\frac{s+1}{2s+1}.$$
+`
+    },
+    {
+      id: "5-19", difficulty: "core", topic: "Closed-loop specs",
+      sec: "5.3",
+      prompt: `Unity negative feedback around $G=K/[s(s+20)]$. Choose $K$ so that $\\zeta=1/2$. What is $T_s$?`,
+      answer: "$K=400$, $T_s=0.4$ s.",
+      expert: `
+**Path:** $\\zeta=10/\\sqrt{K}=1/2$ gives $K=400$. $\\sigma_d=10$.
+`,
+      solution: `
+$$T=\\frac{K}{s^{2}+20s+K},\\qquad
+\\zeta=\\frac{10}{\\sqrt{K}}=\\frac12,\\qquad K=400.$$
+
+$\\sigma_d=10$, so $T_s=0.4$ s.
+`
+    },
+    {
+      id: "5-20", difficulty: "challenge", topic: "Gain design",
+      sec: "5.3",
+      prompt: `Same plant $G=K/[s(s+20)]$, unity negative feedback. Can one $K$ give both $T_s=0.2$ s and $\\zeta=1/2$?`,
+      answer: "No. For every underdamped $K$, $T_s=0.4$ s.",
+      expert: `
+**The limit:** $\\sigma_d$ is glued to $a/2=10$. Asking for $T_s=0.2$ asks for $\\sigma_d=20$.
+`,
+      solution: `
+Underdamped poles are $-10\\pm j\\sqrt{K-100}$. The real part does not move with $K$.
+
+$T_s=4/10=0.4$ s for all $K>100$. Meeting $0.2$ s needs a different $a$ or a compensator.
+`
+    },
+    {
+      id: "5-21", difficulty: "core", topic: "Pole migration",
+      sec: "5.3",
+      prompt: `For $T=K/(s^{2}+10s+K)$, at what $K$ does the step response become underdamped? What happens to $T_p$ as $K$ grows past that value?`,
+      answer: "Underdamped for $K>25$. $T_p=\\pi/\\sqrt{K-25}$ decreases toward $0$.",
+      expert: `
+**Path:** critical at $K=a^{2}/4=25$. Then $\\omega_d=\\sqrt{K-25}$.
+`,
+      solution: `
+Discriminant $100-4K$. Repeated poles at $K=25$.
+
+For $K>25$, $\\omega_d=\\sqrt{K-25}$ and $T_p=\\pi/\\omega_d$ falls as $K$ grows. Overshoot rises with it.
+`
+    },
+    {
+      id: "5-22", difficulty: "core", topic: "Block diagram reduction",
+      sec: "5.2",
+      prompt: `Minor loop: $G_2=1/(s+1)$, $H_2=1$, negative. That combination is the plant for a major loop with $G_1=K$ and $H_1=1$, negative. Find $T(s)$.`,
+      answer: "$$T=\\dfrac{K}{s+2+K}.$$",
+      expert: `
+**Path:** inner first, $T_i=1/(s+2)$. Then $T=KT_i/(1+KT_i)$.
+`,
+      solution: `
+$$T_i=\\frac{1/(s+1)}{1+1/(s+1)}=\\frac{1}{s+2}.$$
+
+$$T=\\frac{K/(s+2)}{1+K/(s+2)}=\\frac{K}{s+2+K}.$$
+`
+    },
+    {
+      id: "5-23", difficulty: "challenge", topic: "Feedback formula",
+      sec: "5.2",
+      prompt: `Unity *positive* feedback around $G=2/(s+3)$. Find the closed-loop pole. Is the loop stable?`,
+      hint: "$T=G/(1-G)$. Positive feedback is unstable only if the loop gain reaches $1$ in the RHP sense.",
+      answer: "Pole at $s=-1$. Stable. $G(0)=2/3<1$.",
+      expert: `
+**Discard:** "positive feedback means unstable." That is a slogan, not a calculation.
+`,
+      solution: `
+$$T=\\frac{G}{1-G}=\\frac{2/(s+3)}{1-2/(s+3)}=\\frac{2}{s+1}.$$
+
+The pole is at $-1$, in the LHP. DC loop gain $2/3$ is less than $1$, so the plus in the summer never quite regenerates.
+`
+    },
+    {
+      id: "5-24", difficulty: "core", topic: "Closed-loop specs",
+      sec: "5.3",
+      prompt: `Unity negative feedback around $G=36/[s(s+3)]$. Compute $\\zeta$, $\\omega_n$, $T_s$, and $\\%OS$.`,
+      answer: "$\\omega_n=6$, $\\zeta=1/4$, $T_s=8/3$ s, $\\%OS=100e^{-\\pi/\\sqrt{15}}$.",
+      expert: `
+**Path:** $T=36/(s^{2}+3s+36)$. $2\\zeta\\omega_n=3$, $\\omega_n=6$.
+`,
+      solution: `
+$$T=\\frac{36}{s^{2}+3s+36},\\qquad \\omega_n=6,\\qquad \\zeta=\\frac{3}{12}=\\frac14.$$
+
+$$\\sigma_d=1.5,\\qquad T_s=\\frac{4}{1.5}=\\frac{8}{3}\\ \\text{s},\\qquad
+\\%OS=100e^{-\\pi\\zeta/\\sqrt{1-\\zeta^{2}}}=100e^{-\\pi/\\sqrt{15}}.$$
+`
+    },
+    {
+      id: "5-25", difficulty: "challenge", topic: "Gain design",
+      sec: "5.3",
+      prompt: `Unity negative feedback, $G=K/[s(s+8)]$. You need $\\%OS=16.3\\%$ ($\\zeta=1/2$) and you would like $T_p$ as small as possible.
+
+What $K$ meets the overshoot, and can $T_p$ be reduced further without changing $\\zeta$?`,
+      answer: "$K=64$. Not with this plant: $\\zeta$ fixes $K$, and $T_p=\\pi/(\\omega_n\\sqrt{1-\\zeta^{2}})$ is then fixed too.",
+      expert: `
+**Path:** $\\zeta=4/\\sqrt{K}=1/2$ pins $K=64$. One knob, two wishes.
+`,
+      solution: `
+$$\\zeta=\\frac{8}{2\\sqrt{K}}=\\frac{4}{\\sqrt{K}}=\\frac12\\quad\\Rightarrow\\quad K=64.$$
+
+Then $\\omega_n=8$, $\\omega_d=4\\sqrt{3}$, $T_p=\\pi/(4\\sqrt{3})$.
+
+A smaller $T_p$ at the same $\\zeta$ needs a larger $\\omega_n$, hence a larger $a$ as well. Gain alone cannot do it.
+`
+    },
+    {
+      id: "5-26", difficulty: "core", topic: "Block diagram elements",
+      sec: "5.2",
+      prompt: `A node has two incoming arrows, marked $+$ and $-$, and one outgoing arrow. A classmate calls it a pickoff because "the signal splits." Correct them.`,
+      answer: "It is a summing junction. Pickoffs have one incoming signal and several outgoing copies.",
+      expert: `
+**First glance:** count incoming vs outgoing, then look for $\\pm$.
+`,
+      solution: `
+A pickoff copies one signal onto several branches. No signs.
+
+A summer *combines* several incoming signals with written signs. Two in, one out, $+$ and $-$, is a summer. The outgoing signal is the algebraic sum, not a copy of either input.
+`
+    },
+    {
+      id: "5-27", difficulty: "challenge", topic: "Moving blocks",
+      sec: "5.2",
+      prompt: `You want to move $G$ *right* through a summer whose second input is $X$. After the move, $R$ meets $G$ before the summer. What must sit on the $X$ path?`,
+      answer: "$1/G$. Otherwise $X$ would be added after $G$ and $C$ would gain an extra $XG$ it did not have.",
+      expert: `
+**Check:** original $C=RG\\pm X$. After a naive move, $C=(R\\pm X)G=RG\\pm XG$. The extra $G$ on $X$ is cancelled by $1/G$.
+`,
+      solution: `
+Original: $C=RG\\pm X$.
+
+If $G$ sits before the summer and $X$ is untouched, $C=(R\\pm X)G=RG\\pm XG$.
+
+To recover $RG\\pm X$, the $X$ branch must carry $1/G$.
+`
+    },
+    {
+      id: "5-28", difficulty: "core", topic: "Closed-loop specs",
+      sec: "5.3",
+      prompt: `Unity negative feedback, $G=9/[s(s+6)]$. Are the closed-loop poles overdamped, critical, or underdamped?`,
+      answer: "Critical. $K=9=a^{2}/4$. Repeated pole at $-3$.",
+      expert: `
+**Path:** $T=9/(s^{2}+6s+9)=(s+3)^{-2}$.
+`,
+      solution: `
+$$T=\\frac{9}{s^{2}+6s+9}=\\frac{9}{(s+3)^{2}}.$$
+
+$K=a^{2}/4$ exactly. Critically damped. No overshoot; $T_s$ still uses $\\sigma_d=3$ as a first estimate.
+`
+    },
+    {
+      id: "5-29", difficulty: "challenge", topic: "Block diagram reduction",
+      sec: "5.2",
+      prompt: `Forward path $G_1=1$, then $G_2=3/(s+3)$, negative feedback $H=s$ around $G_2$ only. Find $T=C/R$.`,
+      answer: "$$T=\\dfrac{3}{4s+3}.$$",
+      expert: `
+**Path:** inner loop first. $H=s$ is not around $G_1$.
+`,
+      solution: `
+$$T_i=\\frac{3/(s+3)}{1+3s/(s+3)}=\\frac{3}{s+3+3s}=\\frac{3}{4s+3}.$$
+
+$G_1=1$ sits outside, so $T=T_i$.
+`
+    },
+    {
+      id: "5-30", difficulty: "challenge", topic: "Pole migration",
+      sec: "5.3",
+      prompt: `A student says: "On $T=K/(s^{2}+as+K)$, increasing $K$ always speeds every spec." Name one spec that gets worse and one that does not move, once the system is underdamped.`,
+      answer: "Overshoot gets worse ($\\zeta$ falls). Settling time does not move ($\\sigma_d=a/2$ is fixed).",
+      expert: `
+**First glance:** three specs, one knob. Something is invariant, something pays.
+`,
+      solution: `
+Underdamped: $s=-a/2\\pm j\\sqrt{K-a^{2}/4}$.
+
+- $T_s=8/a$ is independent of $K$.
+- $\\zeta=a/(2\\sqrt{K})$ falls, so $\\%OS$ rises.
+- $T_p=\\pi/\\sqrt{K-a^{2}/4}$ falls.
+
+"Faster" is not one number. Peak time improves. Settling does not. Overshoot pays for the peak time.
+`
     }
+
   ]
 });

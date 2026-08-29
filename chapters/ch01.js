@@ -14,6 +14,7 @@ registerChapter({
   guide: [
     {
       title: "What this chapter is for",
+      example: "1-01",
       sec: "1.1",
       body: `
 Almost no computation. The work is naming things correctly.
@@ -29,6 +30,7 @@ exists because gain alone cannot break that trade-off.
     },
     {
       title: "1.1: What a control system is",
+      example: "1-02",
       sec: "1.1",
       body: `
 A control system is an assembly of subsystems and processes arranged to produce a
@@ -54,6 +56,7 @@ framing, **the input is the desired output**.
     },
     {
       title: "1.3: Open loop versus closed loop",
+      example: "1-03",
       sec: "1.3",
       body: `
 **Open loop.** Signal path: input transducer → controller → plant (process). No sensor,
@@ -92,6 +95,7 @@ take on supervisory scheduling.
     },
     {
       title: "1.4: The three analysis and design objectives",
+      example: "1-05",
       sec: "1.4",
       body: `
 **Analysis** determines the performance of a system that already exists.
@@ -138,6 +142,7 @@ is where it has become small.
     },
     {
       title: "Case study: antenna azimuth position control",
+      example: "1-08",
       sec: "1.4",
       body: `
 The running example for the whole book. It reappears as a case study in nearly every
@@ -170,6 +175,7 @@ motor voltage and the faster it turns.
     },
     {
       title: "1.5: The design process and the map of the book",
+      example: "1-10",
       sec: "1.5",
       body: `
 | Step | What you do | Chapters |
@@ -210,6 +216,7 @@ $$a_n\\frac{d^{n}c}{dt^{n}}+\\cdots+a_0c(t)=b_m\\frac{d^{m}r}{dt^{m}}+\\cdots+b_
     },
     {
       title: "Standard test inputs: memorize this",
+      example: "1-11",
       sec: "1.5",
       body: `
 | Input | Function | Defining property | Used to evaluate |
@@ -232,6 +239,7 @@ a commanded position; a step into a velocity system means a commanded speed.
     },
     {
       title: "1.2: History, the part that is useful",
+      example: "1-18",
       sec: "1.2",
       body: `
 Most of Section 1.2 is color. What is worth retaining is that a handful of names map
@@ -252,13 +260,13 @@ directly onto techniques you are about to learn.
 
   formulas: [
     { latex: "\\text{total response} = \\text{natural} + \\text{forced}",
-      note: "Natural response: homogeneous solution. Its form depends only on the system. Forced response: particular solution. Its form depends on the input." },
+      note: "Natural response is the homogeneous solution. Forced response is the particular solution." },
     { latex: "a_n\\dfrac{d^{n}c}{dt^{n}}+\\cdots+a_0c = b_m\\dfrac{d^{m}r}{dt^{m}}+\\cdots+b_0r",
-      note: "LTI input-output equation. Chapter 2 turns this into $G(s)=C(s)/R(s)$ at zero initial conditions." },
-    { latex: "\\delta(t),\; u(t),\; t\,u(t),\; \\tfrac12 t^{2}u(t),\; \\sin\\omega t",
+      note: "LTI input-output equation. Chapter 2 writes this as $G(s)=C(s)/R(s)$ at zero initial conditions." },
+    { latex: "\\delta(t),\\; u(t),\\; t\\,u(t),\\; \\tfrac12 t^{2}u(t),\\; \\sin\\omega t",
       note: "Impulse, step, ramp, parabola, sinusoid." },
-    { latex: "\\text{stable} \iff \\text{natural response} \to 0 \text{ or stays bounded}",
-      note: "If the natural response grows, transient and steady-state error are undefined as design specs." }
+    { latex: "\\text{stable}\\iff\\text{natural response}\\to 0\\text{ or stays bounded}",
+      note: "If the natural response grows, transient and steady-state error are not usable specs." }
   ],
 
   problems: [
@@ -987,6 +995,120 @@ of element Section 2.10 would classify alongside saturation and dead zone. It wo
 well enough because the thermal plant is slow, which is a real engineering lesson: the
 sophistication of the controller should match the difficulty of the plant.
 `
+    },
+
+    {
+      id: "1-26", difficulty: "challenge", topic: "Open vs closed loop",
+      sec: "1.3",
+      prompt: `A washing-machine cycle runs a fixed sequence of fill, agitate, and spin times. A later model adds a turbidity sensor that extends the wash if the water is still dirty.
+
+Is the first machine a control system? Is it open or closed loop? What changed in the second machine?`,
+      hint: "A control system does not require feedback. Closed loop requires a measurement of the controlled variable.",
+      answer: "Both are control systems. The first is open loop. The second closes a loop on dirtiness (turbidity), not on a clock.",
+      expert: `
+**First glance:** a timer is an input program, not a measurement of cleanliness.
+
+**Discard:** "the first is not a control system because there is no sensor." Open-loop systems are control systems.
+
+**Path:** name the controlled variable. If it is cleanliness and nobody measures it, the loop is open.
+`,
+      solution: `
+A control system produces a specified output from a specified input with specified performance. The first machine does that: a cycle selection in, a wash out. No measurement of the clothes is taken, so the loop is **open**.
+
+The second machine measures turbidity and changes the plant input. That is **closed loop**, and the sensed variable is cleanliness, not time.
+
+A clock is not feedback unless the controlled variable *is* time.
+`
+    },
+    {
+      id: "1-27", difficulty: "challenge", topic: "Design objectives",
+      sec: "1.4",
+      prompt: `A plant's natural response to any initial condition grows like $e^{+2t}$. An engineer applies a bounded input and observes a bounded output for the first two seconds, then declares the system stable enough to discuss overshoot.
+
+What is wrong, and which of the three design objectives is being ignored?`,
+      hint: "Stability is a property of the natural response.",
+      answer: "The natural response grows. The system is unstable. Transient specs and steady-state error are not defined as design objectives until the natural response dies or stays bounded.",
+      expert: `
+**First glance:** $e^{+2t}$ is the whole story. Two seconds of a bounded input cannot cancel an unstable mode.
+
+**Discard:** "the forced response looked fine." Forced response is the wrong cut for stability.
+`,
+      solution: `
+Stability is decided by the **natural** response. $e^{+2t}$ grows for every initial condition, so the system is unstable.
+
+A short record of a particular forced response does not change that. Overshoot and steady-state error assume a transient that ends. If the homogeneous solution diverges, those two objectives have nothing to sit on.
+
+The ignored objective is stability.
+`
+    },
+    {
+      id: "1-28", difficulty: "challenge", topic: "Definitions",
+      sec: "1.4",
+      prompt: `A stable first-order system is given a unit step. After five time constants the output is $0.99$ and still creeping toward $1$.
+
+Which of the following are still present, and which have effectively ended: natural response, forced response, transient response, steady-state response?`,
+      hint: "Natural vs forced is a partition of the *solution*. Transient vs steady-state is a partition of *time*.",
+      answer: "Forced response is still there (the particular solution $1$). Natural response is almost gone. Transient is effectively over. Steady-state has begun; the remaining $0.01$ is leftover natural response, not a new regime.",
+      expert: `
+**First glance:** $0.99$ is not a fourth category. It is $1$ plus a dying exponential.
+
+**Path:** write $c(t)=1-e^{-t/\\tau}$. The $1$ is forced and steady. The exponential is natural and transient.
+`,
+      solution: `
+$$c(t)=1-e^{-t/\\tau}$$
+
+- $1$ is the forced response. It exists for all $t>0$.
+- $-e^{-t/\\tau}$ is the natural response. At $5\\tau$ it is $e^{-5}\\approx 0.007$, so it is still present and already negligible.
+- Transient means "while the natural part is visible." After $5\\tau$ one usually calls the motion steady-state.
+- Steady-state is the forced value $1$, not a new function that appears at $t=5\\tau$.
+
+The two partitions cut different axes. Do not merge them.
+`
+    },
+    {
+      id: "1-29", difficulty: "challenge", topic: "Design process",
+      sec: "1.5",
+      prompt: `You are handed a motor, a load inertia, and a required $10\\%$ overshoot. A classmate starts by sketching a root locus.
+
+Which design-process step has been skipped, and what specific object is missing before a locus means anything?`,
+      hint: "You cannot move poles you have not modeled.",
+      answer: "Modeling was skipped. There is no $G(s)$ yet. A root locus is a picture of how closed-loop poles move; it needs an open-loop model first.",
+      expert: `
+**First glance:** specs arrived before a transfer function. Drawing a locus of nothing is theater.
+
+**Path:** design process is transform, model, reduce, analyze, design. They jumped to design.
+`,
+      solution: `
+The required overshoot is a spec. The motor and inertia are hardware. Between those two sits a **model**: a differential equation or $G(s)$.
+
+A root locus is a design tool for a loop $KG(s)H(s)$ that already exists on paper. Without $G(s)$, there are no branches to draw.
+
+The skipped step is modeling (and, if several blocks are present, block-diagram reduction).
+`
+    },
+    {
+      id: "1-30", difficulty: "challenge", topic: "Open vs closed loop",
+      sec: "1.3",
+      prompt: `A loudspeaker is driven by an amplifier whose input is a recorded waveform. A microphone in the room feeds a signal back to the same amplifier, and the system howls.
+
+Is this feedback? Is the howl evidence that feedback is always better than open loop? Name the sign of the loop.`,
+      hint: "Howl is oscillation from a loop gain that is too large with the wrong phase, i.e. effectively positive at that frequency.",
+      answer: "Yes, it is feedback. No, feedback is not automatically better. The howl is a closed-loop instability; around the howl frequency the loop is effectively regenerative (positive).",
+      expert: `
+**First glance:** a microphone into the same chain is a loop. The useful lesson is the sign and the gain, not the word "feedback."
+
+**Discard:** "feedback failed so it was not really feedback." Unstable closed-loop systems are still closed loop.
+`,
+      solution: `
+The microphone measures the output (air pressure) and adds it to the input. That is feedback.
+
+Open-loop playback of the recording would not howl. The howl appears only after the loop is closed, so feedback here made the system worse: it became unstable.
+
+At the howl frequency the phase around the loop is such that the returned signal *adds* to the input. That is the positive-feedback case of Chapter 5, $G/(1-GH)$, sitting on a pole in the right half-plane.
+
+Feedback is a structure. Stability is a separate question.
+`
     }
+
   ]
 });

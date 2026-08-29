@@ -1,7 +1,7 @@
 registerChapter({
   id: 4,
   title: "Time Response",
-  sections: "4.1–4.8",
+  sections: "4.1–4.7",
   brief: "A pole's location is a number you can measure. Real part sets settling, imaginary part sets peak time, angle sets overshoot. $\\omega_n$ only scales the clock. Zeros change how strongly each mode is excited, not which modes exist.",
   sectionList: [
     { id: "4.1", title: "Introduction" },
@@ -16,6 +16,7 @@ registerChapter({
   guide: [
     {
       title: "What this chapter is for",
+      example: "4-01",
       sec: "4.1",
       body: `
 Chapter 2 asked *what is the transfer function*. Chapter 4 asks **what does the system
@@ -42,6 +43,7 @@ $$\\underbrace{\\text{poles \\& zeros}}_{4.2}
     },
     {
       title: "Poles are modes, zeros are amplitudes",
+      example: "4-01",
       sec: "4.2",
       body: `
 This split governs the entire chapter, so it is worth stating precisely.
@@ -89,6 +91,7 @@ therefore dominates the late response. This is the seed of Sections 4.7 and 4.8.
     },
     {
       title: "First order: one storage element, one mode",
+      example: "4-02",
       sec: "4.3",
       body: `
 $$G(s)=\\frac{a}{s+a}\\;\\Longrightarrow\\;c(t)=1-e^{-at}$$
@@ -139,6 +142,7 @@ transfer function before saying anything about final values.`
     },
     {
       title: "Why two storage elements can oscillate",
+      example: "4-04",
       sec: "4.4",
       body: `
 This is the conceptual heart of the chapter.
@@ -180,6 +184,7 @@ to it.`
     },
     {
       title: "What $\zeta$ and $\omega_{n}$ actually measure",
+      example: "4-06",
       sec: "4.4",
       body: `
 These are not arbitrary symbols. Each answers a specific physical question.
@@ -216,6 +221,7 @@ $\\omega_{n}$.** It is a shape property, and shape does not care how fast you ru
     },
     {
       title: "The four cases as one story of pole migration",
+      example: "4-05",
       sec: "4.4",
       body: `
 Fix $\\omega_{n}$ and sweep the damping from heavy to none. Watch where the poles go.
@@ -265,6 +271,7 @@ Compute the discriminant $b^{2}-4c$ before attempting to factor:
     },
     {
       title: "The underdamped response, derived",
+      example: "4-09",
       sec: "4.5",
       body: `
 For $0<\\zeta<1$ with a unit step, the response is
@@ -309,6 +316,7 @@ which is where the peak time formula comes from.`
     },
     {
       title: "Where each specification comes from",
+      example: "4-08",
       sec: "4.5",
       body: `
 Set the derivative to zero to find the peak; use the envelope to find settling; evaluate
@@ -378,6 +386,7 @@ cleanly was built from one of these five.`
     },
     {
       title: "The $s$-plane as a design canvas",
+      example: "4-11",
       sec: "4.5",
       body: `
 Because each specification depends on a different geometric feature, each has its own
@@ -432,6 +441,7 @@ That sentence is the entire motivation for Chapter 9.`
     },
     {
       title: "Higher-order systems and dominance",
+      example: "4-14",
       sec: "4.6",
       body: `
 Real systems have more than two poles. These sections tell you when you may ignore the
@@ -483,6 +493,7 @@ residue relative to the others.`
     },
     {
       title: "Zeros revisited: the derivative decomposition",
+      example: "4-16",
       sec: "4.7",
       body: `
 Zeros never add modes. So how do they change a response? Through one identity that explains
@@ -548,6 +559,7 @@ tells you the numerator's degree before you compute anything.`
     },
     {
       title: "The chapter in one picture",
+      example: "4-07",
       sec: "4.1",
       body: `
 $$\\underbrace{G(s)}_{\\text{Chapter 2}}
@@ -587,21 +599,27 @@ Everything from here is about relocating the poles you have just learned to read
 
   formulas: [
     { latex: "G(s)=\\dfrac{\\omega_n^{2}}{s^{2}+2\\zeta\\omega_n s+\\omega_n^{2}}",
-      note: "Canonical second-order plant. Leading coefficient of the denominator must be $1$ before reading $\\omega_n$ and $\\zeta$." },
-    { latex: "\\omega_n=\\sqrt{c},\qquad \\zeta=\\dfrac{b}{2\\sqrt{c}}",
-      note: "From $s^{2}+bs+c$, after any leading coefficient has been divided out." },
+      note: "Canonical second-order plant. Divide so the leading denominator coefficient is $1$ before reading $\\omega_n$ and $\\zeta$." },
+    { latex: "\\omega_n=\\sqrt{c}",
+      note: "From $s^{2}+bs+c$." },
+    { latex: "\\zeta=\\dfrac{b}{2\\sqrt{c}}",
+      note: "From $s^{2}+bs+c$." },
     { latex: "s=-\\zeta\\omega_n\\pm j\\omega_n\\sqrt{1-\\zeta^{2}}=-\\sigma_d\\pm j\\omega_d",
-      note: "Underdamped poles. Distance from the origin is $\\omega_n$ for every $\\zeta$." },
-    { latex: "T_p=\\dfrac{\\pi}{\\omega_d},\qquad T_s=\\dfrac{4}{\\sigma_d},\qquad \\%OS=100\,e^{-\\pi\\sigma_d/\\omega_d}",
-      note: "Peak time from the imaginary part, $2\%$ settling from the real part, overshoot from the ratio $\\sigma_d/\\omega_d$. $\\omega_n$ never enters $\\%OS$." },
+      note: "Underdamped poles. Distance from the origin is $\\omega_n$." },
+    { latex: "T_p=\\dfrac{\\pi}{\\omega_d}",
+      note: "Peak time. Imaginary part only." },
+    { latex: "T_s=\\dfrac{4}{\\sigma_d}",
+      note: "Two-percent settling. Real part only." },
+    { latex: "\\%OS=100e^{-\\pi\\sigma_d/\\omega_d}",
+      note: "Overshoot. Ratio of real to imaginary part; $\\omega_n$ cancels." },
     { latex: "\\zeta=\\dfrac{-\\ln(\\%OS/100)}{\\sqrt{\\pi^{2}+\\ln^{2}(\\%OS/100)}}=\\cos\\theta",
       note: "$\\theta$ is measured from the negative real axis." },
-    { latex: "\\tau=\\dfrac{1}{a},\qquad T_r=\\dfrac{2.2}{a},\qquad T_s=\\dfrac{4}{a}",
-      note: "First-order system with pole at $-a$. No overshoot is possible." },
+    { latex: "\\tau=\\dfrac{1}{a},\\quad T_r=\\dfrac{2.2}{a},\\quad T_s=\\dfrac{4}{a}",
+      note: "First-order system, pole at $-a$. No overshoot." },
     { latex: "\\dot c(t)=\\dfrac{\\omega_n}{\\sqrt{1-\\zeta^{2}}}e^{-\\sigma_d t}\\sin\\omega_d t",
-      note: "Unit-step derivative for the canonical underdamped plant. Pure sine; the first positive zero is $T_p$." },
+      note: "Derivative of the unit-step response of the canonical underdamped plant." },
     { latex: "\\alpha_r \\ge 5\\sigma_d",
-      note: "A real pole this far left can be dropped; the remaining pair still predicts the visible transient." }
+      note: "A real pole this far left can be dropped for the visible transient." }
   ],
 
   problems: [
@@ -2830,6 +2848,121 @@ $T_{p}\\le1$ s: you would need $\\omega_{d}\\ge\\pi$, and since $\\omega_{d}=2$ 
 would fail. The only remedy would be changing $M$, or adding a controller. That is the
 argument for Chapter 9.
 `
+    },
+
+    {
+      id: "4-26", difficulty: "challenge", topic: "Second-order systems",
+      sec: "4.4",
+      prompt: `A classmate reads $G(s)=\\dfrac{20}{2s^{2}+4s+20}$ as $\\omega_n=\\sqrt{20}$ and $\\zeta=4/(2\\sqrt{20})$.
+
+Correct them, then compute $\\omega_n$ and $\\zeta$.`,
+      hint: "Leading coefficient of the denominator must be $1$.",
+      answer: "Divide by $2$ first: $G=10/(s^{2}+2s+10)$. Then $\\omega_n=\\sqrt{10}$, $\\zeta=1/\\sqrt{10}$.",
+      expert: `
+**First glance:** $2s^{2}$ is the trap. $\\omega_n^{2}$ is the *normalized* constant term.
+
+**Path:** $s^{2}+2s+10$, $\\omega_n=\\sqrt{10}$, $2\\zeta\\omega_n=2$ so $\\zeta=1/\\omega_n=1/\\sqrt{10}$.
+`,
+      solution: `
+$$G(s)=\\frac{20}{2s^{2}+4s+20}=\\frac{10}{s^{2}+2s+10}.$$
+
+$$\\omega_n=\\sqrt{10},\\qquad 2\\zeta\\omega_n=2\\quad\\Rightarrow\\quad \\zeta=\\frac{1}{\\sqrt{10}}.$$
+
+Using $\\sqrt{20}$ treats the un-normalized polynomial as if it were monic. The poles of $2s^{2}+4s+20=0$ are the same as $s^{2}+2s+10=0$, so the geometry never agreed with $\\sqrt{20}$.
+`
+    },
+    {
+      id: "4-27", difficulty: "challenge", topic: "Design from specifications",
+      sec: "4.5",
+      prompt: `A second-order pair must satisfy $T_s\\le 1$ s and $\\%OS\\le 100e^{-\\pi}$ (that is, $\\zeta\\ge \\sqrt{2}/2$).
+
+Can both be met with $\\omega_n=3$? If not, what is the smallest $\\omega_n$ that works?`,
+      hint: "$T_s=4/(\\zeta\\omega_n)$. The tighter $\\zeta$ makes $T_s$ larger for fixed $\\omega_n$.",
+      answer: "No. At $\\zeta=\\sqrt{2}/2$ and $\\omega_n=3$, $T_s=4/(\\tfrac{\\sqrt{2}}{2}\\cdot 3)=8/(3\\sqrt{2})\\approx 1.89>1$. Need $\\zeta\\omega_n\\ge 4$, so $\\omega_n\\ge 4\\sqrt{2}$ at this $\\zeta$.",
+      expert: `
+**First glance:** $T_s$ is a vertical line $\\sigma_d=4$. $\\zeta=\\sqrt{2}/2$ is a $45^{\\circ}$ ray. Their intersection is $\\omega_n=4\\sqrt{2}$.
+
+**Path:** $\\omega_n=3$ sits inside the $\\zeta$ wedge only if $\\sigma_d=\\zeta\\omega_n\\ge 3/\\sqrt{2}\\approx 2.12<4$. Too close to the axis.
+`,
+      solution: `
+$\\%OS\\le 100e^{-\\pi}$ means $\\zeta\\ge \\sqrt{2}/2$, so the poles lie inside the $45^{\\circ}$ wedge.
+
+$T_s\\le 1$ means $\\sigma_d=\\zeta\\omega_n\\ge 4$.
+
+On the wedge boundary, $\\sigma_d=\\omega_n/\\sqrt{2}$, so $\\omega_n/\\sqrt{2}\\ge 4$, $\\omega_n\\ge 4\\sqrt{2}\\approx 5.66$.
+
+$\\omega_n=3$ cannot reach $\\sigma_d=4$ at any $\\zeta\\le 1$. Even critically damped, $\\sigma_d=3<4$.
+`
+    },
+    {
+      id: "4-28", difficulty: "challenge", topic: "Pole dominance",
+      sec: "4.6",
+      prompt: `$$G(s)=\\frac{36\\cdot 10}{(s^{2}+2\\cdot 0.5\\cdot 6\\, s+36)(s+10)}=\\frac{360}{(s^{2}+6s+36)(s+10)}.$$
+
+Is the real pole negligible by the five-times rule? Estimate $\\%OS$ as if it were, then state the direction of the error that the neglected pole introduces.`,
+      hint: "Compare $10$ to $\\sigma_d=3$. Extra real poles pull overshoot *down*.",
+      answer: "No: $10/3\\approx 3.3<5$. Treating it as second order gives $\\zeta=0.5$, $\\%OS=100e^{-\\pi/\\sqrt{3}}$. The real pole, being too close, will reduce the actual overshoot below that estimate.",
+      expert: `
+**First glance:** $\\sigma_d=3$, third pole at $-10$, ratio $3.3$. The rule fails.
+
+**Check:** a left-half-plane pole is a lag. It slows the rise and trims the peak. The second-order $\\%OS$ is an upper bound here, not a prediction.
+`,
+      solution: `
+The quadratic is $s^{2}+6s+36$, so $\\omega_n=6$, $\\zeta=1/2$, $\\sigma_d=3$.
+
+Five-times wants the extra pole at least at $-15$. It sits at $-10$. Do not drop it for a grade-level $\\%OS$ claim.
+
+If you drop it anyway you get $\\%OS=100e^{-\\pi/\\sqrt{3}}\\approx 16\\%$. The ignored pole removes high-frequency content from the rise, so the true peak is *smaller*.
+`
+    },
+    {
+      id: "4-29", difficulty: "challenge", topic: "Zeros",
+      sec: "4.7",
+      prompt: `A closed-loop system is $\\dfrac{36(s+z)}{z(s^{2}+6s+36)}$ with $z>0$.
+
+For $z=3$ versus $z=30$, which case has more overshoot, and why, without computing $c(t)$?`,
+      hint: "A zero is a weighted derivative of the zero-free response. Closer zeros mean heavier derivative.",
+      answer: "More overshoot at $z=3$. The zero is closer to the imaginary axis, so the $c_{\\text{zero-free}}+\\frac{1}{z}\\dot c_{\\text{zero-free}}$ mix puts more weight on the derivative, which peaks earlier and higher.",
+      expert: `
+**First glance:** both have the same poles. Only the zero moves. Overshoot is an amplitude effect.
+
+**Path:** $C(s)=\\big(1+s/z\\big)C_{\\text{nf}}(s)$ for a step into the no-zero system scaled to the same DC. Small $z$ is a large $1/z$.
+`,
+      solution: `
+Write the no-zero step response as $c_{\\text{nf}}(t)$, DC gain $1$. Then
+
+$$c(t)=c_{\\text{nf}}(t)+\\frac{1}{z}\\dot c_{\\text{nf}}(t).$$
+
+$\\dot c_{\\text{nf}}$ is a signed pulse around the rise. Adding a large multiple of it ($z=3$) lifts the peak. $z=30$ is a small multiple; the response is nearly $c_{\\text{nf}}$.
+
+Same poles, different residues. That is the whole content of a zero.
+`
+    },
+    {
+      id: "4-30", difficulty: "challenge", topic: "System identification",
+      sec: "4.5",
+      prompt: `A step test on an unknown underdamped plant shows $T_p=0.5$ s, $T_s=2$ s, and a peak of $1.16$ when the final value is $1$.
+
+Is this consistent with a *pure* second-order model? If you must pick one pair $(\\zeta,\\omega_n)$ anyway, which two of the three numbers would you trust first, and why?`,
+      hint: "Pure second order: $\\%OS$ fixes $\\zeta$, $T_s$ fixes $\\sigma_d$, $T_p$ fixes $\\omega_d$. Check whether $\\zeta=\\sigma_d/\\omega_n$ agrees.",
+      answer: "$\\%OS=16\\%$ is $\\zeta\\approx 0.5$. $T_s=2$ gives $\\sigma_d=2$. $T_p=0.5$ gives $\\omega_d=2\\pi\\approx 6.28$. Then $\\omega_n\\approx 6.6$ and $\\zeta=\\sigma_d/\\omega_n\\approx 0.30$, which does not match $0.5$. The three numbers are inconsistent with one pair. Trust $T_s$ and $T_p$ for the pole *location*; treat extra overshoot or extra damping as a zero or a third pole.",
+      expert: `
+**First glance:** three measurements, two parameters. A contradiction is information: the plant is not that pair.
+
+**Path:** $\\sigma_d=4/T_s=2$, $\\omega_d=\\pi/T_p=2\\pi$. That *is* a pole location. $\\%OS$ then has to match $\\sigma_d/\\omega_d=1/\\pi$, i.e. $\\zeta=1/\\sqrt{1+\\pi^{2}}\\approx 0.30$, not $0.5$. The overshoot is too small for those poles, which is what an extra left-half-plane pole would do.
+`,
+      solution: `
+Pure second order has only two degrees of freedom. Three independent specs overdetermine it.
+
+From time locations:
+
+$$\\sigma_d=\\frac{4}{2}=2,\\qquad \\omega_d=\\frac{\\pi}{0.5}=2\\pi.$$
+
+Those poles have $\\zeta=\\sigma_d/\\omega_n=2/\\sqrt{4+4\\pi^{2}}\\approx 0.30$, so $\\%OS\\approx 100e^{-\\pi\\cdot 0.30/\\sqrt{1-0.09}}\\approx 37\\%$, not $16\\%$.
+
+The peak is too low for the observed $T_p$ and $T_s$. A nearby real pole (Chapter 4.6) or a far zero is in the plant. Report the pole pair from $T_s$ and $T_p$, then explain the missing overshoot separately.
+`
     }
+
   ]
 });
