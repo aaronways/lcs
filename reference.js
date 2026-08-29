@@ -1,5 +1,5 @@
 /* ============================================================
-   Global reference tables — shown under "Reference" in the sidebar,
+   Global reference tables: shown under "Reference" in the sidebar,
    independent of any chapter. Notation follows Nise, 7e.
    ============================================================ */
 
@@ -35,7 +35,7 @@ are the ones you actually need for partial fractions:
 | 10 | $t\\,e^{-at}u(t)$ | $\\dfrac{1}{(s+a)^{2}}$ |
 | 11 | $t^{n}e^{-at}u(t)$ | $\\dfrac{n!}{(s+a)^{n+1}}$ |
 
-**Two traps.** Item 6 has $\\omega$ on top and item 7 has $s$ on top — mixing them turns
+**Two traps.** Item 6 has $\\omega$ on top and item 7 has $s$ on top - mixing them turns
 a cosine into a sine. Item 4 is $n!/s^{n+1}$, so $\\mathcal{L}\\{t^{2}\\}=2/s^{3}$, not
 $1/s^{3}$.
 `
@@ -75,18 +75,18 @@ $s^{n}$. That is the whole trick behind the transfer function.
 **Step 0.** If $\\deg N(s)\\ge\\deg D(s)$, do polynomial long division first. Leftover
 quotient terms invert to $\\delta(t)$ and its derivatives.
 
-**Case 1 — real, distinct roots.**
+**Case 1: real, distinct roots.**
 
 $$F(s)=\\frac{N(s)}{(s+p_{1})(s+p_{2})\\cdots(s+p_{n})}=\\frac{K_{1}}{s+p_{1}}+\\cdots+\\frac{K_{n}}{s+p_{n}}$$
 
 $$K_{m}=\\Big[(s+p_{m})F(s)\\Big]_{\\,s\\to-p_{m}} \\qquad \\text{(cover-up method)}$$
 
-**Case 2 — real, repeated roots.** A factor to the power $r$ produces $r$ terms. With
+**Case 2: real, repeated roots.** A factor to the power $r$ produces $r$ terms. With
 $F_{1}(s)=(s+p_{1})^{r}F(s)$:
 
 $$K_{i}=\\frac{1}{(i-1)!}\\left.\\frac{d^{\\,i-1}F_{1}(s)}{ds^{\\,i-1}}\\right|_{s\\to-p_{1}},\\qquad 0!=1$$
 
-**Case 3 — complex or imaginary roots.** Keep the irreducible quadratic whole and give
+**Case 3: complex or imaginary roots.** Keep the irreducible quadratic whole and give
 it a *linear* numerator:
 
 $$F(s)=\\frac{K_{1}}{s+p_{1}}+\\frac{K_{2}s+K_{3}}{s^{2}+as+b}$$
@@ -157,7 +157,7 @@ $$\\left[\\begin{array}{c}\\text{sum of impedances}\\\\ \\text{connected to the 
 -\\sum_{j\\ne k}\\left[\\begin{array}{c}\\text{impedances between}\\\\ x_{k}\\text{ and }x_{j}\\end{array}\\right]X_{j}(s)
 =\\left[\\begin{array}{c}\\text{applied forces}\\\\ \\text{at }x_{k}\\end{array}\\right]$$
 
-**Force–voltage analogy** — this is why the two patterns above are identical:
+**Force–voltage analogy**: this is why the two patterns above are identical:
 
 | Mechanical | Electrical |
 |---|---|
@@ -184,9 +184,9 @@ $$s=\\frac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}$$
 
 | Discriminant $b^{2}-4ac$ | Roots | Response |
 |---|---|---|
-| $>0$ | real, distinct | overdamped — sum of exponentials |
-| $=0$ | real, repeated | critically damped — includes a $te^{-at}$ term |
-| $<0$ | complex conjugate | underdamped — damped sinusoid |
+| $>0$ | real, distinct | overdamped: sum of exponentials |
+| $=0$ | real, repeated | critically damped: includes a $te^{-at}$ term |
+| $<0$ | complex conjugate | underdamped: damped sinusoid |
 
 **Completing the square.**
 
@@ -209,7 +209,7 @@ $$\\begin{vmatrix}a&b\\\\c&d\\end{vmatrix}=ad-bc
 $$x_{k}=\\frac{\\det\\mathbf{A}_{k}}{\\det\\mathbf{A}}$$
 
 where $\\mathbf{A}_{k}$ is $\\mathbf{A}$ with its $k$th **column** replaced by
-$\\mathbf{b}$. Use it when you want only one unknown — the output variable.
+$\\mathbf{b}$. Use it when you want only one unknown - the output variable.
 
 **Combining a sine and cosine of the same frequency.**
 
@@ -246,7 +246,7 @@ m_{a}=\\left.\\frac{df}{dx}\\right|_{x=x_{0}},\\qquad \\delta x=x-x_{0}$$
 2. Find the operating point: set the small-signal input to zero, set all derivatives to
    zero, solve the resulting algebraic equation.
 3. Substitute $x=x_{0}+\\delta x$. Since $x_{0}$ is constant,
-   $\\dfrac{d(x_{0}+\\delta x)}{dt}=\\dfrac{d\\,\\delta x}{dt}$ — derivative terms pass
+   $\\dfrac{d(x_{0}+\\delta x)}{dt}=\\dfrac{d\\,\\delta x}{dt}$ - derivative terms pass
    through unchanged.
 4. Replace each nonlinear term by its linear approximation; drop higher-order terms.
 5. Laplace transform with zero initial conditions and form the transfer function.
@@ -294,7 +294,7 @@ pairs of $c$ in your head:
 | $s^{2}-3s+2$ | $(-1)(-2)$ | $-1-2=-3$ | $(s-1)(s-2)$ |
 
 **Signs:** $c>0$ means both factors share $b$'s sign. $c<0$ means the factors have
-opposite signs. A negative $b$ with positive $c$ gives **positive roots** — that is the
+opposite signs. A negative $b$ with positive $c$ gives **positive roots** - that is the
 instability tell.
 
 ### Decide factorable vs irreducible in one step
@@ -305,8 +305,8 @@ Compute $b^{2}-4ac$ first, before trying to factor:
 |---|---|---|
 | perfect square ($0,1,4,9,16,25,\\dots$) | rational | factor by inspection |
 | positive, not a perfect square | real irrational | quadratic formula, leave the surd |
-| zero | repeated | $(s+\\tfrac{b}{2})^{2}$ — Case 2 partial fractions |
-| negative | complex | **do not factor** — complete the square, Case 3 |
+| zero | repeated | $(s+\\tfrac{b}{2})^{2}$: Case 2 partial fractions |
+| negative | complex | **do not factor**: complete the square, Case 3 |
 
 ### Simplifying surds
 
@@ -331,16 +331,16 @@ $$\\sqrt2\\;(\\approx\\!1.41),\\quad \\sqrt3\\;(\\approx\\!1.73),\\quad \\sqrt5,
 | $30^{\\circ}=\\pi/6$ | $\\tfrac12$ | $\\tfrac{\\sqrt3}{2}$ | $\\tfrac{\\sqrt3}{3}$ |
 | $45^{\\circ}=\\pi/4$ | $\\tfrac{\\sqrt2}{2}$ | $\\tfrac{\\sqrt2}{2}$ | $1$ |
 | $60^{\\circ}=\\pi/3$ | $\\tfrac{\\sqrt3}{2}$ | $\\tfrac12$ | $\\sqrt3$ |
-| $90^{\\circ}=\\pi/2$ | $1$ | $0$ | — |
+| $90^{\\circ}=\\pi/2$ | $1$ | $0$ | - |
 
 So $\\arctan(1)=45^{\\circ}$, $\\arctan(\\sqrt3)=60^{\\circ}$,
 $\\arctan\\!\\left(\\tfrac{\\sqrt3}{3}\\right)=30^{\\circ}$. Any other arctangent should be
-left written as $\\arctan(B/A)$ — you are not expected to evaluate it.
+left written as $\\arctan(B/A)$: you are not expected to evaluate it.
 
 ### Clearing compound fractions
 
 Multiply top and bottom by the inner denominator. Dividing by $\\tfrac12 s$ means
-multiplying by $\\dfrac{2}{s}$ — a factor-of-4 trap if you write $\\dfrac{1}{2s}$.
+multiplying by $\\dfrac{2}{s}$: a factor-of-4 trap if you write $\\dfrac{1}{2s}$.
 
 $$\\frac{a}{\\;\\dfrac{b}{c}\\;}=\\frac{ac}{b},\\qquad
 \\frac{\\tfrac{2}{s}}{s+3+\\tfrac{2}{s}}\\;\\xrightarrow{\\;\\times s\\;}\\;\\frac{2}{s^{2}+3s+2}$$
@@ -391,7 +391,7 @@ not. There are only about six.
    before anything else. Many wrong answers are correct transfer functions of the wrong
    pair.
 2. **Check for nonlinearity.** Any power, product, root, trig, exponential or log of a
-   variable means linearize first — everything downstream assumes linearity.
+   variable means linearize first: everything downstream assumes linearity.
 3. **Convert to impedances.** $R,\\;Ls,\\;1/Cs$ or $K,\\;f_{v}s,\\;Ms^{2}$.
 4. **Count the unknowns.** That is how many equations you need: meshes, independent
    nodes, or independently movable masses.
@@ -410,7 +410,7 @@ not. There are only about six.
 - **High frequency, as $s\\to\\infty$.** Capacitors short, inductors open. The limit should
   be finite and sensible.
 - **Signs.** A stable system's exponentials are all $e^{-\\text{positive}\\cdot t}$.
-- **Initial and final value theorems** against your time-domain answer — and check the
+- **Initial and final value theorems** against your time-domain answer: and check the
   final value theorem's pole precondition before using it.
 
 ### When the setup is genuinely unfamiliar
@@ -423,7 +423,7 @@ Ask what each element *responds to*, not what it is called.
 - An element tied to **ground** touches one diagonal only and never the off-diagonal.
 - Non-adjacent meshes share nothing, so their matrix entry is exactly zero.
 - If the input is a displacement rather than a force, the right-hand side becomes an
-  operator acting on the input — and that is what puts zeros in the numerator.
+  operator acting on the input: and that is what puts zeros in the numerator.
 
 ### If you are stuck
 
