@@ -33,9 +33,13 @@ function applyTheme(theme){
 
 function mdMath(src){
   if (!src) return '';
+  const figs = [];
   const vault = [];
+  const stashFig = m => { figs.push(m); return '<!--NXFIG' + (figs.length - 1) + '-->'; };
   const stash = m => { vault.push(m); return '@@M' + (vault.length - 1) + '@@'; };
   let s = String(src)
+    .replace(/<figure[\s\S]*?<\/figure>/g, stashFig)
+    .replace(/<svg[\s\S]*?<\/svg>/g, stashFig)
     .replace(/\$\$([\s\S]*?)\$\$/g, stash)
     .replace(/\\\[([\s\S]*?)\\\]/g, stash)
     .replace(/\\\(([\s\S]*?)\\\)/g, stash)
@@ -43,8 +47,11 @@ function mdMath(src){
   let html = (typeof marked !== 'undefined')
     ? marked.parse(s, { breaks:false, mangle:false, headerIds:false })
     : s.replace(/\n\n/g, '<br><br>');
-  return html.replace(/@@M(\d+)@@/g, (_, i) => vault[+i]);
+  html = html.replace(/@@M(\d+)@@/g, (_, i) => vault[+i]);
+  html = html.replace(/<!--NXFIG(\d+)-->/g, (_, i) => figs[+i]);
+  return html;
 }
+
 function mdInline(src){
   return mdMath(src).replace(/^<p>/, '').replace(/<\/p>\s*$/, '').trim();
 }
@@ -214,9 +221,9 @@ function renderGuide(main, ch){
       body.className = 'guide-body';
       d.appendChild(body);
       main.appendChild(d);
-      const prefix = sec.sec ? sec.sec + ' · ' : '';
-      fillInline(label, prefix + sec.title);
+      fillInline(label, sec.title);
       fill(body, sec.body);
+      attachExample(body, ch, sec.example);
     });
   });
 }
@@ -243,7 +250,15 @@ function renderFormulas(main, ch){
       fill(n, f.note);
     }
     grid.appendChild(card);
-    fill(eq, '$$' + f.latex + '$$');
+    if (typeof katex !== 'undefined') {
+      try {
+        katex.render(f.latex, eq, { displayMode: true, throwOnError: false, strict: false });
+      } catch (err) {
+        fill(eq, '$$' + f.latex + '$$');
+      }
+    } else {
+      fill(eq, '$$' + f.latex + '$$');
+    }
   });
 }
 
@@ -270,6 +285,84 @@ function addReveal(body, acts, title, markdown, btnLabel, extraClass){
     }
   };
   acts.appendChild(btn);
+}
+
+function mountProblemCard(list, p){
+  const card = document.createElement('div');
+  card.className = 'prob' + (state.solved[p.id] ? ' done' : '');
+  card.id = 'prob-' + p.id;
+  const head = document.createElement('div');
+  head.className = 'prob-head';
+  head.innerHTML =
+    '<span class="prob-num">' + p.id + '</span>' +
+    (p.sec ? '<span class="tag sec">' + p.sec + '</span>' : '') +
+    (p.difficulty ? '<span class="tag ' + p.difficulty + '">' + p.difficulty + '</span>' : '') +
+    (p.topic ? '<span class="tag">' + p.topic + '</span>' : '');
+  card.appendChild(head);
+  const body = document.createElement('div');
+  body.className = 'prob-body';
+  card.appendChild(body);
+  const prompt = document.createElement('div');
+  body.appendChild(prompt);
+  const acts = document.createElement('div');
+  acts.className = 'prob-actions';
+  body.appendChild(acts);
+  if (p.hint) addReveal(body, acts, 'Hint', p.hint, 'Hint');
+  addReveal(body, acts, 'Answer', p.answer, 'Answer');
+  if (p.expert) addReveal(body, acts, 'Expert read', p.expert, 'Expert read', 'expert');
+  addReveal(body, acts, 'Solution', p.solution, 'Solution');
+  const doneBtn = document.createElement('button');
+  doneBtn.className = 'act' + (state.solved[p.id] ? ' done' : '');
+  doneBtn.textContent = state.solved[p.id] ? 'Solved' : 'Solved?';
+  doneBtn.onclick = () => {
+    if (state.solved[p.id]) delete state.solved[p.id];
+    else state.solved[p.id] = true;
+    saveProgress(); render();
+  };
+  acts.appendChild(doneBtn);
+  list.appendChild(card);
+  fill(prompt, p.prompt);
+  return card;
+}
+
+function attachExample(body, ch, exampleId){
+  if (!exampleId) return;
+  const p = (ch.problems || []).find(x => x.id === exampleId);
+  if (!p) return;
+  const row = document.createElement('div');
+  row.className = 'example-row';
+  const btn = document.createElement('button');
+  btn.className = 'act';
+  btn.type = 'button';
+  btn.textContent = 'Example · ' + p.id;
+  const jump = document.createElement('button');
+  jump.className = 'act';
+  jump.type = 'button';
+  jump.textContent = 'Open in Problems';
+  const hold = document.createElement('div');
+  hold.className = 'example-hold hidden';
+  btn.onclick = () => {
+    hold.classList.toggle('hidden');
+    btn.textContent = hold.classList.contains('hidden') ? ('Example · ' + p.id) : 'Hide example';
+    if (!hold.dataset.ready) {
+      mountProblemCard(hold, p);
+      hold.dataset.ready = '1';
+    }
+  };
+  jump.onclick = () => {
+    state.tab = 'problems';
+    state.query = p.id;
+    state.sec = 'all';
+    state.topic = 'all';
+    state.diff = 'all';
+    const search = document.getElementById('search');
+    if (search) search.value = p.id;
+    render();
+  };
+  row.appendChild(btn);
+  row.appendChild(jump);
+  body.appendChild(row);
+  body.appendChild(hold);
 }
 
 function renderProblems(main, ch){
@@ -326,44 +419,8 @@ function renderProblems(main, ch){
     return;
   }
 
-  shown.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'prob' + (state.solved[p.id] ? ' done' : '');
-    const head = document.createElement('div');
-    head.className = 'prob-head';
-    head.innerHTML =
-      '<span class="prob-num">' + p.id + '</span>' +
-      (p.sec ? '<span class="tag sec">' + p.sec + '</span>' : '') +
-      (p.difficulty ? '<span class="tag ' + p.difficulty + '">' + p.difficulty + '</span>' : '') +
-      (p.topic ? '<span class="tag">' + p.topic + '</span>' : '');
-    card.appendChild(head);
-    const body = document.createElement('div');
-    body.className = 'prob-body';
-    card.appendChild(body);
-    const prompt = document.createElement('div');
-    body.appendChild(prompt);
-    const acts = document.createElement('div');
-    acts.className = 'prob-actions';
-    body.appendChild(acts);
+  shown.forEach(p => mountProblemCard(list, p));
 
-    if (p.hint) addReveal(body, acts, 'Hint', p.hint, 'Hint');
-    addReveal(body, acts, 'Answer', p.answer, 'Answer');
-    if (p.expert) addReveal(body, acts, 'Expert read', p.expert, 'Expert read', 'expert');
-    addReveal(body, acts, 'Solution', p.solution, 'Solution');
-
-    const doneBtn = document.createElement('button');
-    doneBtn.className = 'act' + (state.solved[p.id] ? ' done' : '');
-    doneBtn.textContent = state.solved[p.id] ? 'Solved' : 'Solved?';
-    doneBtn.onclick = () => {
-      if (state.solved[p.id]) delete state.solved[p.id];
-      else state.solved[p.id] = true;
-      saveProgress(); render();
-    };
-    acts.appendChild(doneBtn);
-
-    list.appendChild(card);
-    fill(prompt, p.prompt);
-  });
 }
 
 function renderReference(main){
