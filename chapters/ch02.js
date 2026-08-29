@@ -3303,7 +3303,7 @@ $G(0)=1$: a constant wall move becomes a constant mass position, same number, be
 
 Write the linearized map from $\\delta p$ to $\\delta q$. If someone uses $q\\approx (c/2\\sqrt{p_0})p$ (no $\\delta$, no offset), what experiment will they mispredict?`,
       hint: "Linearization is about deviations. The tangent line need not pass through the origin.",
-      answer: "$$\\delta q=\\dfrac{c}{2\\sqrt{p_0}}\\delta p=\\dfrac{1}{2}\\delta p$$ since $c=q_0/\\sqrt{p_0}=1$. Dropping the offset mispredicts any experiment whose $p$ is not a small move about $16$. In particular it gets the DC flow at $p=16$ wrong: the tangent line is $q=4+\\tfrac12(p-16)$, not $q=p/2$.",
+      answer: "$$\\delta q=\\dfrac{c}{2\\sqrt{p_0}}\\,\\delta p=\\dfrac{1}{8}\\,\\delta p$$ since $c=q_0/\\sqrt{p_0}=1$. Dropping the offset mispredicts any experiment whose $p$ is not a small move about $16$. In particular it gets the operating flow wrong: the tangent line is $q=4+\\tfrac18(p-16)$, not $q=p/8$.",
       expert: `
 **First glance:** $dq/dp=c/(2\\sqrt{p})$. At $p_0=16$, slope $1/2$. The line is $q-4=(1/2)(p-16)$.
 
@@ -3312,11 +3312,13 @@ Write the linearized map from $\\delta p$ to $\\delta q$. If someone uses $q\\ap
       solution: `
 $c=q_0/\\sqrt{p_0}=4/4=1$.
 
-$$\\left.\\frac{dq}{dp}\\right|_{16}=\\frac{1}{2\\sqrt{16}}=\\frac18\\cdot 4=\\frac12.$$
+$$\\left.\\frac{dq}{dp}\\right|_{p_0=16}=\\frac{c}{2\\sqrt{p}}\\bigg|_{16}=\\frac{1}{2\\sqrt{16}}=\\frac{1}{2(4)}=\\frac18.$$
 
-So $\\delta q=\\tfrac12\\delta p$, or $q=4+\\tfrac12(p-16)$.
+So $\\delta q=\\tfrac18\\,\\delta p$, or in absolute variables $q=4+\\tfrac18(p-16)$.
 
-The origin-forced line $q=p/2$ passes through $(16,8)$, not $(16,4)$. It is the wrong tangent and the wrong operating flow. Small-signal $G(s)$ built on that slope would happen to have the right *slope* and the wrong *meaning* for the symbols $Q(s)$ and $P(s)$.
+**Check the tangent numerically.** At $p=17$ the linear model gives $4+\\tfrac18=4.125$, and the true value is $\\sqrt{17}=4.1231$. Agreement to three decimals confirms the slope. A slope of $\\tfrac12$ would predict $4.5$ — badly wrong.
+
+The origin-forced line $q=p/8$ passes through $(16,2)$, not $(16,4)$. It is the wrong operating flow. A small-signal $G(s)$ built that way would carry the right *slope* and the wrong *meaning* for the symbols $Q(s)$ and $P(s)$: they would no longer be deviations from a physical operating point.
 `
     }
 

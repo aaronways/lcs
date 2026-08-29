@@ -11,1037 +11,320 @@ registerChapter({
 
   guide: [
     {
-      title: "What this chapter is for",
-      example: "5-01",
+      title: "How to use this chapter",
       sec: "5.1",
-      body: `
-Chapters 2 and 4 gave you one block: $G(s)$, then the time response of that $G(s)$.
-A control system is several blocks. The job of 5.1–5.3 is to turn the diagram into
-**one** closed-loop transfer function $T(s)=C(s)/R(s)$ so the Chapter 4 dictionary
-still applies.
-
-Signal-flow graphs and Mason's rule are 5.4–5.5. They are not in this cut.
-
-> The only new algebra is three reductions and the right to move a block past a
-> summer or a pickoff. Everything else is Chapter 2 multiplication and Chapter 4 poles.
-`
-    },
-    {
-      title: "The four marks on the page",
       example: "5-01",
-      sec: "5.2",
-      body: `
-A linear block diagram is built from four marks.
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" class="nx-fig">
-  <defs><marker id="nx0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="170" y="28" text-anchor="middle" font-size="13" opacity=".65">Signal</text>
-  <line x1="50" y1="72" x2="290" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <text x="170" y="100" text-anchor="middle">R(s)</text>
-
-  <text x="510" y="28" text-anchor="middle" font-size="13" opacity=".65">Block</text>
-  <line x1="380" y1="72" x2="424" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <rect x="424" y="50" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="484" y="77" text-anchor="middle">G(s)</text>
-  <line x1="544" y1="72" x2="630" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-
-  <text x="170" y="168" text-anchor="middle" font-size="13" opacity=".65">Summing junction</text>
-  <line x1="50" y1="220" x2="118" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <circle cx="138" cy="220" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="138" y="226" text-anchor="middle" font-size="16">Σ</text>
-  <text x="112" y="212" font-size="13">+</text>
-  <line x1="138" y1="286" x2="138" y2="242" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <text x="150" y="282" font-size="13">− B(s)</text>
-  <line x1="158" y1="220" x2="290" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-
-  <text x="510" y="168" text-anchor="middle" font-size="13" opacity=".65">Pickoff</text>
-  <line x1="380" y1="220" x2="630" y2="220" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <circle cx="510" cy="220" r="3.5" fill="currentColor"/>
-  <line x1="510" y1="220" x2="510" y2="286" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx0)"/>
-  <text x="524" y="262" font-size="13">same R(s)</text>
-</svg>
-<figcaption>Four marks. A pickoff copies a signal. A summer adds them.</figcaption>
-</figure>
-
-- A **signal** is a Laplace transform, not a wire gauge.
-- A **block** multiplies. $C=RG$.
-- A **summing junction** adds, with the sign written at the incoming arrow. Negative
-  feedback is a minus on the feedback arrow, not a property of $H(s)$.
-- A **pickoff** copies a signal without changing it. The same $R(s)$ leaves on every
-  branch.
-
-If two blocks share a node, ask which mark it is. Summer or pickoff. The reductions
-are different.
-`
+      body: "\nChapter 2 built a transfer function for one subsystem. Chapter 4 said what one transfer\nfunction does in time. **Chapter 5 is where you finally get to connect things**, and it\nis the chapter that makes the rest of the course possible.\n\nYour course covers 5.1–5.3: block diagram algebra and the analysis of feedback systems.\nSections 5.4–5.8 (signal-flow graphs, Mason's rule, state-space representations) are not\ncovered.\n\n| Tier | Job |\n|---|---|\n| **Warmup** | The three basic forms — cascade, parallel, feedback — must be instant. |\n| **Core** | Reducing a diagram that is not already in a familiar form, and using gain to hit a specification. |\n| **Challenge** | Multi-loop reduction, disturbances, and working backwards from a desired closed-loop response. |\n\n**Every answer is exact.** Closed-calculator, as always.\n\nThis chapter has a single punchline, and it is worth reading before anything else:\n\n> **Feedback moves the poles.** Open-loop poles are the roots of the denominator of\n> $G(s)$. Closed-loop poles are the roots of $1+G(s)H(s)=0$ — a completely different\n> equation. Everything from Chapter 6 to Chapter 11 is the study of where those roots go."
     },
     {
-      title: "Cascade, parallel, feedback",
+      title: "Why block diagrams exist at all",
+      sec: "5.1",
+      example: "5-01",
+      body: "\nRecall the problem Chapter 2 solved. A differential equation tangles input, system and\noutput together, so you cannot point at a piece of it and say \"that is the motor.\"\n\nThe transfer function untangled them:\n\n$$C(s)=R(s)\\,G(s)$$\n\n**Chapter 5 is the payoff for that.** Because a subsystem is now a single multiplicative\nfactor, subsystems compose by **algebra** rather than by re-solving differential\nequations. A block diagram is a picture of that algebra: each block is a transfer\nfunction, each line carries a Laplace-transformed signal, and the diagram tells you which\nproducts and sums to take.\n\n**A signal on a line is a specific quantity.** If $R(s)$ enters a block $G(s)$, the line\nleaving it carries $G(s)R(s)$ — not \"the input, changed somehow,\" but exactly that\nproduct. Every reduction rule in this chapter is verified the same way: *trace the signal\nat each point and confirm both diagrams produce the same expression.* If you can do that,\nyou never have to memorize a single block-move rule.\n\n### The three components of a diagram\n\n| Element | Symbol | What it does |\n|---|---|---|\n| **Block** | rectangle | multiplies the incoming signal by its transfer function |\n| **Summing junction** | circle with $+/-$ | adds or subtracts incoming signals |\n| **Pickoff point** | dot | sends the *same* signal down two or more paths |\n\nA pickoff point does **not** split the signal in half. Both branches carry the full\nsignal. This trips people up constantly."
+    },
+    {
+      title: "Cascade form — and the loading caveat",
+      sec: "5.2",
+      example: "5-02",
+      body: "\nSubsystems connected so that the output of one is the input of the next.\n\n$$G_{e}(s)=G_{3}(s)\\,G_{2}(s)\\,G_{1}(s)$$\n\n**Multiply.** Trace the signals to see why: $R\\to G_{1}R\\to G_{2}G_{1}R\\to G_{3}G_{2}G_{1}R$.\n\n### The assumption hiding inside that equation\n\nEquation (5.1) is derived assuming interconnected subsystems **do not load** each other —\nthat a subsystem's output is the same whether or not the next subsystem is attached.\n\nThis is not automatic. You met the failure case in Chapter 2: two $RC$ stages in a ladder\ngive $s^{2}+3s+1$, **not** $(s+1)^{2}$, because the second stage draws current from the\nfirst. Multiplying the individual transfer functions there would be wrong.\n\n**When is cascading safe?**\n\n- The downstream stage has very high input impedance (an op-amp input, for example).\n- A buffer amplifier is inserted between stages.\n- The subsystems are genuinely independent physical devices — an amplifier driving a\n  motor, say.\n\n**When you are handed a block diagram**, the loading question has already been settled by\nwhoever drew it: blocks in a diagram are by definition non-loading. The caveat matters\nwhen *you* are the one deciding whether a physical system can be drawn as two blocks."
+    },
+    {
+      title: "Parallel form",
+      sec: "5.2",
+      example: "5-03",
+      body: "\nSubsystems with a **common input**, whose outputs are summed.\n\n$$G_{e}(s)=\\pm G_{1}(s)\\pm G_{2}(s)\\pm G_{3}(s)$$\n\n**Add**, with signs taken from the summing junction.\n\nThe common input comes from a **pickoff point**: the same $R(s)$ goes into every branch at\nfull strength. The outputs then meet at a summing junction.\n\n### How to tell parallel from cascade at a glance\n\n- **Cascade:** the signal passes *through* one block and then the next. One path.\n- **Parallel:** the signal *splits* and takes two paths that later rejoin.\n\nIf you see a pickoff point and a summing junction bracketing two blocks with no feedback\nbetween them, it is parallel — add.\n\n### Why this matters more than it looks\n\nA parallel section is how a controller with two actions is drawn. A PD controller is\nliterally $K_{p}+K_{d}s$ — a proportional branch and a derivative branch in parallel. A\nPID controller is three branches. When you get to Chapter 9 and design one, you will be\ndrawing a parallel form."
+    },
+    {
+      title: "Feedback form — the derivation you must be able to reproduce",
+      sec: "5.2",
       example: "5-04",
-      sec: "5.2",
-      body: `
-Three topologies. Draw them until the equivalent $T(s)$ is automatic.
-
-### Cascade
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 110" class="nx-fig">
-  <defs><marker id="nx1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="8" y="60">R</text>
-  <line x1="28" y1="54" x2="62" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
-  <rect x="62" y="32" width="88" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="106" y="59" text-anchor="middle">G₁</text>
-  <line x1="150" y1="54" x2="184" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
-  <rect x="184" y="32" width="88" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="228" y="59" text-anchor="middle">G₂</text>
-  <line x1="272" y1="54" x2="306" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
-  <text x="314" y="60">C</text>
-  <text x="368" y="60" font-size="20">≡</text>
-  <text x="402" y="60">R</text>
-  <line x1="422" y1="54" x2="456" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
-  <rect x="456" y="32" width="130" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="521" y="59" text-anchor="middle">G₂ G₁</text>
-  <line x1="586" y1="54" x2="624" y2="54" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx1)"/>
-  <text x="632" y="60">C</text>
-</svg>
-<figcaption>Cascade. Equivalent transfer function is the product, if there is no loading.</figcaption>
-</figure>
-
-$$T = G_2G_1$$
-
-Order in the product is the signal order, right to left if you write operators that
-way; commutativity of scalar transfer functions makes $G_1G_2$ the same function.
-The assumption is **no loading**: connecting $G_2$ does not change the output of $G_1$.
-
-Two $RC$ stages soldered together load. The product $G_2G_1$ misses a cross term
-$1/(R_2C_1)$ in the damping. An isolating amplifier between them restores the product.
-
-### Parallel
-
-Same input, outputs summed.
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" class="nx-fig">
-  <defs><marker id="nxp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="8" y="116">R</text>
-  <line x1="28" y1="110" x2="90" y2="110" stroke="currentColor" stroke-width="1.8"/>
-  <circle cx="90" cy="110" r="3.5" fill="currentColor"/>
-  <line x1="90" y1="40" x2="90" y2="180" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="90" y1="40" x2="150" y2="40" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
-  <line x1="90" y1="110" x2="150" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
-  <line x1="90" y1="180" x2="150" y2="180" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
-  <rect x="150" y="18" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="200" y="45" text-anchor="middle">G₁</text>
-  <rect x="150" y="88" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="200" y="115" text-anchor="middle">G₂</text>
-  <rect x="150" y="158" width="100" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="200" y="185" text-anchor="middle">G₃</text>
-  <line x1="250" y1="40" x2="340" y2="40" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="250" y1="110" x2="340" y2="110" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="250" y1="180" x2="340" y2="180" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="340" y1="40" x2="340" y2="180" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="340" y1="110" x2="378" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
-  <circle cx="398" cy="110" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="398" y="116" text-anchor="middle" font-size="16">Σ</text>
-  <text x="352" y="36" font-size="13">+</text>
-  <text x="352" y="106" font-size="13">−</text>
-  <text x="352" y="176" font-size="13">+</text>
-  <line x1="418" y1="110" x2="500" y2="110" stroke="currentColor" stroke-width="1.8" marker-end="url(#nxp)"/>
-  <text x="512" y="116">C</text>
-</svg>
-<figcaption>Parallel. Same input; the summer writes the signs.</figcaption>
-</figure>
-
-$$T = \\pm G_1 \\pm G_2 \\pm G_3$$
-
-The signs are the signs at the summer.
-
-### Feedback
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 210" class="nx-fig">
-  <defs><marker id="nx2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="6" y="58">R</text>
-  <line x1="26" y1="52" x2="70" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
-  <circle cx="90" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="90" y="58" text-anchor="middle" font-size="16">Σ</text>
-  <text x="64" y="44" font-size="13">+</text>
-  <text x="98" y="86" font-size="13">−</text>
-  <line x1="110" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
-  <text x="132" y="42" font-size="13">E</text>
-  <rect x="168" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="228" y="57" text-anchor="middle">G</text>
-  <line x1="288" y1="52" x2="430" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
-  <text x="444" y="58">C</text>
-  <circle cx="360" cy="52" r="3.5" fill="currentColor"/>
-  <line x1="360" y1="52" x2="360" y2="150" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="360" y1="150" x2="228" y2="150" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
-  <rect x="168" y="128" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="228" y="155" text-anchor="middle">H</text>
-  <line x1="168" y1="150" x2="90" y2="150" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="90" y1="150" x2="90" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx2)"/>
-</svg>
-<figcaption>Negative feedback. E = R − HC and C = EG give T = G / (1 + GH).</figcaption>
-</figure>
-
-$$E = R - HC,\\qquad C = EG
-\\quad\\Longrightarrow\\quad
-T = \\frac{C}{R} = \\frac{G}{1+GH}$$
-
-Minus at the summer gives the $+$ in the denominator. Positive feedback is
-$G/(1-GH)$. The product $GH$ is the **loop gain**, or open-loop transfer function.
-
-Unity feedback is $H=1$, so $T=G/(1+G)$. Almost every 5.3 design problem is that case.
-`
+      body: "\nThis is the most important equation in the chapter, and the derivation is two lines.\n\nLet $E(s)$ be the actuating signal leaving the summing junction, and take **negative**\nfeedback:\n\n$$E(s)=R(s)-C(s)H(s)$$\n\nBut the forward path gives $C(s)=E(s)G(s)$, so $E(s)=C(s)/G(s)$. Substituting:\n\n$$\\frac{C(s)}{G(s)}=R(s)-C(s)H(s)$$\n\nMultiply through by $G(s)$ and collect the $C(s)$ terms:\n\n$$C(s)=G(s)R(s)-G(s)H(s)C(s)$$\n\n$$C(s)\\Big[1+G(s)H(s)\\Big]=G(s)R(s)$$\n\n$$\\boxed{\\;T(s)=\\frac{C(s)}{R(s)}=\\frac{G(s)}{1+G(s)H(s)}\\;}$$\n\n**With positive feedback the sign flips:**\n\n$$T(s)=\\frac{G(s)}{1-G(s)H(s)}$$\n\nThe general form $\\dfrac{G}{1\\mp GH}$ carries the *opposite* sign to the summing junction.\nNegative feedback (a minus at the junction) gives a **plus** in the denominator. Getting\nthis backwards is the single most common error in the chapter.\n\n### The vocabulary, used with precision\n\n| Name | Expression | What it is |\n|---|---|---|\n| **Forward-path transfer function** | $G(s)$ | everything from the summing junction to the output |\n| **Feedback transfer function** | $H(s)$ | everything in the return path |\n| **Open-loop transfer function** (or **loop gain**) | $G(s)H(s)$ | the product — what you get going once around the loop |\n| **Closed-loop transfer function** | $T(s)=\\dfrac{G}{1+GH}$ | input to output, loop closed |\n\n**Unity feedback** means $H(s)=1$, giving $T=\\dfrac{G}{1+G}$. Much of Chapters 7–11\nassumes it."
     },
     {
-      title: "Moving a block past a summer or a pickoff",
+      title: "What feedback actually does to the poles",
+      sec: "5.2",
+      example: "5-17",
+      body: "\nThis section is short and it is the reason the chapter matters.\n\n**Open-loop poles** are the roots of the denominator of $G(s)$.\n\n**Closed-loop poles** are the roots of the denominator of $T(s)$ — and from the feedback\nformula, that denominator is\n\n$$1+G(s)H(s)=0$$\n\n$$\\boxed{\\;\\text{Closed-loop poles are the roots of }1+G(s)H(s)=0\\;}$$\n\nThese are **not** the open-loop poles. Closing the loop relocates them.\n\n### A concrete case\n\nTake $G(s)=\\dfrac{5}{s+1}$ with unity feedback. The open-loop pole is at $-1$.\n\n$$T(s)=\\frac{5/(s+1)}{1+5/(s+1)}=\\frac{5}{s+6}$$\n\nThe closed-loop pole is at $-6$. **Feedback moved the pole six times farther from the\nimaginary axis** — the closed-loop system settles six times faster than the plant alone.\n\n### Why this reframes the whole course\n\nChapter 4 taught you to read behaviour off a pole location. Chapter 5 shows that **you can\nchange the pole location by closing a loop and choosing a gain.** So design becomes:\n\n1. decide where you want the closed-loop poles (Chapter 4 tells you where),\n2. find a controller that puts them there.\n\nChapter 6 asks whether $1+GH=0$ has any roots in the right half-plane. Chapter 8 plots how\nthose roots move as a gain varies — that is the root locus, and it is literally a plot of\nthe solutions of $1+GH=0$. Chapters 9 and 11 add dynamics to $G$ so the roots land where\nyou want.\n\n**Everything downstream is about the equation $1+G(s)H(s)=0$.**"
+    },
+    {
+      title: "Moving blocks to create familiar forms",
+      sec: "5.2",
       example: "5-06",
-      sec: "5.2",
-      body: `
-Cascade, parallel, and feedback are not always sitting on the page. A pickoff taken
-from the error signal, or a block sitting after a summer, hides the form. Move the
-block so a named form appears, then reduce.
-
-The rule is not a memorized picture. Trace $R$ and the extra signal $X$ to $C$ on
-both sides and require the same expression.
-
-### Past a summing junction
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" class="nx-fig">
-  <defs><marker id="nx3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="20" y="24" font-size="13" opacity=".65">G after the summer</text>
-  <text x="8" y="78">R</text>
-  <line x1="26" y1="72" x2="70" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <circle cx="88" cy="72" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="88" y="77" text-anchor="middle" font-size="15">Σ</text>
-  <line x1="106" y1="72" x2="148" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <rect x="148" y="50" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="188" y="77" text-anchor="middle">G</text>
-  <line x1="228" y1="72" x2="280" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <text x="288" y="78">C</text>
-  <text x="70" y="128">X</text>
-  <line x1="88" y1="116" x2="88" y2="92" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-
-  <text x="360" y="78" font-size="22">≡</text>
-
-  <text x="420" y="24" font-size="13" opacity=".65">G before the summer</text>
-  <text x="400" y="78">R</text>
-  <line x1="418" y1="72" x2="458" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <rect x="458" y="50" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="498" y="77" text-anchor="middle">G</text>
-  <line x1="538" y1="72" x2="578" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <circle cx="596" cy="72" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="596" y="77" text-anchor="middle" font-size="15">Σ</text>
-  <line x1="614" y1="72" x2="660" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <text x="666" y="78">C</text>
-  <text x="400" y="168">X</text>
-  <line x1="418" y1="162" x2="458" y2="162" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-  <rect x="458" y="140" width="80" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="498" y="167" text-anchor="middle">G</text>
-  <line x1="538" y1="162" x2="596" y2="162" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="596" y1="162" x2="596" y2="92" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx3)"/>
-</svg>
-<figcaption>Moving G left through a summer. X must also pass through G, or C changes.</figcaption>
-</figure>
-
-Left side: $C=(R\\pm X)G = RG\\pm XG$.  
-Right side: both inputs pass through $G$ before they add. Same $C$.
-
-Moving $G$ the other way, *to the right* through the summer, means $X$ no longer
-sees $G$. To keep $C$ unchanged you insert $1/G$ on the $X$ path.
-
-### Past a pickoff
-
-Pushing $G$ to the left past a pickoff: the branch that used to carry $R$ now
-carries $RG$, so put $1/G$ on that branch to restore $R$.
-
-Pushing $G$ to the right past a pickoff: the branch that used to carry $R$ must
-now carry $RG$, so put a copy of $G$ on that branch.
-
-Never move a block through a pickoff or summer "for free." One path will be missing
-a factor. That missing factor is the $G$ or $1/G$ you add.
-`
+      body: "\nThe three forms are not always visible. In particular, **if a pickoff point sits after the\nsumming junction inside a loop, you cannot apply the feedback formula** — that signal\ndisappears in the reduction and there is nowhere to re-establish the pickoff.\n\nThe fix is to move blocks around until a familiar form appears. Every move follows the\nsame principle:\n\n> **A move is legal if every signal in the diagram is unchanged.**\n\nYou never need to memorize these. Derive them in five seconds by tracing signals.\n\n### Past a summing junction\n\n**Moving a block to the right past a summing junction.** Before, the junction sees\n$R-X$ and the block gives $G(R-X)$. After the move the block must act on each input\nseparately: $GR-GX$. Since $G(R-X)=GR-GX$, the moved diagram needs a block $G$ inserted\nin the **other** input branch too.\n\n**Moving a block to the left past a summing junction.** Reverse it: a $G$ already on\nevery input branch can be pulled out in front of the junction, leaving one block. Any\nbranch without a $G$ acquires $1/G$.\n\n### Past a pickoff point\n\n**Moving a block to the right past a pickoff point.** Before, both branches carry $GR$.\nAfter moving $G$ downstream, one branch has it and the other carries only $R$ — so that\nbranch needs its own $G$ to restore $GR$.\n\n**Moving a block to the left past a pickoff point.** The branch that already had the\nsignal now gets it early; the other branch must be divided by $G$ to compensate.\n\n### The rule in one line\n\n$$\\text{cross a junction or pickoff}\\;\\Longrightarrow\\;\\text{compensate the other branch by }G\\text{ or }1/G$$\n\n**Which one?** Ask what that branch's signal was before the move and what it is after,\nthen supply whatever factor restores it. That question always answers itself."
     },
     {
-      title: "How to reduce a diagram that is not already a named form",
+      title: "A reduction strategy that always works",
+      sec: "5.2",
       example: "5-08",
-      sec: "5.2",
-      body: `
-A working order. Not a ritual: if a feedback pair is already isolated, take it first.
-
-1. Name $R$ and $C$. If the question wants an intermediate signal, name that too.
-   A correct $T$ for the wrong pair is a wrong answer.
-2. Collapse adjacent summers that share a node and add nothing between them.
-3. Reduce every isolated cascade to a product and every isolated parallel pair to a sum.
-4. Reduce every isolated feedback pair with $G/(1\\pm GH)$.
-5. If a pickoff or an extra summer blocks a reduction, move one block using the
-   identities above, then return to 3.
-
-**Check.** Degrees: each genuine energy-storage element in the plants should still
-be visible in the denominator after cancellation of shared factors. DC: set $s=0$
-and ask what a constant input does physically.
-
-A minor loop inside a major loop is just two uses of the feedback formula. Reduce
-the inner loop first. Its $T_{\\text{inner}}$ becomes a block in the outer forward path.
-`
+      body: "\nBlock diagram reduction rewards order. Random simplification produces algebra you cannot\ncheck.\n\n### The procedure\n\n1. **Work from the inside out.** Find the innermost loop — the one containing no other\n   loops — and collapse it with the feedback formula.\n2. **Collapse cascades and parallels** wherever they appear, before touching another loop.\n3. **If no familiar form is visible, move a block** to create one. Usually one move is\n   enough.\n4. **Repeat** until a single block remains.\n5. **Check** the result.\n\n### Which loop is \"innermost\"\n\nA loop is innermost if no other feedback path is nested inside it. In a diagram with a\nminor (rate) feedback loop around the plant and a major unity loop around everything, the\nminor loop is innermost — collapse it first, then treat the result as the forward path of\nthe outer loop.\n\n### Free checks on the answer\n\n- **Order.** The closed-loop denominator has the same order as the open-loop denominator\n  (assuming $GH$ is proper). If you started with two poles and ended with three, something\n  is wrong.\n- **DC gain.** Evaluate the finished $T(0)$ and compare against reducing the diagram at\n  $s=0$ by hand, with all blocks replaced by their dc values. Two independent routes.\n- **Loop-gain sanity.** The denominator should read $1+GH$ with $GH$ recognizable as the\n  product of everything around the loop.\n- **Unity-feedback special case.** If $H=1$, then $T=\\dfrac{G}{1+G}$, so\n  $T(0)=\\dfrac{G(0)}{1+G(0)}$, which is always **less than 1** for positive $G(0)$. A\n  unity-feedback closed-loop dc gain above 1 is an error."
     },
     {
-      title: "Closed-loop poles move when the gain moves",
-      example: "5-11",
+      title: "5.3 — Using gain to shape the response",
       sec: "5.3",
-      body: `
-Section 5.3 is Chapter 4 applied to $T(s)$ after the diagram has collapsed.
-
-The standard plant in this section is a gain times a type-1 second-order piece,
-unity feedback:
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" class="nx-fig">
-  <defs><marker id="nx4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="6" y="58">R</text>
-  <line x1="26" y1="52" x2="70" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
-  <circle cx="90" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="90" y="58" text-anchor="middle" font-size="16">Σ</text>
-  <text x="64" y="44" font-size="13">+</text>
-  <text x="98" y="86" font-size="13">−</text>
-  <line x1="110" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
-  <rect x="168" y="28" width="160" height="48" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="248" y="57" text-anchor="middle">K / [s(s + a)]</text>
-  <line x1="328" y1="52" x2="430" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
-  <text x="444" y="58">C</text>
-  <circle cx="360" cy="52" r="3.5" fill="currentColor"/>
-  <line x1="360" y1="52" x2="360" y2="140" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="360" y1="140" x2="90" y2="140" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="90" y1="140" x2="90" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx4)"/>
-</svg>
-<figcaption>Unity feedback around K / [s(s + a)]. Closed-loop T = K / (s² + a s + K).</figcaption>
-</figure>
-
-$$T(s)=\\frac{K}{s^{2}+as+K}$$
-
-Read Chapter 4 off this polynomial:
-
-$$\\omega_n=\\sqrt{K},\\qquad 2\\zeta\\omega_n=a\\quad\\Rightarrow\\quad \\zeta=\\frac{a}{2\\sqrt{K}}$$
-
-As $K$ increases:
-
-| $K$ | Poles | What moves |
-|---|---|---|
-| $0<K<a^{2}/4$ | two real, distinct | they walk toward each other |
-| $K=a^{2}/4$ | repeated at $-a/2$ | critical damping |
-| $K>a^{2}/4$ | $-a/2\\pm j\\sqrt{K-a^{2}/4}$ | real part **fixed**, imaginary part grows |
-
-So for this plant, **settling time is independent of $K$ once the system is
-underdamped**: $T_s=4/(a/2)=8/a$. Overshoot and peak time are not. Larger $K$
-means larger $\\omega_n$, smaller $\\zeta$, more overshoot, smaller $T_p$.
-
-That is the design knob 5.3 gives you. One parameter. It cannot set $T_s$ and
-$\\%OS$ independently. That limitation is why later chapters add a compensator.
-`
+      example: "5-10",
+      body: "\nNow combine Chapter 4 with the feedback formula. Consider the system that models the\nantenna azimuth control from Chapter 1 — an amplifier of gain $K$ driving a motor, load\nand gears:\n\n$$G(s)=\\frac{K}{s(s+a)},\\qquad H(s)=1$$\n\n$$T(s)=\\frac{K/[s(s+a)]}{1+K/[s(s+a)]}=\\frac{K}{s^{2}+as+K}$$\n\nCompare with the canonical second-order form:\n\n$$\\omega_{n}=\\sqrt{K},\\qquad 2\\zeta\\omega_{n}=a\\;\\Longrightarrow\\;\\zeta=\\frac{a}{2\\sqrt{K}}$$\n\n### The three ranges of $K$\n\n$$s_{1,2}=-\\frac{a}{2}\\pm\\frac{\\sqrt{a^{2}-4K}}{2}$$\n\n| Range | Poles | Behaviour |\n|---|---|---|\n| $0<K<\\dfrac{a^{2}}{4}$ | real, distinct | **overdamped** |\n| $K=\\dfrac{a^{2}}{4}$ | real, repeated at $-\\dfrac{a}{2}$ | **critically damped** |\n| $K>\\dfrac{a^{2}}{4}$ | complex: $-\\dfrac{a}{2}\\pm j\\dfrac{\\sqrt{4K-a^{2}}}{2}$ | **underdamped** |\n\n### The result that defines the limits of gain adjustment\n\nLook at the underdamped pole:\n\n$$s=-\\underbrace{\\frac{a}{2}}_{\\text{fixed}}\\;\\pm\\;j\\underbrace{\\frac{\\sqrt{4K-a^{2}}}{2}}_{\\text{grows with }K}$$\n\n**The real part does not depend on $K$ at all.** As $K$ increases, the poles slide\n*vertically* in the $s$-plane.\n\nSince Chapter 4 told you that $T_{s}=4/\\sigma_{d}$ depends only on the real part:\n\n$$\\boxed{\\;\\text{Increasing }K:\\;\\%OS\\uparrow,\\;\\;T_{p}\\downarrow,\\;\\;T_{s}\\;\\textbf{unchanged}\\;}$$\n\nYou can set the overshoot **or** the peak time with gain. You cannot set the settling\ntime, and you cannot set two of them independently.\n\n### Why this is the argument for the rest of the course\n\nOne knob, and it only moves poles along a vertical line. If the specification calls for a\nsettling time the plant does not naturally have, **no gain will achieve it.** You must add\ndynamics — poles and zeros of your own — to the loop.\n\nThat is a compensator, and designing one is Chapters 9 and 11."
+    },
+    {
+      title: "Disturbances, and what feedback does to them",
+      sec: "5.3",
+      example: "5-12",
+      body: "\nA real system has inputs you did not ask for: wind on an antenna, load torque on a motor,\ntemperature drift. These enter the diagram **partway along the forward path**, not at the\nreference.\n\nTake a controller $G_{1}(s)$, a plant $G_{2}(s)$, unity feedback, and a disturbance\n$D(s)$ entering between them.\n\nBecause the system is **linear**, superposition applies: compute the response to each\ninput with the other set to zero, then add.\n\n**Response to the reference** (set $D=0$): the forward path is $G_{1}G_{2}$, so\n\n$$\\frac{C(s)}{R(s)}=\\frac{G_{1}G_{2}}{1+G_{1}G_{2}}$$\n\n**Response to the disturbance** (set $R=0$): the disturbance sees only $G_{2}$ on its way\nto the output, but the loop gain is still $G_{1}G_{2}$:\n\n$$\\frac{C(s)}{D(s)}=\\frac{G_{2}}{1+G_{1}G_{2}}$$\n\n### Reading the comparison\n\nBoth have the **same denominator** — the closed-loop poles are a property of the loop, not\nof which input you excite. Only the numerators differ.\n\nThe ratio of the two transmissions is\n\n$$\\frac{C/D}{C/R}=\\frac{1}{G_{1}}$$\n\n**Large controller gain suppresses the disturbance relative to the reference.** That is\nthe quantitative version of Chapter 1's claim that feedback compensates for disturbances —\nand it shows the suppression is achieved by putting gain *upstream* of where the\ndisturbance enters.\n\nA disturbance entering after the plant, at the output itself, is attenuated by the full\n$1+G_{1}G_{2}$ but has no $G_{1}$ advantage. **Where a disturbance enters matters as much\nas how big it is.**"
+    },
+    {
+      title: "The chapter in one picture",
+      sec: "5.3",
+      example: "5-11",
+      body: "\n$$\\underbrace{\\text{many blocks}}_{\\text{a diagram}}\n\\;\\xrightarrow[\\text{move blocks if needed}]{\\text{cascade, parallel, feedback}}\\;\n\\underbrace{T(s)=\\frac{G}{1+GH}}_{\\text{one block}}\n\\;\\xrightarrow[\\text{Chapter 4}]{}\\;\n\\underbrace{T_{p},\\,T_{s},\\,\\%OS}_{\\text{behaviour}}$$\n\n### The six things to carry forward\n\n1. **Cascade multiplies, parallel adds, feedback is $\\dfrac{G}{1\\mp GH}$** — with the\n   denominator sign **opposite** to the summing-junction sign.\n2. **A pickoff point does not split a signal.** Both branches carry the full signal.\n3. **Every block move is justified by tracing signals**, not by memory. Cross a junction\n   or pickoff and compensate the other branch by $G$ or $1/G$.\n4. **Reduce inside out**, and check the result with order and dc gain.\n5. **Closed-loop poles are the roots of $1+G(s)H(s)=0$** — a different equation from the\n   open-loop poles. Feedback relocates them.\n6. **For $G=K/[s(s+a)]$, gain moves the poles vertically only.** $\\%OS$ and $T_{p}$ are\n   adjustable; $T_{s}$ is not.\n\n### What is coming\n\nChapter 6 asks whether $1+GH=0$ has roots in the right half-plane — stability, tested\nwithout factoring. Chapter 7 asks what steady-state error survives, and the answer is\nwritten in terms of $G(s)$ and its poles at the origin. Chapter 8 plots the roots of\n$1+GH=0$ as $K$ sweeps from zero to infinity. Chapters 9 and 11 add poles and zeros so the\nroots land where Chapter 4 says they should.\n\n**All four of those chapters are about one equation, and you just derived it.**"
     }
   ],
 
   formulas: [
-    { latex: "T=G_2G_1",
-      note: "Cascade, no loading." },
-    { latex: "T=\\pm G_1\\pm G_2",
-      note: "Parallel. Signs are the signs at the summer." },
-    { latex: "T=\\dfrac{G}{1+GH}",
-      note: "Negative feedback. Positive feedback uses $1-GH$. $GH$ is the loop gain." },
-    { latex: "T=\\dfrac{K}{s^{2}+as+K}",
-      note: "Unity feedback around $K/[s(s+a)]$. Then $\\omega_n=\\sqrt{K}$ and $\\zeta=a/(2\\sqrt{K})$." },
-    { latex: "(R\\pm X)G \\equiv RG\\pm XG",
-      note: "Moving $G$ left through a summer: copy $G$ onto the $X$ path." }
+    { latex: "T(s)=\\frac{G(s)}{1+G(s)H(s)}", note: "Negative feedback. Denominator sign is OPPOSITE the junction sign." },
+    { latex: "T(s)=\\frac{G(s)}{1-G(s)H(s)}", note: "Positive feedback." },
+    { latex: "G_e=G_3G_2G_1", note: "Cascade — multiply (assumes no loading)." },
+    { latex: "G_e=\\pm G_1\\pm G_2\\pm G_3", note: "Parallel — add, with junction signs." },
+    { latex: "1+G(s)H(s)=0", note: "Closed-loop poles. The equation the rest of the course studies." },
+    { latex: "G(s)H(s)", note: "Open-loop transfer function, a.k.a. loop gain." },
+    { latex: "T(s)=\\frac{K}{s^2+as+K}", note: "Unity feedback on K/[s(s+a)]." },
+    { latex: "\\omega_n=\\sqrt{K},\\quad \\zeta=\\frac{a}{2\\sqrt{K}}", note: "Gain sets omega_n and zeta; sigma_d = a/2 is fixed." },
+    { latex: "K=\\frac{a^2}{4}", note: "Critical damping. Below: overdamped. Above: underdamped." },
+    { latex: "\\frac{C}{R}=\\frac{G_1G_2}{1+G_1G_2},\\quad \\frac{C}{D}=\\frac{G_2}{1+G_1G_2}", note: "Reference vs disturbance — same denominator." }
   ],
 
   problems: [
     {
-      id: "5-01", difficulty: "warmup", topic: "Block diagram elements",
-      sec: "5.2",
-      prompt: `On a block diagram, a line leaves $C(s)$ and feeds two places: the output node and
-the input of $H(s)$. What mark is that, and what is true of the two departing signals?`,
+      id: "5-01", difficulty: "warmup", topic: "Block diagram elements", sec: "5.2",
+      prompt: "On a block diagram, a line leaves $C(s)$ and feeds two places: the output node and\nthe input of $H(s)$. What mark is that, and what is true of the two departing signals?",
       hint: "Does the signal split and stay the same, or do the two paths add?",
       answer: "A pickoff. Both departing signals equal $C(s)$. Nothing is scaled or added there.",
-      expert: `
-**First glance:** two arrows leaving one node, no circle, no $\\pm$. That is a pickoff.
-
-**Discard:** a summing junction. Summers have incoming arrows and a written sign.
-A block would have a rectangle.
-
-**Path:** pickoff copies. $C$ on the output wire is the same $C$ that enters $H$.
-`,
-      solution: `
-A node with one incoming signal and several outgoing branches, no rectangle and no
-$\\pm$, is a **pickoff**.
-
-Each outgoing branch carries the incoming transform unchanged. If the incoming
-signal is $C(s)$, both the output node and $H(s)$ receive $C(s)$.
-
-A summing junction is the other mark: several incoming branches, one outgoing,
-signs written at the incoming arrows.
-`
+      expert: "\n**First glance:** two arrows leaving one node, no circle, no $\\pm$. That is a pickoff.\n\n**Discard:** a summing junction. Summers have incoming arrows and a written sign.\nA block would have a rectangle.\n\n**Path:** pickoff copies. $C$ on the output wire is the same $C$ that enters $H$.\n",
+      solution: "\nA node with one incoming signal and several outgoing branches, no rectangle and no\n$\\pm$, is a **pickoff**.\n\nEach outgoing branch carries the incoming transform unchanged. If the incoming\nsignal is $C(s)$, both the output node and $H(s)$ receive $C(s)$.\n\nA summing junction is the other mark: several incoming branches, one outgoing,\nsigns written at the incoming arrows.\n"
     },
     {
-      id: "5-02", difficulty: "warmup", topic: "Cascade and loading",
-      sec: "5.2",
-      prompt: `Two isolated stages have
-
-$$G_1=\\frac{2}{s+2},\\qquad G_2=\\frac{4}{s+4}.$$
-
-**(a)** If they are cascaded with no loading, what is $T=C/R$?
-**(b)** A later measurement of the connected hardware gives
-
-$$T=\\frac{8}{s^{2}+8s+8}.$$
-
-What happened? Name the missing term.`,
+      id: "5-02", difficulty: "warmup", topic: "Cascade and loading", sec: "5.2",
+      prompt: "Two isolated stages have\n\n$$G_1=\\frac{2}{s+2},\\qquad G_2=\\frac{4}{s+4}.$$\n\n**(a)** If they are cascaded with no loading, what is $T=C/R$?\n**(b)** A later measurement of the connected hardware gives\n\n$$T=\\frac{8}{s^{2}+8s+8}.$$\n\nWhat happened? Name the missing term.",
       hint: "Write $G_2G_1$. Compare damping coefficients.",
       answer: "**(a)** $T=8/[(s+2)(s+4)]=8/(s^2+6s+8)$. **(b)** Loading. The connected denominator has $8s$ instead of $6s$; the extra $2s$ is the interaction term the product misses.",
-      expert: `
-**First glance:** part (a) is the product. Part (b) is the same DC gain $8/8=1=G_1(0)G_2(0)$,
-so the discrepancy is not a gain error. It lives in the $s$ coefficient.
-
-**Discard:** "the stages were numbered backwards." Transfer functions commute.
-$G_1G_2=G_2G_1$ as functions.
-
-**Path:** product damping $2+4=6$. Measured damping $8$. The extra $2$ is exactly
-the kind of $1/(R_2C_1)$ cross term two passive stages produce when they share a node.
-`,
-      solution: `
-## (a)
-
-No loading means the equivalent is the product.
-
-$$T=G_2G_1=\\frac{4}{s+4}\\cdot\\frac{2}{s+2}=\\frac{8}{(s+2)(s+4)}=\\frac{8}{s^{2}+6s+8}$$
-
-## (b)
-
-The measured function has the same numerator and the same constant term, so the same
-DC gain $T(0)=1$. The linear coefficients differ: $6$ versus $8$.
-
-That extra $2s$ is the loading term. Connecting the second stage changes the current
-drawn from the first, which adds a cross coefficient the isolated models do not know
-about. An isolating amplifier between the stages would have restored the product in (a).
-`
+      expert: "\n**First glance:** part (a) is the product. Part (b) is the same DC gain $8/8=1=G_1(0)G_2(0)$,\nso the discrepancy is not a gain error. It lives in the $s$ coefficient.\n\n**Discard:** \"the stages were numbered backwards.\" Transfer functions commute.\n$G_1G_2=G_2G_1$ as functions.\n\n**Path:** product damping $2+4=6$. Measured damping $8$. The extra $2$ is exactly\nthe kind of $1/(R_2C_1)$ cross term two passive stages produce when they share a node.\n",
+      solution: "\n## (a)\n\nNo loading means the equivalent is the product.\n\n$$T=G_2G_1=\\frac{4}{s+4}\\cdot\\frac{2}{s+2}=\\frac{8}{(s+2)(s+4)}=\\frac{8}{s^{2}+6s+8}$$\n\n## (b)\n\nThe measured function has the same numerator and the same constant term, so the same\nDC gain $T(0)=1$. The linear coefficients differ: $6$ versus $8$.\n\nThat extra $2s$ is the loading term. Connecting the second stage changes the current\ndrawn from the first, which adds a cross coefficient the isolated models do not know\nabout. An isolating amplifier between the stages would have restored the product in (a).\n"
     },
     {
-      id: "5-03", difficulty: "warmup", topic: "Parallel form",
-      sec: "5.2",
-      prompt: `Three blocks share an input $R$. Their outputs enter a summer as $+G_1$, $-G_2$, $+G_3$,
-and the summer output is $C$. Write $T=C/R$.`,
+      id: "5-03", difficulty: "warmup", topic: "Parallel form", sec: "5.2",
+      prompt: "Three blocks share an input $R$. Their outputs enter a summer as $+G_1$, $-G_2$, $+G_3$,\nand the summer output is $C$. Write $T=C/R$.",
+      hint: "A pickoff point duplicates the signal; it does not divide it. Every branch sees the full $R$.",
       answer: "$$T=G_1-G_2+G_3$$",
-      expert: `
-**First glance:** one $R$, three forward paths, one summer. Parallel.
-
-**Path:** copy the signs off the summer. $T=G_1-G_2+G_3$.
-`,
-      solution: `
-Each path sees the same $R$, so $C=(G_1-G_2+G_3)R$, hence
-
-$$T=G_1-G_2+G_3.$$
-
-The only content is the minus on $G_2$.
-`
+      expert: "\n**First glance:** one input, three forward paths, one summer, and nothing returning from\ndownstream. **Parallel — add**, and copy the signs straight off the junction.\n\n**The trap that makes this a real question:** a pickoff **duplicates**. All three branches\ncarry the full $R(s)$, not a third each. Students who think the signal splits get\n$\\tfrac13(G_1-G_2+G_3)$ and cannot see why.\n\n**Ruled out on sight:** multiplying (that is cascade), and the feedback formula — nothing\ntravels backwards, so there is no loop.\n\n**What an expert notices unprompted:** combining over a common denominator would produce\n**zeros that none of the three blocks possessed**. Sums create zeros; products never do.\nThat is why a PD controller $K_p+K_ds$ — a parallel form — has a zero at $-K_p/K_d$, and it\nis the knob you will actually design in Chapter 9.\n",
+      solution: "\n**Step 1 — identify the form.**\n\nA pickoff sends $R(s)$ down three paths; the outputs meet at a summing junction. No signal\nreturns from the output. This is the **parallel form**.\n\n**Step 2 — trace each branch.**\n\nBecause a pickoff point **duplicates** rather than divides, every branch receives the full\ninput:\n\n$$\\text{branch 1}=G_1(s)R(s),\\qquad \\text{branch 2}=G_2(s)R(s),\\qquad \\text{branch 3}=G_3(s)R(s)$$\n\n**Step 3 — apply the junction signs.**\n\nThe summer is marked $+G_1$, $-G_2$, $+G_3$:\n\n$$C(s)=G_1(s)R(s)-G_2(s)R(s)+G_3(s)R(s)=\\Big[G_1(s)-G_2(s)+G_3(s)\\Big]R(s)$$\n\n$$\\boxed{\\;T(s)=G_1(s)-G_2(s)+G_3(s)\\;}$$\n\n---\n\n**The only content here is the minus sign**, and it comes straight off the diagram. Parallel\nsubsystems add **with the signs shown at the summing junction** — the general form is\n\n$$G_e=\\pm G_1\\pm G_2\\pm G_3$$\n\n**Why this matters more than it looks.** A controller with several actions is drawn exactly\nthis way. A PD controller is $K_p+K_ds$; a PID controller is\n$K_p+\\dfrac{K_i}{s}+K_ds$ — three parallel branches. When you design one in Chapter 9 you\nwill be reducing a parallel form.\n\n**The structural consequence.** Combining over a common denominator gives\n\n$$T=\\frac{N_1D_2D_3-N_2D_1D_3+N_3D_1D_2}{D_1D_2D_3}$$\n\nThe poles are the union of all three branches' poles, but the **numerator is new** — parallel\nconnection creates zeros that no individual branch had. Cascade connection never does this.\n"
     },
     {
-      id: "5-04", difficulty: "core", topic: "Feedback formula",
-      sec: "5.2",
-      prompt: `For negative unity feedback around $G$, derive $T=C/R$ from $E=R-C$ and $C=EG$.
-Then state what changes if the summer is $E=R+C$ instead.`,
+      id: "5-04", difficulty: "core", topic: "Feedback formula", sec: "5.2",
+      prompt: "For negative unity feedback around $G$, derive $T=C/R$ from $E=R-C$ and $C=EG$.\nThen state what changes if the summer is $E=R+C$ instead.",
       hint: "Eliminate $E$. Do not quote the boxed formula until you have it.",
       answer: "Negative: $T=G/(1+G)$. Positive: $T=G/(1-G)$.",
-      expert: `
-**First glance:** two equations, two unknowns $E,C$. Algebra, not a picture memory.
-
-**Discard:** writing $1+GH$ with a leftover $H$. Here $H=1$.
-
-**Check:** DC of $G=K$ large. Negative unity feedback gives $T\\to 1$. Positive
-unity feedback around a large $G$ is a pole near $+1$ in the $T$ denominator and
-runs away. The sign in the denominator is the stability tell.
-`,
-      solution: `
-Negative unity feedback:
-
-$$E=R-C,\\qquad C=EG=G(R-C).$$
-
-$$C=GR-GC\\quad\\Rightarrow\\quad C(1+G)=GR\\quad\\Rightarrow\\quad T=\\frac{G}{1+G}.$$
-
-Positive summer $E=R+C$:
-
-$$C=G(R+C)\\quad\\Rightarrow\\quad C-GC=GR\\quad\\Rightarrow\\quad T=\\frac{G}{1-G}.$$
-
-The sign at the summer is the sign that appears, flipped, in the denominator.
-`
+      expert: "\n**First glance:** two equations, two unknowns $E,C$. Algebra, not a picture memory.\n\n**Discard:** writing $1+GH$ with a leftover $H$. Here $H=1$.\n\n**Check:** DC of $G=K$ large. Negative unity feedback gives $T\\to 1$. Positive\nunity feedback around a large $G$ is a pole near $+1$ in the $T$ denominator and\nruns away. The sign in the denominator is the stability tell.\n",
+      solution: "\nNegative unity feedback:\n\n$$E=R-C,\\qquad C=EG=G(R-C).$$\n\n$$C=GR-GC\\quad\\Rightarrow\\quad C(1+G)=GR\\quad\\Rightarrow\\quad T=\\frac{G}{1+G}.$$\n\nPositive summer $E=R+C$:\n\n$$C=G(R+C)\\quad\\Rightarrow\\quad C-GC=GR\\quad\\Rightarrow\\quad T=\\frac{G}{1-G}.$$\n\nThe sign at the summer is the sign that appears, flipped, in the denominator.\n"
     },
     {
-      id: "5-05", difficulty: "core", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Unity-gain prefilter $G_1=2$, then a negative-feedback loop with forward $G_2=1/(s+1)$
-and feedback $H=s$. Find $T=C/R$.
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" class="nx-fig">
-  <defs><marker id="nx5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="6" y="58">R</text>
-  <line x1="24" y1="52" x2="58" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-  <rect x="58" y="30" width="64" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="90" y="57" text-anchor="middle">2</text>
-  <line x1="122" y1="52" x2="168" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-  <circle cx="188" cy="52" r="20" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="188" y="58" text-anchor="middle" font-size="16">Σ</text>
-  <text x="162" y="44" font-size="13">+</text>
-  <text x="196" y="86" font-size="13">−</text>
-  <line x1="208" y1="52" x2="256" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-  <rect x="256" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="316" y="57" text-anchor="middle">1 / (s + 1)</text>
-  <line x1="376" y1="52" x2="490" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-  <text x="504" y="58">C</text>
-  <circle cx="430" cy="52" r="3.5" fill="currentColor"/>
-  <line x1="430" y1="52" x2="430" y2="140" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="430" y1="140" x2="256" y2="140" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-  <rect x="196" y="118" width="60" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="226" y="145" text-anchor="middle">s</text>
-  <line x1="196" y1="140" x2="188" y2="140" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="188" y1="140" x2="188" y2="74" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx5)"/>
-</svg>
-<figcaption>Problem 5-05. The block 2 sits outside the loop.</figcaption>
-</figure>`,
+      id: "5-05", difficulty: "core", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Unity-gain prefilter $G_1=2$, then a negative-feedback loop with forward $G_2=1/(s+1)$\nand feedback $H=s$. Find $T=C/R$.\n\n<figure class=\"nx-frame\">\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 200\" class=\"nx-fig\">\n  <defs><marker id=\"nx5\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto\"><path d=\"M0 1.6 L9 5 L0 8.4 z\" fill=\"currentColor\"/></marker></defs>\n  <text x=\"6\" y=\"58\">R</text>\n  <line x1=\"24\" y1=\"52\" x2=\"58\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n  <rect x=\"58\" y=\"30\" width=\"64\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"90\" y=\"57\" text-anchor=\"middle\">2</text>\n  <line x1=\"122\" y1=\"52\" x2=\"168\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n  <circle cx=\"188\" cy=\"52\" r=\"20\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"188\" y=\"58\" text-anchor=\"middle\" font-size=\"16\">Σ</text>\n  <text x=\"162\" y=\"44\" font-size=\"13\">+</text>\n  <text x=\"196\" y=\"86\" font-size=\"13\">−</text>\n  <line x1=\"208\" y1=\"52\" x2=\"256\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n  <rect x=\"256\" y=\"30\" width=\"120\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"316\" y=\"57\" text-anchor=\"middle\">1 / (s + 1)</text>\n  <line x1=\"376\" y1=\"52\" x2=\"490\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n  <text x=\"504\" y=\"58\">C</text>\n  <circle cx=\"430\" cy=\"52\" r=\"3.5\" fill=\"currentColor\"/>\n  <line x1=\"430\" y1=\"52\" x2=\"430\" y2=\"140\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <line x1=\"430\" y1=\"140\" x2=\"256\" y2=\"140\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n  <rect x=\"196\" y=\"118\" width=\"60\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"226\" y=\"145\" text-anchor=\"middle\">s</text>\n  <line x1=\"196\" y1=\"140\" x2=\"188\" y2=\"140\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <line x1=\"188\" y1=\"140\" x2=\"188\" y2=\"74\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx5)\"/>\n</svg>\n<figcaption>Problem 5-05. The block 2 sits outside the loop.</figcaption>\n</figure>",
       hint: "Inner loop first. Then multiply by the cascade 2.",
       answer: "$$T=\\dfrac{2}{2s+1}$$",
-      expert: `
-**First glance:** a cascade in front of an isolated feedback pair. Inner loop first.
-
-**Discard:** feeding $H=s$ around both blocks. The pickoff is after $G_2$, the summer
-is after $G_1$. $G_1$ is outside the loop.
-
-**Path:** $T_{\\text{inner}}=G_2/(1+G_2H)=\\dfrac{1/(s+1)}{1+s/(s+1)}=1/(2s+1)$.
-Then $T=2\\cdot T_{\\text{inner}}$.
-`,
-      solution: `
-Inner loop, negative feedback:
-
-$$T_{\\text{inner}}=\\frac{G_2}{1+G_2H}=\\frac{1/(s+1)}{1+\\dfrac{s}{s+1}}=\\frac{1/(s+1)}{(s+1+s)/(s+1)}=\\frac{1}{2s+1}.$$
-
-$G_1=2$ is cascaded in front and is not inside the loop, so
-
-$$T=2\\cdot\\frac{1}{2s+1}=\\frac{2}{2s+1}.$$
-
-Check: $T(0)=2$. A constant $R$ produces $E$ such that $C=E/(1)$ wait: at DC,
-$G_2(0)=1$, $H(0)=0$, so the inner loop is open at DC and $T_{\\text{inner}}(0)=1$,
-$T(0)=2$. The $H=s$ block is a differentiator; it is silent on constants. ✓
-`
+      expert: "\n**First glance:** a cascade in front of an isolated feedback pair. Inner loop first.\n\n**Discard:** feeding $H=s$ around both blocks. The pickoff is after $G_2$, the summer\nis after $G_1$. $G_1$ is outside the loop.\n\n**Path:** $T_{\\text{inner}}=G_2/(1+G_2H)=\\dfrac{1/(s+1)}{1+s/(s+1)}=1/(2s+1)$.\nThen $T=2\\cdot T_{\\text{inner}}$.\n",
+      solution: "\nInner loop, negative feedback:\n\n$$T_{\\text{inner}}=\\frac{G_2}{1+G_2H}=\\frac{1/(s+1)}{1+\\dfrac{s}{s+1}}=\\frac{1/(s+1)}{(s+1+s)/(s+1)}=\\frac{1}{2s+1}.$$\n\n$G_1=2$ is cascaded in front and is not inside the loop, so\n\n$$T=2\\cdot\\frac{1}{2s+1}=\\frac{2}{2s+1}.$$\n\nCheck: $T(0)=2$. A constant $R$ produces $E$ such that $C=E/(1)$ wait: at DC,\n$G_2(0)=1$, $H(0)=0$, so the inner loop is open at DC and $T_{\\text{inner}}(0)=1$,\n$T(0)=2$. The $H=s$ block is a differentiator; it is silent on constants. ✓\n"
     },
     {
-      id: "5-06", difficulty: "core", topic: "Moving blocks",
-      sec: "5.2",
-      prompt: `A summer forms $R-X$, then a block $G$ produces $C=(R-X)G$. You want $G$ to sit
-*before* the summer. What block must appear on the $X$ path so $C$ is unchanged?`,
+      id: "5-06", difficulty: "core", topic: "Moving blocks", sec: "5.2",
+      prompt: "A summer forms $R-X$, then a block $G$ produces $C=(R-X)G$. You want $G$ to sit\n*before* the summer. What block must appear on the $X$ path so $C$ is unchanged?",
       hint: "Write $C$ both ways and match coefficients of $X$.",
       answer: "A copy of $G$ on the $X$ path, so the summer sees $RG$ and $XG$.",
-      expert: `
-**First glance:** this is the left-through-summer identity. $C=RG-XG$ already.
-
-**Path:** after the move, $R$ goes through $G$ first. For $X$ to still be multiplied
-by $G$, $X$ must also go through a $G$ before the summer.
-`,
-      solution: `
-As drawn, $C=(R-X)G=RG-XG$.
-
-After $G$ moves left, $R$ is multiplied by $G$ before the summer. The summer output
-is then (something)$\\,-\\,$(something). To keep $C=RG-XG$, the subtracted something
-must be $XG$. So the $X$ path also passes through $G$.
-
-Putting $1/G$ on that path would cancel the new $G$ and leave $C=RG-X$, which is a
-different system.
-`
+      expert: "\n**First glance:** this is the left-through-summer identity. $C=RG-XG$ already.\n\n**Path:** after the move, $R$ goes through $G$ first. For $X$ to still be multiplied\nby $G$, $X$ must also go through a $G$ before the summer.\n",
+      solution: "\nAs drawn, $C=(R-X)G=RG-XG$.\n\nAfter $G$ moves left, $R$ is multiplied by $G$ before the summer. The summer output\nis then (something)$\\,-\\,$(something). To keep $C=RG-XG$, the subtracted something\nmust be $XG$. So the $X$ path also passes through $G$.\n\nPutting $1/G$ on that path would cancel the new $G$ and leave $C=RG-X$, which is a\ndifferent system.\n"
     },
     {
-      id: "5-07", difficulty: "core", topic: "Moving blocks",
-      sec: "5.2",
-      prompt: `A block $G$ sits on the forward line. A pickoff *after* $G$ currently feeds $H$.
-You move $G$ to the right, past that pickoff. What must you place on the branch
-that goes to $H$ so the signals are unchanged?`,
+      id: "5-07", difficulty: "core", topic: "Moving blocks", sec: "5.2",
+      prompt: "A block $G$ sits on the forward line. A pickoff *after* $G$ currently feeds $H$.\nYou move $G$ to the right, past that pickoff. What must you place on the branch\nthat goes to $H$ so the signals are unchanged?",
       answer: "A copy of $G$. The branch to $H$ used to carry $RG$; after the move the pickoff sees $R$, so $H$ needs its own $G$.",
-      expert: `
-**First glance:** pickoff identity, move right. The branch loses $G$ unless you
-put $G$ on it.
-
-**Discard:** putting $1/G$ on the $H$ branch. That would be the move *left*
-past the pickoff.
-`,
-      solution: `
-Before the move the pickoff is after $G$, so $H$ receives $RG$.
-
-After $G$ is pushed right of the pickoff, the pickoff node carries $R$. For $H$
-to keep receiving $RG$, the branch to $H$ must contain $G$.
-
-The opposite move (slide $G$ left through the pickoff) puts $1/G$ on the branch,
-because that branch would otherwise carry $RG$ when it used to carry $R$.
-`
+      expert: "\n**First glance:** pickoff identity, move right. The branch loses $G$ unless you\nput $G$ on it.\n\n**Discard:** putting $1/G$ on the $H$ branch. That would be the move *left*\npast the pickoff.\n",
+      solution: "\nBefore the move the pickoff is after $G$, so $H$ receives $RG$.\n\nAfter $G$ is pushed right of the pickoff, the pickoff node carries $R$. For $H$\nto keep receiving $RG$, the branch to $H$ must contain $G$.\n\nThe opposite move (slide $G$ left through the pickoff) puts $1/G$ on the branch,\nbecause that branch would otherwise carry $RG$ when it used to carry $R$.\n"
     },
     {
-      id: "5-08", difficulty: "challenge", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Reduce the system below to $T=C/R$.
-
-Forward path: $G_1=1$, then a summer, then $G_2=2/(s+2)$, then $C$.
-Feedback from $C$ through $H_1=1$ (negative) into that summer.
-A second feedback from $C$ through $H_2=3$ (negative) into a summer *in front of*
-$G_1$, where it subtracts from $R$.
-
-<figure class="nx-frame">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 230" class="nx-fig">
-  <defs><marker id="nx6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 1.6 L9 5 L0 8.4 z" fill="currentColor"/></marker></defs>
-  <text x="4" y="58">R</text>
-  <line x1="22" y1="52" x2="58" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <circle cx="78" cy="52" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="78" y="57" text-anchor="middle" font-size="15">Σ</text>
-  <text x="54" y="44" font-size="12">+</text>
-  <line x1="96" y1="52" x2="132" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <rect x="132" y="30" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="160" y="57" text-anchor="middle">1</text>
-  <line x1="188" y1="52" x2="230" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <circle cx="248" cy="52" r="18" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="248" y="57" text-anchor="middle" font-size="15">Σ</text>
-  <text x="224" y="44" font-size="12">+</text>
-  <line x1="266" y1="52" x2="304" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <rect x="304" y="30" width="120" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="364" y="57" text-anchor="middle">2 / (s + 2)</text>
-  <line x1="424" y1="52" x2="560" y2="52" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <text x="572" y="58">C</text>
-  <circle cx="500" cy="52" r="3.5" fill="currentColor"/>
-  <line x1="500" y1="52" x2="500" y2="120" stroke="currentColor" stroke-width="1.8"/>
-  <rect x="304" y="98" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="332" y="125" text-anchor="middle">1</text>
-  <line x1="304" y1="120" x2="248" y2="120" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="248" y1="120" x2="248" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <text x="256" y="92" font-size="12">−</text>
-  <line x1="500" y1="120" x2="500" y2="188" stroke="currentColor" stroke-width="1.8"/>
-  <rect x="132" y="166" width="56" height="44" rx="6" fill="var(--panel)" stroke="currentColor" stroke-width="1.8"/>
-  <text x="160" y="193" text-anchor="middle">3</text>
-  <line x1="500" y1="188" x2="188" y2="188" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="132" y1="188" x2="78" y2="188" stroke="currentColor" stroke-width="1.8"/>
-  <line x1="78" y1="188" x2="78" y2="72" stroke="currentColor" stroke-width="1.8" marker-end="url(#nx6)"/>
-  <text x="86" y="92" font-size="12">−</text>
-</svg>
-<figcaption>Problem 5-08. Inner loop first, then the outer loop.</figcaption>
-</figure>`,
+      id: "5-08", difficulty: "challenge", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Reduce the system below to $T=C/R$.\n\nForward path: $G_1=1$, then a summer, then $G_2=2/(s+2)$, then $C$.\nFeedback from $C$ through $H_1=1$ (negative) into that summer.\nA second feedback from $C$ through $H_2=3$ (negative) into a summer *in front of*\n$G_1$, where it subtracts from $R$.\n\n<figure class=\"nx-frame\">\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 700 230\" class=\"nx-fig\">\n  <defs><marker id=\"nx6\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto\"><path d=\"M0 1.6 L9 5 L0 8.4 z\" fill=\"currentColor\"/></marker></defs>\n  <text x=\"4\" y=\"58\">R</text>\n  <line x1=\"22\" y1=\"52\" x2=\"58\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <circle cx=\"78\" cy=\"52\" r=\"18\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"78\" y=\"57\" text-anchor=\"middle\" font-size=\"15\">Σ</text>\n  <text x=\"54\" y=\"44\" font-size=\"12\">+</text>\n  <line x1=\"96\" y1=\"52\" x2=\"132\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <rect x=\"132\" y=\"30\" width=\"56\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"160\" y=\"57\" text-anchor=\"middle\">1</text>\n  <line x1=\"188\" y1=\"52\" x2=\"230\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <circle cx=\"248\" cy=\"52\" r=\"18\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"248\" y=\"57\" text-anchor=\"middle\" font-size=\"15\">Σ</text>\n  <text x=\"224\" y=\"44\" font-size=\"12\">+</text>\n  <line x1=\"266\" y1=\"52\" x2=\"304\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <rect x=\"304\" y=\"30\" width=\"120\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"364\" y=\"57\" text-anchor=\"middle\">2 / (s + 2)</text>\n  <line x1=\"424\" y1=\"52\" x2=\"560\" y2=\"52\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <text x=\"572\" y=\"58\">C</text>\n  <circle cx=\"500\" cy=\"52\" r=\"3.5\" fill=\"currentColor\"/>\n  <line x1=\"500\" y1=\"52\" x2=\"500\" y2=\"120\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <rect x=\"304\" y=\"98\" width=\"56\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"332\" y=\"125\" text-anchor=\"middle\">1</text>\n  <line x1=\"304\" y1=\"120\" x2=\"248\" y2=\"120\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <line x1=\"248\" y1=\"120\" x2=\"248\" y2=\"72\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <text x=\"256\" y=\"92\" font-size=\"12\">−</text>\n  <line x1=\"500\" y1=\"120\" x2=\"500\" y2=\"188\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <rect x=\"132\" y=\"166\" width=\"56\" height=\"44\" rx=\"6\" fill=\"var(--panel)\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <text x=\"160\" y=\"193\" text-anchor=\"middle\">3</text>\n  <line x1=\"500\" y1=\"188\" x2=\"188\" y2=\"188\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <line x1=\"132\" y1=\"188\" x2=\"78\" y2=\"188\" stroke=\"currentColor\" stroke-width=\"1.8\"/>\n  <line x1=\"78\" y1=\"188\" x2=\"78\" y2=\"72\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#nx6)\"/>\n  <text x=\"86\" y=\"92\" font-size=\"12\">−</text>\n</svg>\n<figcaption>Problem 5-08. Inner loop first, then the outer loop.</figcaption>\n</figure>",
       hint: "Inner loop $G_2$ with $H_1=1$ first. That block then sits in the outer loop with $H_2=3$.",
       answer: "$$T=\\dfrac{2}{s+10}$$",
-      expert: `
-**First glance:** minor loop around $G_2$, major loop around everything. Inner first.
-
-**Path:** $T_{\\text{inner}}=\\dfrac{2/(s+2)}{1+2/(s+2)}=2/(s+4)$.
-Outer forward path is $1\\cdot T_{\\text{inner}}=2/(s+4)$, $H_2=3$, so
-$T=\\dfrac{2/(s+4)}{1+6/(s+4)}=2/(s+10)$.
-`,
-      solution: `
-**Inner loop.** Forward $G_2=2/(s+2)$, $H_1=1$, negative.
-
-$$T_{\\text{inner}}=\\frac{2/(s+2)}{1+2/(s+2)}=\\frac{2}{s+2+2}=\\frac{2}{s+4}.$$
-
-**Outer loop.** Forward $G_1T_{\\text{inner}}=2/(s+4)$, $H_2=3$, negative.
-
-$$T=\\frac{2/(s+4)}{1+3\\cdot 2/(s+4)}=\\frac{2}{s+4+6}=\\frac{2}{s+10}.$$
-
-DC check: $T(0)=1/5$. A unit step should settle at $0.2$. Both loops are negative
-and $H_2=3$ is a heavy DC feedback, so a small final value is the right shape. ✓
-`
+      expert: "\n**First glance:** minor loop around $G_2$, major loop around everything. Inner first.\n\n**Path:** $T_{\\text{inner}}=\\dfrac{2/(s+2)}{1+2/(s+2)}=2/(s+4)$.\nOuter forward path is $1\\cdot T_{\\text{inner}}=2/(s+4)$, $H_2=3$, so\n$T=\\dfrac{2/(s+4)}{1+6/(s+4)}=2/(s+10)$.\n",
+      solution: "\n**Inner loop.** Forward $G_2=2/(s+2)$, $H_1=1$, negative.\n\n$$T_{\\text{inner}}=\\frac{2/(s+2)}{1+2/(s+2)}=\\frac{2}{s+2+2}=\\frac{2}{s+4}.$$\n\n**Outer loop.** Forward $G_1T_{\\text{inner}}=2/(s+4)$, $H_2=3$, negative.\n\n$$T=\\frac{2/(s+4)}{1+3\\cdot 2/(s+4)}=\\frac{2}{s+4+6}=\\frac{2}{s+10}.$$\n\nDC check: $T(0)=1/5$. A unit step should settle at $0.2$. Both loops are negative\nand $H_2=3$ is a heavy DC feedback, so a small final value is the right shape. ✓\n"
     },
     {
-      id: "5-09", difficulty: "core", topic: "Closed-loop specs",
-      sec: "5.3",
-      prompt: `Unity negative feedback around $G=100/[s(s+10)]$. Find $\\zeta$, $\\omega_n$, $T_s$,
-$T_p$, and $\\%OS$ of the closed-loop step response.`,
+      id: "5-09", difficulty: "core", topic: "Closed-loop specs", sec: "5.3",
+      prompt: "Unity negative feedback around $G=100/[s(s+10)]$. Find $\\zeta$, $\\omega_n$, $T_s$,\n$T_p$, and $\\%OS$ of the closed-loop step response.",
       hint: "Form $T=G/(1+G)$, then read $s^2+2\\zeta\\omega_n s+\\omega_n^2$.",
       answer: "$\\omega_n=10$, $\\zeta=1/2$, $T_s=0.8$ s, $T_p=\\pi/(5\\sqrt{3})$ s, $\\%OS=100e^{-\\pi/\\sqrt{3}}$.",
-      expert: `
-**First glance:** 5.3 plant. $T=100/(s^2+10s+100)$. $\\omega_n=10$, $2\\zeta\\omega_n=10$
-so $\\zeta=1/2$. The rest is Chapter 4 at $\\zeta=1/2$.
-
-**Discard:** reading specs off the *open*-loop poles $0$ and $-10$. Those are not
-the closed-loop poles.
-`,
-      solution: `
-$$T=\\frac{G}{1+G}=\\frac{100/[s(s+10)]}{1+100/[s(s+10)]}=\\frac{100}{s^{2}+10s+100}.$$
-
-$$\\omega_n=10,\\qquad 2\\zeta\\omega_n=10\\quad\\Rightarrow\\quad \\zeta=\\tfrac12.$$
-
-Poles: $-5\\pm j5\\sqrt{3}$. Then
-
-$$T_s=\\frac{4}{5}=0.8\\ \\text{s},\\qquad
-T_p=\\frac{\\pi}{5\\sqrt{3}}\\ \\text{s},\\qquad
-\\%OS=100e^{-\\pi/\\sqrt{3}}.$$
-
-$\\zeta=1/2$ is the $60^{\\circ}$ line. No calculator.
-`
+      expert: "\n**First glance:** 5.3 plant. $T=100/(s^2+10s+100)$. $\\omega_n=10$, $2\\zeta\\omega_n=10$\nso $\\zeta=1/2$. The rest is Chapter 4 at $\\zeta=1/2$.\n\n**Discard:** reading specs off the *open*-loop poles $0$ and $-10$. Those are not\nthe closed-loop poles.\n",
+      solution: "\n$$T=\\frac{G}{1+G}=\\frac{100/[s(s+10)]}{1+100/[s(s+10)]}=\\frac{100}{s^{2}+10s+100}.$$\n\n$$\\omega_n=10,\\qquad 2\\zeta\\omega_n=10\\quad\\Rightarrow\\quad \\zeta=\\tfrac12.$$\n\nPoles: $-5\\pm j5\\sqrt{3}$. Then\n\n$$T_s=\\frac{4}{5}=0.8\\ \\text{s},\\qquad\nT_p=\\frac{\\pi}{5\\sqrt{3}}\\ \\text{s},\\qquad\n\\%OS=100e^{-\\pi/\\sqrt{3}}.$$\n\n$\\zeta=1/2$ is the $60^{\\circ}$ line. No calculator.\n"
     },
     {
-      id: "5-10", difficulty: "core", topic: "Gain design",
-      sec: "5.3",
-      prompt: `Unity negative feedback around $G=K/[s(s+8)]$. Choose $K$ so that $\\%OS=100e^{-\\pi}$.
-With that $K$, what is $T_s$?`,
+      id: "5-10", difficulty: "core", topic: "Gain design", sec: "5.3",
+      prompt: "Unity negative feedback around $G=K/[s(s+8)]$. Choose $K$ so that $\\%OS=100e^{-\\pi}$.\nWith that $K$, what is $T_s$?",
       hint: "$100e^{-\\pi}$ is $\\zeta=\\sqrt{2}/2$. Then $\\zeta=8/(2\\sqrt{K})$.",
       answer: "$K=32$, $T_s=1$ s.",
-      expert: `
-**First glance:** $\\%OS=100e^{-\\pi}$ is the $45^{\\circ}$ case, $\\zeta=\\sqrt{2}/2$,
-no logarithm required.
-
-**Path:** $\\zeta=a/(2\\sqrt{K})=8/(2\\sqrt{K})=4/\\sqrt{K}=\\sqrt{2}/2$, so
-$\\sqrt{K}=8/\\sqrt{2}=4\\sqrt{2}$, $K=32$. Real part $a/2=4$, $T_s=1$.
-`,
-      solution: `
-$\\%OS=100e^{-\\pi}$ means $\\zeta=\\sqrt{2}/2$.
-
-$$T=\\frac{K}{s^{2}+8s+K},\\qquad \\zeta=\\frac{8}{2\\sqrt{K}}=\\frac{4}{\\sqrt{K}}.$$
-
-$$\\frac{4}{\\sqrt{K}}=\\frac{\\sqrt{2}}{2}\\quad\\Rightarrow\\quad \\sqrt{K}=\\frac{8}{\\sqrt{2}}=4\\sqrt{2}
-\\quad\\Rightarrow\\quad K=32.$$
-
-Underdamped real part is $a/2=4$, so $T_s=4/4=1$ s. Gain does not move that real
-part on this plant. ✓
-`
+      expert: "\n**First glance:** $\\%OS=100e^{-\\pi}$ is the $45^{\\circ}$ case, $\\zeta=\\sqrt{2}/2$,\nno logarithm required.\n\n**Path:** $\\zeta=a/(2\\sqrt{K})=8/(2\\sqrt{K})=4/\\sqrt{K}=\\sqrt{2}/2$, so\n$\\sqrt{K}=8/\\sqrt{2}=4\\sqrt{2}$, $K=32$. Real part $a/2=4$, $T_s=1$.\n",
+      solution: "\n$\\%OS=100e^{-\\pi}$ means $\\zeta=\\sqrt{2}/2$.\n\n$$T=\\frac{K}{s^{2}+8s+K},\\qquad \\zeta=\\frac{8}{2\\sqrt{K}}=\\frac{4}{\\sqrt{K}}.$$\n\n$$\\frac{4}{\\sqrt{K}}=\\frac{\\sqrt{2}}{2}\\quad\\Rightarrow\\quad \\sqrt{K}=\\frac{8}{\\sqrt{2}}=4\\sqrt{2}\n\\quad\\Rightarrow\\quad K=32.$$\n\nUnderdamped real part is $a/2=4$, so $T_s=4/4=1$ s. Gain does not move that real\npart on this plant. ✓\n"
     },
     {
-      id: "5-11", difficulty: "core", topic: "Pole migration",
-      sec: "5.3",
-      prompt: `For $T=K/(s^{2}+6s+K)$, describe the closed-loop poles as $K$ goes from $0$ through
-$9$ and beyond. What happens to $T_s$ for $K>9$?`,
+      id: "5-11", difficulty: "core", topic: "Pole migration", sec: "5.3",
+      prompt: "For $T=K/(s^{2}+6s+K)$, describe the closed-loop poles as $K$ goes from $0$ through\n$9$ and beyond. What happens to $T_s$ for $K>9$?",
       answer: "For $0<K<9$, two real poles walk toward $-3$. At $K=9$, a repeated pole at $-3$. For $K>9$, poles $-3\\pm j\\sqrt{K-9}$; $T_s=4/3$ s, constant.",
-      expert: `
-**First glance:** discriminant $36-4K$. Critical at $K=9$. After that the real part
-is locked at $-3$.
-
-**Check:** $T_s=4/\\sigma_d=4/3$ once underdamped. Gain buys $\\omega_d$ and overshoot,
-not settling, on this plant.
-`,
-      solution: `
-Characteristic polynomial $s^{2}+6s+K$. Discriminant $36-4K$.
-
-- $K<9$: real poles $-3\\pm\\sqrt{9-K}$, moving toward each other.
-- $K=9$: repeated pole at $-3$.
-- $K>9$: $-3\\pm j\\sqrt{K-9}$.
-
-For $K>9$, $\\sigma_d=3$ is independent of $K$, so $T_s=4/3$ s stays put while
-$T_p=\\pi/\\sqrt{K-9}$ falls and $\\%OS$ rises.
-`
+      expert: "\n**First glance:** discriminant $36-4K$. Critical at $K=9$. After that the real part\nis locked at $-3$.\n\n**Check:** $T_s=4/\\sigma_d=4/3$ once underdamped. Gain buys $\\omega_d$ and overshoot,\nnot settling, on this plant.\n",
+      solution: "\nCharacteristic polynomial $s^{2}+6s+K$. Discriminant $36-4K$.\n\n- $K<9$: real poles $-3\\pm\\sqrt{9-K}$, moving toward each other.\n- $K=9$: repeated pole at $-3$.\n- $K>9$: $-3\\pm j\\sqrt{K-9}$.\n\nFor $K>9$, $\\sigma_d=3$ is independent of $K$, so $T_s=4/3$ s stays put while\n$T_p=\\pi/\\sqrt{K-9}$ falls and $\\%OS$ rises.\n"
     },
     {
-      id: "5-12", difficulty: "challenge", topic: "Closed-loop specs",
-      sec: "5.3",
-      prompt: `A plant $G=4/[s(s+4)]$ is already under unity negative feedback. An engineer adds a
-**proportional gain $K$ in cascade in front of $G$**, still inside the loop
-(after the error summer).
-
-**(a)** Write $T(s)$.
-**(b)** Find $K$ so that $\\zeta=1/2$.
-**(c)** With that $K$, can this architecture meet $T_s\\le 0.5$ s? If not, what
-would have to change?`,
+      id: "5-12", difficulty: "challenge", topic: "Closed-loop specs", sec: "5.3",
+      prompt: "A plant $G=4/[s(s+4)]$ is already under unity negative feedback. An engineer adds a\n**proportional gain $K$ in cascade in front of $G$**, still inside the loop\n(after the error summer).\n\n**(a)** Write $T(s)$.\n**(b)** Find $K$ so that $\\zeta=1/2$.\n**(c)** With that $K$, can this architecture meet $T_s\\le 0.5$ s? If not, what\nwould have to change?",
       hint: "The forward path is $KG$. Settling is set by the real part $a/2=2$.",
       answer: "**(a)** $T=4K/(s^2+4s+4K)$. **(b)** $K=4$. **(c)** No. $T_s=2$ s is fixed. Meeting $0.5$ s requires a larger $a$, i.e. a different plant or a compensator that moves the real part.",
-      expert: `
-**First glance:** still the 5.3 plant, with $K$ absorbed into the numerator constant
-$4K$. Real part stays $2$.
-
-**The curveball:** part (c) is the point of 5.3. One gain cannot set $\\zeta$ and
-$T_s$ at once on $K/[s(s+a)]$. Choosing $\\zeta$ spends $K$. $T_s$ was never on
-that knob.
-`,
-      solution: `
-## (a)
-
-Forward path $KG=4K/[s(s+4)]$, $H=1$,
-
-$$T=\\frac{4K}{s^{2}+4s+4K}.$$
-
-## (b)
-
-$$\\omega_n=2\\sqrt{K},\\qquad \\zeta=\\frac{4}{2\\cdot 2\\sqrt{K}}=\\frac{1}{\\sqrt{K}}.$$
-
-$\\zeta=1/2$ gives $\\sqrt{K}=2$, $K=4$. Then $T=16/(s^{2}+4s+16)$, poles $-2\\pm j2\\sqrt{3}$.
-
-## (c)
-
-$T_s=4/2=2$ s for every underdamped $K$. The requirement $T_s\\le 0.5$ needs
-$\\sigma_d\\ge 8$, but $\\sigma_d$ is glued to $a/2=2$. Gain cannot move it.
-
-To move $\\sigma_d$ you change $a$ (a different motor, or rate feedback that
-enlarges the $s$ coefficient) or you leave this architecture. That is the argument
-for Chapter 9.
-`
+      expert: "\n**First glance:** still the 5.3 plant, with $K$ absorbed into the numerator constant\n$4K$. Real part stays $2$.\n\n**The curveball:** part (c) is the point of 5.3. One gain cannot set $\\zeta$ and\n$T_s$ at once on $K/[s(s+a)]$. Choosing $\\zeta$ spends $K$. $T_s$ was never on\nthat knob.\n",
+      solution: "\n## (a)\n\nForward path $KG=4K/[s(s+4)]$, $H=1$,\n\n$$T=\\frac{4K}{s^{2}+4s+4K}.$$\n\n## (b)\n\n$$\\omega_n=2\\sqrt{K},\\qquad \\zeta=\\frac{4}{2\\cdot 2\\sqrt{K}}=\\frac{1}{\\sqrt{K}}.$$\n\n$\\zeta=1/2$ gives $\\sqrt{K}=2$, $K=4$. Then $T=16/(s^{2}+4s+16)$, poles $-2\\pm j2\\sqrt{3}$.\n\n## (c)\n\n$T_s=4/2=2$ s for every underdamped $K$. The requirement $T_s\\le 0.5$ needs\n$\\sigma_d\\ge 8$, but $\\sigma_d$ is glued to $a/2=2$. Gain cannot move it.\n\nTo move $\\sigma_d$ you change $a$ (a different motor, or rate feedback that\nenlarges the $s$ coefficient) or you leave this architecture. That is the argument\nfor Chapter 9.\n"
     },
-
     {
-      id: "5-13", difficulty: "challenge", topic: "Loading",
-      sec: "5.2",
-      prompt: `A diagram prints two cascaded blocks and $T=G_2G_1$. The hardware is two passive $RC$ stages soldered together. Is the printed $T$ the hardware $T$? What block would make the diagram honest?`,
+      id: "5-13", difficulty: "challenge", topic: "Loading", sec: "5.2",
+      prompt: "A diagram prints two cascaded blocks and $T=G_2G_1$. The hardware is two passive $RC$ stages soldered together. Is the printed $T$ the hardware $T$? What block would make the diagram honest?",
       hint: "Cascade-as-product assumes no loading.",
       answer: "No. Insert an isolating amplifier between the stages.",
-      expert: `
-**First glance:** a product on paper is a claim about impedances, not a soldering diagram.
-`,
-      solution: `
-Connecting the second $RC$ stage draws current from the first capacitor and adds a cross term to the damping. The product $G_2G_1$ is then false.
-
-A buffer with high input impedance and low output impedance restores the unloaded stages, and the product holds.
-`
+      expert: "\n**First glance:** a product on paper is a claim about impedances, not a soldering diagram.\n",
+      solution: "\nConnecting the second $RC$ stage draws current from the first capacitor and adds a cross term to the damping. The product $G_2G_1$ is then false.\n\nA buffer with high input impedance and low output impedance restores the unloaded stages, and the product holds.\n"
     },
     {
-      id: "5-14", difficulty: "challenge", topic: "Feedback formula",
-      sec: "5.2",
-      prompt: `The summer is $E=R+HC$ with $H\\neq 1$, and $C=EG$. Find $T=C/R$ and name the sign of the loop.`,
+      id: "5-14", difficulty: "challenge", topic: "Feedback formula", sec: "5.2",
+      prompt: "The summer is $E=R+HC$ with $H\\neq 1$, and $C=EG$. Find $T=C/R$ and name the sign of the loop.",
+      hint: "Do not reach for the formula. Write the two equations the diagram gives you and eliminate $E$.",
       answer: "$$T=\\dfrac{G}{1-GH}.$$ Positive feedback.",
-      expert: `
-**Path:** $C=G(R+HC)$ rearranges to $C-GHC=GR$.
-`,
-      solution: `
-$$C=G(R+HC)=GR+GHC,\\qquad C(1-GH)=GR,\\qquad T=\\frac{G}{1-GH}.$$
-
-A plus at the summer is a minus in the denominator.
-`
+      expert: "\n**First glance:** the summer **adds**, so this is positive feedback and the denominator\ncarries a **minus**. The sign rule is always: *denominator sign is opposite the junction\nsign.*\n\n**But the point of the problem is that you should not need the rule.** Two equations,\neliminate $E$, done:\n\n$$C=G(R+HC)\\;\\Longrightarrow\\;C-GHC=GR\\;\\Longrightarrow\\;T=\\frac{G}{1-GH}$$\n\nThree lines, no memory. **Every feedback formula in this chapter is recoverable this way**,\nwhich is what you want on an exam where you might mis-recall a sign.\n\n**What an expert says next, unprompted:** positive feedback is dangerous. The characteristic\nequation is $1-GH=0$, so the loop is unstable whenever $GH$ reaches $1$. For $G=\\tfrac{K}{s+a}$\nwith $H=1$, the closed-loop pole is $-(a-K)$ — it crosses into the right half-plane as soon\nas $K>a$, **destabilizing a plant that was perfectly stable on its own**.\n\nThat is why the minus at the junction is the universal convention, and why positive feedback\nappears in oscillators rather than regulators.\n",
+      solution: "\n**Step 1 — write what the diagram says.**\n\nAt the summing junction (note it **adds**):\n\n$$E(s)=R(s)+H(s)C(s)$$\n\nAt the output:\n\n$$C(s)=E(s)G(s)$$\n\n**Step 2 — substitute to eliminate $E$.**\n\n$$C(s)=G(s)\\Big[R(s)+H(s)C(s)\\Big]=G(s)R(s)+G(s)H(s)C(s)$$\n\n**Step 3 — collect the $C(s)$ terms on one side.**\n\n$$C(s)-G(s)H(s)C(s)=G(s)R(s)$$\n\n$$C(s)\\Big[1-G(s)H(s)\\Big]=G(s)R(s)$$\n\n**Step 4 — solve.**\n\n$$\\boxed{\\;T(s)=\\frac{C(s)}{R(s)}=\\frac{G(s)}{1-G(s)H(s)}\\;}$$\n\n$$\\boxed{\\;\\text{This is \\textbf{positive} feedback.}\\;}$$\n\n---\n\n**The sign rule, stated once.**\n\n$$\\text{junction }+\\;\\Longrightarrow\\;\\text{denominator }-\n\\qquad\n\\text{junction }-\\;\\Longrightarrow\\;\\text{denominator }+$$\n\n**Always opposite.** Reciting that as you write is worth more than re-deriving it — but the\nderivation above takes three lines and cannot be mis-remembered, so use it whenever you are\nunsure.\n\n**Why positive feedback is rare in control.**\n\nThe closed-loop poles are the roots of\n\n$$1-G(s)H(s)=0$$\n\nso the system reaches the stability boundary when $G(s)H(s)=1$. Concretely, for\n$G=\\dfrac{K}{s+a}$ and $H=1$:\n\n$$T=\\frac{K}{s+a-K}$$\n\n- $K<a$: pole at $-(a-K)$, stable but **slower** than the plant alone\n- $K=a$: pole at the origin, marginally stable\n- $K>a$: pole in the **right half-plane** — unstable\n\n**Positive feedback can destabilize a stable plant**, and it moves poles toward the imaginary\naxis rather than away from it. Negative feedback does the reverse, which is why the minus is\nthe convention throughout the rest of the course.\n"
     },
     {
-      id: "5-15", difficulty: "challenge", topic: "Moving blocks",
-      sec: "5.2",
-      prompt: `A pickoff *before* $G$ currently feeds $H$. You slide $G$ left, past that pickoff. What belongs on the branch to $H$?`,
+      id: "5-15", difficulty: "challenge", topic: "Moving blocks", sec: "5.2",
+      prompt: "A pickoff *before* $G$ currently feeds $H$. You slide $G$ left, past that pickoff. What belongs on the branch to $H$?",
+      hint: "What did the branch to $H$ carry before the move, and what does it carry after? Supply the factor that restores it.",
       answer: "$1/G$. The pickoff now carries $RG$; $H$ used to receive $R$.",
-      expert: `
-**Discard:** putting $G$ on the branch. That restores $RG$ when $H$ already wanted $R$.
-`,
-      solution: `
-Before the move, the node is $R$ and $H$ sees $R$.
-
-After $G$ sits to the left of the pickoff, the node is $RG$. The branch must undo $G$, so it carries $1/G$.
-`
+      expert: "\n**First glance:** same derivation method as 5-27, other direction, so expect $1/G$ rather\nthan $G$.\n\n**Before:** the pickoff sits before $G$, so the $H$ branch carries $R$.\n**After sliding $G$ left, past the pickoff:** the pickoff now sits after $G$, so it carries\n$GR$.\n\n**Mismatch:** $GR$ where $R$ is wanted. Divide by $G$.\n\n$$\\boxed{1/G\\text{ on the }H\\text{ branch}}$$\n\n**The one fact that makes every pickoff problem easy:** a pickoff **duplicates**, it never\ndivides. Both branches carry the full signal. Students who think it halves get these\nuniformly wrong.\n\n**The direction rule, so you never memorize it:** moving a block *along* the signal flow past\na node means the other branch **gains** $G$; moving it *against* the flow means the other\nbranch gains $1/G$. Or simply ask what the branch carried before and after — three seconds.\n\n**The warning worth attaching.** $1/G$ inverts the plant: its poles are $G$'s zeros. If $G$\nhas a right-half-plane zero — a nonminimum-phase plant, Chapter 4 — then $1/G$ has a\nright-half-plane **pole** and is unrealizable as physical hardware. Legitimate in a paper\nreduction; not something you can build.\n",
+      solution: "\n**Step 1 — what the $H$ branch carries before the move.**\n\nThe pickoff point sits **before** $G$, so it duplicates $R(s)$:\n\n$$\\text{to } G:\\;R(s)\\qquad\\qquad \\text{to } H:\\;R(s)$$\n\nBoth branches carry the full $R(s)$ — a pickoff **duplicates**, it does not divide.\n\n**Step 2 — what it carries after sliding $G$ left, past the pickoff.**\n\nNow $G$ acts **before** the pickoff, so the pickoff duplicates $G(s)R(s)$:\n\n$$\\text{forward:}\\;G(s)R(s)\\quad\\checkmark\\qquad \\text{to } H:\\;G(s)R(s)\\quad\\times$$\n\nThe forward path is unchanged, but the $H$ branch now receives $G(s)R(s)$ where it should\nreceive $R(s)$.\n\n**Step 3 — supply the compensation.**\n\nInsert a block that undoes the extra $G(s)$:\n\n$$\\boxed{\\;\\text{Put }\\frac{1}{G(s)}\\text{ on the branch to }H.\\;}$$\n\nThen that branch carries $\\dfrac{1}{G}\\cdot GR=R$ again, and every signal in the diagram\nmatches the original.\n\n---\n\n**The pattern, stated so you never have to recall a direction.**\n\n- Moving a block **along** the direction of signal flow past a node → the other branch\n  **gains $G$**.\n- Moving a block **against** the flow past a node → the other branch **gains $1/G$**.\n\nOr, better, skip the pattern entirely: **write what the branch carried before and after, and\nsupply whatever factor restores it.** That question always answers itself and works on\narrangements you have never seen.\n\n**Compare with problem 5-27.** There, $G$ moved *forward* past a summing junction and the\nother branch needed $G$. Here, $G$ moves *backward* past a pickoff and the other branch needs\n$1/G$. Same method, opposite factor, and neither had to be memorized.\n\n**A real caution about $1/G(s)$ blocks.**\n\n$\\dfrac{1}{G}$ inverts the plant: **its poles are the plant's zeros.** So if $G$ has a\nright-half-plane zero — a nonminimum-phase plant, from Chapter 4 — then $1/G$ has a\nright-half-plane **pole** and is unstable.\n\nThat is fine inside a paper reduction, where $1/G$ is bookkeeping that will cancel again. It\nis **not** fine if you intended to build that block. When a reduction offers a choice, prefer\nthe move that avoids creating $1/G$.\n"
     },
     {
-      id: "5-16", difficulty: "core", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Forward path $G=2/(s+2)$ in negative unity feedback. A prefilter $F=s+2$ sits *outside* the loop, in cascade with $R$. Find $T=C/R$.`,
-      hint: "Close the loop on $G$ alone, then multiply by $F$.",
+      id: "5-16", difficulty: "core", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Forward path $G=2/(s+2)$ in negative unity feedback. A prefilter $F=s+2$ sits *outside* the loop, in cascade with $R$. Find $T=C/R$.",
+      hint: "Decide first what the loop encloses. A prefilter outside the loop is a plain cascade factor and does not change the closed-loop poles.",
       answer: "$$T=\\dfrac{2(s+2)}{s+4}.$$",
-      expert: `
-**First glance:** $F$ is not inside $G$. Do not cancel $s+2$ before applying the feedback formula.
-`,
-      solution: `
-$$T_{\\text{cl}}=\\frac{G}{1+G}=\\frac{2/(s+2)}{1+2/(s+2)}=\\frac{2}{s+4}.$$
-
-$$T=F\\,T_{\\text{cl}}=\\frac{2(s+2)}{s+4}.$$
-
-The cancelled-looking factor survives as a zero of $T$.
-`
+      expert: "\n**First glance:** the prefilter $F$ sits **outside** the loop, so it cannot affect the\nclosed-loop poles. It multiplies whatever the loop produces.\n\n$$T=F\\cdot\\frac{G}{1+G}$$\n\n**Close the loop first**, using $\\dfrac{N}{D+N}$ with $N=2$, $D=s+2$:\n\n$$\\frac{G}{1+G}=\\frac{2}{s+4}$$\n\nThen multiply: $T=(s+2)\\cdot\\dfrac{2}{s+4}=\\dfrac{2(s+2)}{s+4}$.\n\n**The structural fact worth stating:** a prefilter **adds zeros and changes the dc gain but\nleaves every closed-loop pole where it was.** The pole is $-4$ before and after. That makes\nprefilters useless for stabilization and useful for shaping — exactly the opposite of\nfeedback.\n\n**Read the trade here.** The prefilter cancelled the plant's pole at $-2$ by placing a zero\non it, and multiplied the dc gain from $\\tfrac12$ to $1$. But the closed-loop transfer\nfunction is now **improper-looking in character** — numerator and denominator both degree 1,\nso $T(\\infty)=2\\ne0$ and the step response **jumps immediately**. Chapter 4's rule:\n$c(0^+)=T(\\infty)$.\n\n**Free check:** $T(0)=\\dfrac{2(2)}{4}=1$ ✓\n",
+      solution: "\n**Step 1 — decide what the loop encloses.**\n\nThe prefilter $F=s+2$ sits in cascade **outside** the loop. It is not part of the feedback\npath, so it plays no role in the loop reduction.\n\n**Step 2 — close the loop.**\n\n$$T_{\\text{loop}}(s)=\\frac{G}{1+G}=\\frac{\\dfrac{2}{s+2}}{1+\\dfrac{2}{s+2}}$$\n\nMultiply numerator and denominator by $(s+2)$:\n\n$$T_{\\text{loop}}(s)=\\frac{2}{(s+2)+2}=\\frac{2}{s+4}$$\n\n**Step 3 — apply the cascade factor.**\n\n$$T(s)=F(s)\\cdot T_{\\text{loop}}(s)=(s+2)\\cdot\\frac{2}{s+4}$$\n\n$$\\boxed{\\;T(s)=\\frac{2(s+2)}{s+4}\\;}$$\n\n---\n\n**What a prefilter can and cannot do.**\n\n| | Open loop $G$ | After feedback | After prefilter |\n|---|---|---|---|\n| Pole | $-2$ | $-4$ | $-4$ |\n| Zero | none | none | $-2$ |\n| DC gain | $1$ | $\\tfrac12$ | $1$ |\n\n**The closed-loop pole is $-4$ before and after the prefilter.** A block outside the loop\n**cannot move a closed-loop pole** — the characteristic equation $1+G(s)H(s)=0$ contains no\n$F$ at all.\n\n$$\\boxed{\\;\\text{Prefilters add zeros and rescale gain. Only elements \\textit{inside} the loop move poles.}\\;}$$\n\nThat is the exact complement of feedback, which moves poles but cannot place forward-path\nzeros.\n\n**What it accomplished here.** The zero at $-2$ restored the dc gain that feedback had cost:\n\n$$T(0)=\\frac{2(0+2)}{0+4}=\\frac{4}{4}=1$$\n\nversus $T_{\\text{loop}}(0)=\\tfrac12$. The steady-state error to a step is now zero, achieved\nwithout touching the loop.\n\n**The price, which Chapter 4 lets you read immediately.** Numerator and denominator are both\ndegree 1, so\n\n$$T(\\infty)=\\lim_{s\\to\\infty}\\frac{2(s+2)}{s+4}=2$$\n\nand since $c(0^{+})=T(\\infty)$, **the step response jumps instantly to 2** before settling\nback to 1. The prefilter's zero bought dc accuracy at the cost of a large initial transient —\na real trade, and a standard reason prefilters are used carefully.\n"
     },
     {
-      id: "5-17", difficulty: "core", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Negative feedback, $G=1/s$, $H=2$. Find $T$ and the closed-loop time constant.`,
+      id: "5-17", difficulty: "core", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Negative feedback, $G=1/s$, $H=2$. Find $T$ and the closed-loop time constant.",
+      hint: "An integrator inside a loop with constant feedback becomes an ordinary first-order lag. Find the pole, then read the time constant off it.",
       answer: "$$T=\\dfrac{1}{s+2},\\qquad \\tau=\\dfrac12.$$",
-      expert: `
-**Path:** an integrator in a loop with constant $H$ becomes a real pole at $-H$.
-`,
-      solution: `
-$$T=\\frac{1/s}{1+2/s}=\\frac{1}{s+2}.$$
-
-Pole at $-2$, so $\\tau=1/2$. Feedback turned an integrator into a lag.
-`
+      expert: "\n**First glance:** $G=\\tfrac1s$ with constant $H$. The shortcut is worth memorizing because\nthis configuration appears constantly:\n\n$$\\frac{1/s}{1+H/s}=\\frac{1}{s+H}$$\n\n**An integrator in a loop with constant feedback becomes a first-order lag with pole at\n$-H$.** Here $H=2$, so pole $-2$, so $\\tau=\\tfrac12$.\n\n**Ruled out on sight:** clearing the compound fraction longhand, and any time-domain work.\n\n**The conceptual content, which is the real answer.** Open loop, $\\tfrac1s$ is an\n**integrator** — a pole exactly on the imaginary axis, marginally stable, and its step\nresponse ramps forever without settling. Closing the loop moved that pole to $-2$: the system\nnow settles.\n\n**Feedback converted a system that never settles into one that settles in $T_s=4/2=2$ s.**\nThat is the strongest single demonstration in the chapter of what feedback buys, and it is\nworth stating even when the question only asks for $\\tau$.\n\n**Free check:** $T(0)=\\tfrac12=\\tfrac1H$. For an integrator plant the closed-loop dc gain is\nalways $1/H$ — infinite loop gain at dc forces the output to whatever makes the feedback\nmatch the reference exactly.\n",
+      solution: "\n**Step 1 — apply the feedback formula.**\n\n$$T(s)=\\frac{G(s)}{1+G(s)H(s)}=\\frac{\\dfrac{1}{s}}{1+\\dfrac{1}{s}\\cdot 2}$$\n\n**Step 2 — clear the compound fraction.**\n\nMultiply numerator and denominator by $s$:\n\n$$T(s)=\\frac{1}{s+2}$$\n\n$$\\boxed{\\;T(s)=\\frac{1}{s+2}\\;}$$\n\n**Step 3 — the time constant.**\n\nA first-order system $\\dfrac{K}{s+a}$ has pole at $-a$ and time constant $\\tau=\\dfrac1a$.\nHere $a=2$:\n\n$$\\boxed{\\;\\tau=\\frac12\\ \\text{s}\\;}$$\n\n---\n\n**What feedback accomplished here — the real content.**\n\n**Open loop**, $G=\\dfrac1s$ is a **pure integrator**. Its pole sits exactly **on the\nimaginary axis** at $s=0$:\n\n- it is **marginally stable**, not stable\n- its step response is a ramp that **grows without bound and never settles**\n- $T_s$ and $\\tau$ are undefined — there is no final value\n\n**Closed loop**, the pole has moved to $s=-2$:\n\n- **stable**, firmly in the left half-plane\n- $\\tau=\\tfrac12$ s, $T_s=\\dfrac{4}{2}=2$ s\n- the step response settles at $T(0)=\\tfrac12$\n\n$$\\boxed{\\;\\text{Feedback turned a system that never settles into one that settles in }2\\text{ s.}\\;}$$\n\n**The general result.** For $G=\\dfrac1s$ with constant feedback $H$:\n\n$$T=\\frac{1}{s+H}$$\n\nso the closed-loop pole sits at $-H$ and the time constant is $\\tfrac1H$. **Larger feedback\ngain gives a faster system** — the pole moves farther left as $H$ grows.\n\n**Check — dc gain.** $T(0)=\\dfrac{1}{2}=\\dfrac{1}{H}$.\n\nThat is exact and general for an integrator plant: $G(0)=\\infty$, so\n$T(0)=\\dfrac{G(0)}{1+G(0)H}\\to\\dfrac{1}{H}$. Infinite dc loop gain drives the output until\nthe fed-back signal equals the reference exactly, which requires $C=R/H$.\n"
     },
     {
-      id: "5-18", difficulty: "challenge", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Two parallel forward blocks $G_1=1$ and $G_2=1/s$ add ($+$ and $+$). That sum is then the forward path of a negative unity-feedback loop. Find $T=C/R$.`,
-      hint: "Parallel first, then the feedback formula.",
+      id: "5-18", difficulty: "challenge", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Two parallel forward blocks $G_1=1$ and $G_2=1/s$ add ($+$ and $+$). That sum is then the forward path of a negative unity-feedback loop. Find $T=C/R$.",
+      hint: "Reduce the parallel section to one block first. The feedback formula needs a single forward-path block.",
       answer: "$$T=\\dfrac{s+1}{2s+1}.$$",
-      expert: `
-**Path:** $G_e=(s+1)/s$, then $T=G_e/(1+G_e)$.
-`,
-      solution: `
-$$G_e=1+\\frac{1}{s}=\\frac{s+1}{s},\\qquad
-1+G_e=\\frac{2s+1}{s},\\qquad
-T=\\frac{s+1}{2s+1}.$$
-`
+      expert: "\n**First glance:** parallel, then feedback. **The order is forced** — the feedback formula\nrequires a single forward block, so the parallel sum must be collapsed first.\n\n$$G_e=1+\\frac1s=\\frac{s+1}{s}$$\n\n**Then the unity-feedback pattern**, which removes the compound fraction entirely. For\n$G=\\dfrac{N}{D}$:\n\n$$T=\\frac{N}{D+N}=\\frac{s+1}{s+(s+1)}=\\frac{s+1}{2s+1}$$\n\nTwo lines total.\n\n**Recognize the topology:** a proportional path in parallel with an integrator **is a PI\ncontroller**. Same structure as the op-amp in problem 2-16, and what you design in Chapter 9.\n\n**The structural fact worth extracting:** $T=\\dfrac{N}{D+N}$ shows the numerator passes\nthrough **untouched**. So the closed-loop zero at $-1$ is the open-loop zero — **feedback\nrelocates poles and leaves forward-path zeros alone.** That is why root loci in Chapter 8\nterminate on open-loop zeros.\n\n**Free check:** $T(0)=\\tfrac11=1$. The integrator forces unity dc gain, so zero steady-state\nerror to a step.\n",
+      solution: "\n**Step 1 — collapse the parallel section.**\n\nBoth branches share the input and their outputs are summed with plus signs:\n\n$$G_e(s)=1+\\frac{1}{s}$$\n\nCombine over the common denominator $s$:\n\n$$G_e(s)=\\frac{s}{s}+\\frac{1}{s}=\\frac{s+1}{s}$$\n\n**Step 2 — now a feedback form exists.**\n\n$$T(s)=\\frac{G_e}{1+G_e}=\\frac{\\dfrac{s+1}{s}}{1+\\dfrac{s+1}{s}}$$\n\n**Step 3 — clear the compound fraction.**\n\nMultiply numerator and denominator by $s$:\n\n$$T(s)=\\frac{s+1}{s+(s+1)}=\\frac{s+1}{2s+1}$$\n\n$$\\boxed{\\;T(s)=\\frac{s+1}{2s+1}\\;}$$\n\n---\n\n**Reading the result.**\n\n- **Pole:** $2s+1=0\\Rightarrow s=-\\tfrac12$, so $\\tau=2$ s.\n- **Zero:** $s=-1$, inherited unchanged from the forward path.\n- **DC gain:** $T(0)=\\dfrac{1}{1}=1$.\n\n**Why the dc gain is exactly 1.** $G_e$ contains an integrator, so $G_e(0)=\\infty$ and\n$T(0)=\\dfrac{\\infty}{1+\\infty}=1$. There is **no steady-state error to a step** — the\nintegrator guarantees it.\n\n**Check — the characteristic equation.**\n\n$$1+G_e(s)=0\\;\\Longrightarrow\\;1+\\frac{s+1}{s}=0\\;\\Longrightarrow\\;s+s+1=0\\;\\Longrightarrow\\;s=-\\tfrac12\\;\\checkmark$$\n\n**Where the zero came from.** Neither branch had a zero: $\\tfrac1s$ has none and the\nconstant path has none. **The parallel sum created it**, and it then passed straight through\nthe feedback reduction into $T$.\n\n**The general pattern, worth memorizing.** For unity feedback with $G=\\dfrac{N}{D}$:\n\n$$T=\\frac{N}{D+N}$$\n\nso **closed-loop zeros are the open-loop zeros** (numerator untouched), while **closed-loop\npoles are completely different** (denominator became $D+N$). Feedback moves poles and leaves\nforward-path zeros where they are.\n\n**What this circuit is.** A proportional path in parallel with an integrator is a **PI\ncontroller**. You met the op-amp realization in problem 2-16 and you will design one in\nChapter 9.\n"
     },
     {
-      id: "5-19", difficulty: "core", topic: "Closed-loop specs",
-      sec: "5.3",
-      prompt: `Unity negative feedback around $G=K/[s(s+20)]$. Choose $K$ so that $\\zeta=1/2$. What is $T_s$?`,
+      id: "5-19", difficulty: "core", topic: "Closed-loop specs", sec: "5.3",
+      prompt: "Unity negative feedback around $G=K/[s(s+20)]$. Choose $K$ so that $\\zeta=1/2$. What is $T_s$?",
+      hint: "Reduce first to get $T$ in terms of $K$, then match the $s$ coefficient. Notice which quantity does not depend on $K$.",
       answer: "$K=400$, $T_s=0.4$ s.",
-      expert: `
-**Path:** $\\zeta=10/\\sqrt{K}=1/2$ gives $K=400$. $\\sigma_d=10$.
-`,
-      solution: `
-$$T=\\frac{K}{s^{2}+20s+K},\\qquad
-\\zeta=\\frac{10}{\\sqrt{K}}=\\frac12,\\qquad K=400.$$
-
-$\\sigma_d=10$, so $T_s=0.4$ s.
-`
+      expert: "\n**First glance:** the Section 5.3 family $\\dfrac{K}{s(s+a)}$ with $a=20$. Its closed loop is\nalways $\\dfrac{K}{s^2+as+K}$, so write it down rather than deriving it.\n\n$$\\zeta=\\frac{a}{2\\sqrt K}=\\frac{10}{\\sqrt K}=\\frac12\\;\\Longrightarrow\\;\\sqrt K=20\\;\\Longrightarrow\\;K=400$$\n\n**Then read $T_s$ off the real part, not off $K$.**\n\n$$\\sigma_d=\\frac a2=10\\quad\\text{for every }K\\;\\Longrightarrow\\;T_s=\\frac{4}{10}=\\frac25\\ \\text{s}$$\n\n**That is the point of the problem.** $K$ appears nowhere in $T_s$. You chose the damping;\nthe settling time was chosen for you by the plant the moment $a=20$ was fixed.\n\n**Recognize $\\zeta=\\tfrac12$** as the $60^{\\circ}$ entry from Chapter 4's table, so\n$\\%OS=100e^{-\\pi/\\sqrt3}$ with no computation, and $\\omega_d=\\omega_n\\tfrac{\\sqrt3}{2}=10\\sqrt3$.\n\n**Free check:** $\\omega_n=\\sqrt{400}=20$ and $\\sigma_d=\\zeta\\omega_n=\\tfrac12(20)=10$ ✓\nconsistent with $a/2$.\n",
+      solution: "\n**Step 1 — reduce.**\n\n$$T(s)=\\frac{G}{1+G}=\\frac{\\dfrac{K}{s(s+20)}}{1+\\dfrac{K}{s(s+20)}}=\\frac{K}{s(s+20)+K}=\\frac{K}{s^{2}+20s+K}$$\n\n**Step 2 — read $\\omega_n$ and $\\zeta$ from the canonical form.**\n\n$$\\omega_n^{2}=K\\;\\Longrightarrow\\;\\omega_n=\\sqrt K$$\n\n$$2\\zeta\\omega_n=20\\;\\Longrightarrow\\;\\zeta=\\frac{20}{2\\sqrt K}=\\frac{10}{\\sqrt K}$$\n\n**Step 3 — solve for $K$.**\n\n$$\\frac{10}{\\sqrt K}=\\frac12\\;\\Longrightarrow\\;\\sqrt K=20\\;\\Longrightarrow\\;K=400$$\n\n$$\\boxed{\\;K=400\\;}$$\n\n**Step 4 — the settling time.**\n\n$$\\sigma_d=\\zeta\\omega_n=\\frac12\\cdot 20=10$$\n\n$$T_s=\\frac{4}{\\sigma_d}=\\frac{4}{10}=\\frac{2}{5}=0.4\\ \\text{s}$$\n\n$$\\boxed{\\;T_s=\\frac25\\ \\text{s}\\;}$$\n\n---\n\n**The observation that matters more than the arithmetic.**\n\n$$\\sigma_d=\\frac{a}{2}=\\frac{20}{2}=10\\qquad\\text{for \\textbf{every} }K$$\n\nThe closed-loop poles are\n\n$$s=-10\\pm j\\sqrt{K-100}$$\n\nand $K$ appears **only under the square root** — only in the imaginary part. So\n\n$$T_s=\\frac{4}{\\sigma_d}=\\frac{8}{a}=\\frac{8}{20}=\\frac25\\ \\text{s}$$\n\n**regardless of the gain you chose.** You selected the damping ratio; the settling time was\nfixed the moment the plant's $a=20$ was fixed.\n\n**The rest of the picture, for free.**\n\n$\\zeta=\\tfrac12$ is the $60^{\\circ}$ entry in Chapter 4's exact-value table:\n\n$$\\sqrt{1-\\zeta^{2}}=\\frac{\\sqrt3}{2},\\qquad \\omega_d=20\\cdot\\frac{\\sqrt3}{2}=10\\sqrt3$$\n\n$$T_p=\\frac{\\pi}{\\omega_d}=\\frac{\\pi}{10\\sqrt3}=\\frac{\\pi\\sqrt3}{30}\\ \\text{s},\\qquad \\%OS=100e^{-\\pi/\\sqrt3}$$\n\n**Check.** $\\omega_n=\\sqrt{400}=20$, and the radial distance\n$\\sqrt{10^{2}+(10\\sqrt3)^{2}}=\\sqrt{100+300}=\\sqrt{400}=20$ ✓\n"
     },
     {
-      id: "5-20", difficulty: "challenge", topic: "Gain design",
-      sec: "5.3",
-      prompt: `Same plant $G=K/[s(s+20)]$, unity negative feedback. Can one $K$ give both $T_s=0.2$ s and $\\zeta=1/2$?`,
+      id: "5-20", difficulty: "challenge", topic: "Gain design", sec: "5.3",
+      prompt: "Same plant $G=K/[s(s+20)]$, unity negative feedback. Can one $K$ give both $T_s=0.2$ s and $\\zeta=1/2$?",
+      hint: "Look at which part of the closed-loop pole the gain actually moves. If a required specification depends on the other part, no gain can reach it.",
       answer: "No. For every underdamped $K$, $T_s=0.4$ s.",
-      expert: `
-**The limit:** $\\sigma_d$ is glued to $a/2=10$. Asking for $T_s=0.2$ asks for $\\sigma_d=20$.
-`,
-      solution: `
-Underdamped poles are $-10\\pm j\\sqrt{K-100}$. The real part does not move with $K$.
-
-$T_s=4/10=0.4$ s for all $K>100$. Meeting $0.2$ s needs a different $a$ or a compensator.
-`
+      expert: "\n**First glance:** this is an impossibility question, and the answer has no arithmetic in it.\n\n$$T=\\frac{K}{s^{2}+20s+K}\\;\\Longrightarrow\\;s=-10\\pm j\\sqrt{K-100}$$\n\n**$K$ appears only in the imaginary part.** The real part is glued to $a/2=10$, so\n\n$$T_s=\\frac{4}{10}=\\frac25\\ \\text{s}\\qquad\\text{for every }K$$\n\nThe specification asks for $0.2$ s, which needs $\\sigma_d=20$. Available: $10$. **No $K$\ncloses that gap**, and the correct answer is to say so and explain why.\n\n**Ruled out on sight:** solving simultaneously for a $K$ satisfying both. There isn't one, and\nhunting for it wastes the whole question.\n\n**Why this is the most important problem in the chapter.** One gain is **one** degree of\nfreedom, and for this plant it moves poles **vertically only**. Two independent\nspecifications need two knobs. That is not a limitation of your algebra — it is structural,\nand it is the entire argument for compensation.\n\n**What an expert says next**, because \"impossible\" alone is incomplete: change the plant\n($a=40$ gives $T_s=0.2$ s), add rate feedback to enlarge the $s$ coefficient, or add a\ncascade compensator. Problem 5-30 does exactly the second of those.\n",
+      solution: "\n**Step 1 — what the plant can deliver.**\n\n$$T(s)=\\frac{G}{1+G}=\\frac{K}{s(s+20)+K}=\\frac{K}{s^{2}+20s+K}$$\n\nThe closed-loop poles are\n\n$$s=\\frac{-20\\pm\\sqrt{400-4K}}{2}=-10\\pm\\frac{\\sqrt{400-4K}}{2}$$\n\nFor the underdamped case ($K>100$), write $\\sqrt{400-4K}=j\\,2\\sqrt{K-100}$:\n\n$$s=-10\\pm j\\sqrt{K-100}$$\n\n**$K$ appears only under the square root — only in the imaginary part.** The real part is\n\n$$\\sigma_d=\\frac{a}{2}=\\frac{20}{2}=10\\qquad\\text{for every }K$$\n\n**Step 2 — the settling time is therefore fixed.**\n\n$$T_s=\\frac{4}{\\sigma_d}=\\frac{4}{10}=\\frac{2}{5}=0.4\\ \\text{s}$$\n\nindependent of the gain.\n\n**Step 3 — what the specification demands.**\n\n$$T_s\\le 0.2\\ \\text{s}\\;\\Longrightarrow\\;\\sigma_d\\ge\\frac{4}{0.2}=20$$\n\n**Step 4 — compare.**\n\n$$\\sigma_d=10\\ \\text{available}\\qquad\\text{versus}\\qquad \\sigma_d\\ge20\\ \\text{required}$$\n\n$$\\boxed{\\;\\text{No value of }K\\text{ can satisfy both. }T_s=0.4\\text{ s is fixed by the plant.}\\;}$$\n\nFor completeness, $\\zeta=\\tfrac12$ alone would require $K=400$ (problem 5-19), and that $K$\nstill gives $T_s=0.4$ s — twice the requirement.\n\n---\n\n**Why this happens, in one sentence.**\n\nA single gain provides **one** degree of freedom, and for $G=\\dfrac{K}{s(s+a)}$ that freedom\nmoves the closed-loop poles **vertically only** — up and down the line $\\sigma=-a/2$. Two\nindependent time-domain specifications require two independent design parameters.\n\n**What would actually work.**\n\n**Option 1 — change the plant.** $T_s=\\dfrac{8}{a}$, so $T_s=0.2$ s needs $a=40$. That means\ndifferent hardware: more damping, different gearing. Often impossible or expensive.\n\n**Option 2 — add rate feedback.** A minor loop with $H=1+k_ts$ makes the characteristic\nequation\n\n$$s^{2}+(20+Kk_t)s+K=0$$\n\nso the $s$ coefficient — and therefore $\\sigma_d$ — becomes adjustable through $k_t$. That\nis a genuine second knob, and problem 5-30 works exactly this case.\n\n**Option 3 — add a cascade compensator.** Insert $G_c(s)$ with its own poles and zeros. The\ncharacteristic equation becomes $1+G_c(s)G(s)=0$, whose roots need not lie on $\\sigma=-10$\nat all.\n\n$$\\boxed{\\;\\text{This impossibility is the argument for Chapters 9 and 11.}\\;}$$\n"
     },
     {
-      id: "5-21", difficulty: "core", topic: "Pole migration",
-      sec: "5.3",
-      prompt: `For $T=K/(s^{2}+10s+K)$, at what $K$ does the step response become underdamped? What happens to $T_p$ as $K$ grows past that value?`,
+      id: "5-21", difficulty: "core", topic: "Pole migration", sec: "5.3",
+      prompt: "For $T=K/(s^{2}+10s+K)$, at what $K$ does the step response become underdamped? What happens to $T_p$ as $K$ grows past that value?",
+      hint: "The boundary between real and complex poles is where the discriminant vanishes. Then ask which part of the pole the gain actually moves.",
       answer: "Underdamped for $K>25$. $T_p=\\pi/\\sqrt{K-25}$ decreases toward $0$.",
-      expert: `
-**Path:** critical at $K=a^{2}/4=25$. Then $\\omega_d=\\sqrt{K-25}$.
-`,
-      solution: `
-Discriminant $100-4K$. Repeated poles at $K=25$.
-
-For $K>25$, $\\omega_d=\\sqrt{K-25}$ and $T_p=\\pi/\\omega_d$ falls as $K$ grows. Overshoot rises with it.
-`
+      expert: "\n**First glance:** the critical gain for $s^2+as+K$ has a closed form worth memorizing:\n\n$$a^{2}-4K=0\\;\\Longrightarrow\\;K=\\frac{a^{2}}{4}=\\frac{100}{4}=25$$\n\n**Everything follows from that one number**, and the repeated pole sits at $-a/2=-5$ without\nfurther algebra.\n\n**Then the migration, which is the real question.** For $K>25$:\n\n$$s=-5\\pm j\\sqrt{K-25}$$\n\n$K$ lives **only in the imaginary part**. So as $K\\to\\infty$:\n\n$$T_p=\\frac{\\pi}{\\sqrt{K-25}}\\to 0,\\qquad T_s=\\frac45\\ \\text{s fixed},\\qquad \\%OS\\to100\\%$$\n\n**Faster to the peak, no faster to settle, and ever-worse overshoot.** That trade is the\nentire content of Section 5.3.\n\n**The sanity check on direction:** small $K$ means weak feedback means the sluggish\nopen-loop plant shows through — **overdamped**. Large $K$ drives hard and overshoots —\n**underdamped**. If your inequality runs the other way you flipped it.\n\n**What you have actually drawn** is a root locus: two real poles start at $0$ and $-10$,\nslide together, collide at $-5$, then split vertically. Chapter 8 systematizes exactly this.\n",
+      solution: "\n**Step 1 — classify by the discriminant.**\n\nFor $T=\\dfrac{K}{s^{2}+10s+K}$, the denominator has $b=10$, $c=K$:\n\n$$\\text{discriminant}=b^{2}-4c=100-4K$$\n\n| Discriminant | Condition | Poles | Character |\n|---|---|---|---|\n| $100-4K>0$ | $0<K<25$ | real, distinct | **overdamped** |\n| $100-4K=0$ | $K=25$ | real, repeated | **critically damped** |\n| $100-4K<0$ | $K>25$ | complex conjugate | **underdamped** |\n\n$$\\boxed{\\;\\text{Underdamped for }K>25\\;}$$\n\n**Step 2 — the migration, stage by stage.**\n\n**$K\\to 0^{+}$.** The poles approach the open-loop poles at $s=0$ and $s=-10$ — the roots of\n$s(s+10)$.\n\n**$0<K<25$.** Two real poles, moving **toward each other** along the real axis as $K$ rises.\n\n**$K=25$.** They **collide** at\n\n$$s=-\\frac{b}{2}=-\\frac{10}{2}=-5\\quad\\text{(repeated)}$$\n\nThis is the **breakaway point**, and it is always at $-a/2$ for this family.\n\n**$K>25$.** They **split off the real axis**:\n\n$$s=-5\\pm j\\sqrt{K-25}$$\n\nand travel **vertically**, one up and one down, along the line $\\sigma=-5$.\n\n**Step 3 — what happens to $T_p$ as $K$ grows.**\n\n$$\\omega_d=\\sqrt{K-25}\\;\\longrightarrow\\;\\infty\\qquad\\text{as }K\\to\\infty$$\n\n$$T_p=\\frac{\\pi}{\\omega_d}=\\frac{\\pi}{\\sqrt{K-25}}\\;\\longrightarrow\\;0$$\n\n$$\\boxed{\\;T_p\\text{ decreases toward zero as }K\\text{ increases.}\\;}$$\n\n---\n\n**What does \\textit{not} change, and why it matters.**\n\n$$\\sigma_d=5\\qquad\\text{for every }K>25$$\n\nso\n\n$$T_s=\\frac{4}{5}\\ \\text{s}\\qquad\\text{always}$$\n\nAnd since $\\%OS=100e^{-\\pi\\sigma_d/\\omega_d}$ with $\\sigma_d$ fixed and $\\omega_d$ growing,\nthe exponent shrinks toward zero and\n\n$$\\%OS\\;\\longrightarrow\\;100\\%$$\n\n**The complete trade.** Raising $K$ makes the system reach its peak sooner and overshoot\nmore, while taking exactly as long to settle. You buy speed-to-peak with overshoot and get\nnothing at all in settling time.\n\n**You have just sketched a root locus.** The path — in from the open-loop poles, together\nalong the real axis, collide, then out along a vertical line — is the root locus of this\nsystem, drawn from the discriminant alone. Chapter 8 makes the construction systematic.\n"
     },
     {
-      id: "5-22", difficulty: "core", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Minor loop: $G_2=1/(s+1)$, $H_2=1$, negative. That combination is the plant for a major loop with $G_1=K$ and $H_1=1$, negative. Find $T(s)$.`,
+      id: "5-22", difficulty: "core", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Minor loop: $G_2=1/(s+1)$, $H_2=1$, negative. That combination is the plant for a major loop with $G_1=K$ and $H_1=1$, negative. Find $T(s)$.",
+      hint: "Inside out. Collapse the minor loop, then treat the result as the plant of the major loop.",
       answer: "$$T=\\dfrac{K}{s+2+K}.$$",
-      expert: `
-**Path:** inner first, $T_i=1/(s+2)$. Then $T=KT_i/(1+KT_i)$.
-`,
-      solution: `
-$$T_i=\\frac{1/(s+1)}{1+1/(s+1)}=\\frac{1}{s+2}.$$
-
-$$T=\\frac{K/(s+2)}{1+K/(s+2)}=\\frac{K}{s+2+K}.$$
-`
+      expert: "\n**First glance:** nested loops. **Inside out, always** — the minor loop contains no other\nloop, so it collapses first, and the rest is a one-step feedback problem.\n\n**Both steps use the same pattern**, which removes every compound fraction. For\n$G=\\dfrac{N}{D}$ and constant $H$:\n\n$$\\frac{G}{1+GH}=\\frac{N}{D+NH}$$\n\nInner: $N=1$, $D=s+1$, $H=1$ → $\\dfrac{1}{s+2}$.\nOuter: $N=K$, $D=s+2$, $H=1$ → $\\dfrac{K}{s+2+K}$.\n\n**Two lines, no fraction-clearing.**\n\n**Track the pole as you go:** $-1$ (plant) → $-2$ (minor loop) → $-(2+K)$ (major loop).\n**Each loop closure pushes the pole farther left**, and the gain in the outer loop keeps\npushing.\n\n**Why anyone builds it this way.** Minor-loop feedback is real practice — a tachometer loop\naround a motor speeds the motor up *before* the position loop is closed. It gives a second\ndesign parameter that a single loop does not have, which is exactly the degree of freedom\nproblem 5-20 shows a lone gain lacks.\n\n**Free check:** $T(0)=\\dfrac{K}{2+K}<1$, as unity feedback on a finite-dc-gain plant always\nrequires.\n",
+      solution: "\n**Step 1 — identify the innermost loop.**\n\nThe loop containing $G_2=\\dfrac{1}{s+1}$ with $H_2=1$ has no other loop inside it. Collapse\nit first.\n\n$$T_i(s)=\\frac{G_2}{1+G_2H_2}=\\frac{\\dfrac{1}{s+1}}{1+\\dfrac{1}{s+1}}$$\n\nMultiply numerator and denominator by $(s+1)$:\n\n$$T_i(s)=\\frac{1}{(s+1)+1}=\\frac{1}{s+2}$$\n\n**Step 2 — the reduced inner loop is now the plant for the major loop.**\n\nThe forward path of the outer loop is $G_1$ in cascade with $T_i$:\n\n$$G_{\\text{fwd}}(s)=K\\cdot\\frac{1}{s+2}=\\frac{K}{s+2}$$\n\n**Step 3 — close the outer loop.**\n\n$$T(s)=\\frac{G_{\\text{fwd}}}{1+G_{\\text{fwd}}}=\\frac{\\dfrac{K}{s+2}}{1+\\dfrac{K}{s+2}}=\\frac{K}{(s+2)+K}$$\n\n$$\\boxed{\\;T(s)=\\frac{K}{s+2+K}\\;}$$\n\n---\n\n**Track the pole through the reduction.**\n\n| Stage | Pole | $T_s=4/|p|$ |\n|---|---|---|\n| plant $G_2$ alone | $-1$ | $4$ s |\n| after minor loop | $-2$ | $2$ s |\n| after major loop | $-(2+K)$ | $\\dfrac{4}{2+K}$ s |\n\n**Each loop closure moved the pole farther left.** The minor loop did it once for free; the\nmajor loop then does it again by an amount you control through $K$.\n\n**Check — dc gain.** $T(0)=\\dfrac{K}{2+K}$.\n\nIndependently: $G_{\\text{fwd}}(0)=\\dfrac{K}{2}$, so\n\n$$T(0)=\\frac{K/2}{1+K/2}=\\frac{K}{2+K}\\;\\checkmark$$\n\nNote $T(0)<1$ for every finite $K$, approaching 1 as $K\\to\\infty$ — unity feedback on a\nplant with finite dc gain always leaves some steady-state error, and only infinite gain\nremoves it. Chapter 7 quantifies exactly that.\n\n**Check — order.** One energy-storage element in $G_2$, so first order. Neither loop closure\nchanged the order: **feedback relocates poles, it never creates them.**\n\n**Why minor-loop feedback is used in practice.** A rate (tachometer) loop around a motor is\nexactly this topology. It gives the designer a **second parameter** — the minor-loop gain —\nin addition to the forward gain. Problem 5-20 shows that a single gain provides only one\ndegree of freedom; a minor loop is one standard way to buy another.\n"
     },
     {
-      id: "5-23", difficulty: "challenge", topic: "Feedback formula",
-      sec: "5.2",
-      prompt: `Unity *positive* feedback around $G=2/(s+3)$. Find the closed-loop pole. Is the loop stable?`,
-      hint: "$T=G/(1-G)$. Positive feedback is unstable only if the loop gain reaches $1$ in the RHP sense.",
+      id: "5-23", difficulty: "challenge", topic: "Feedback formula", sec: "5.2",
+      prompt: "Unity *positive* feedback around $G=2/(s+3)$. Find the closed-loop pole. Is the loop stable?",
+      hint: "Positive feedback puts a minus in the denominator. Then check where the pole ends up relative to the plant's pole.",
       answer: "Pole at $s=-1$. Stable. $G(0)=2/3<1$.",
-      expert: `
-**Discard:** "positive feedback means unstable." That is a slogan, not a calculation.
-`,
-      solution: `
-$$T=\\frac{G}{1-G}=\\frac{2/(s+3)}{1-2/(s+3)}=\\frac{2}{s+1}.$$
-
-The pole is at $-1$, in the LHP. DC loop gain $2/3$ is less than $1$, so the plus in the summer never quite regenerates.
-`
+      expert: "\n**First glance:** positive feedback, so the denominator carries a **minus** — the sign is\nalways opposite the junction.\n\n$$T=\\frac{G}{1-G}=\\frac{2/(s+3)}{1-2/(s+3)}=\\frac{2}{s+1}$$\n\n**The shortcut:** for $G=\\dfrac{K}{s+a}$ with positive unity feedback, the gain is\n**subtracted**: pole at $-(a-K)=-(3-2)=-1$.\n\n**Stable, but worse.** The plant's pole was at $-3$ ($T_s=\\tfrac43$ s); closing positive\nfeedback moved it to $-1$ ($T_s=4$ s) — **three times slower**. Negative feedback pushes\npoles left; positive feedback pushes them right.\n\n**The condition that decides stability**, and the real content of the question: the pole sits\nat $-(a-K)$, so the loop is stable **iff $K<a$**, i.e. iff $G(0)<1$. Here $G(0)=\\tfrac23<1$ ✓\n\n**Push $K$ to 3 and the pole hits the origin; past 3 it enters the right half-plane and a\nperfectly stable plant has been destabilized by its own feedback.** That is why the minus is\nthe universal convention, and why positive feedback belongs in oscillators rather than\nregulators.\n\n**Free check on dc gain:** $T(0)=2$, which is **larger** than $G(0)=\\tfrac23$. Positive\nfeedback amplifies; negative feedback attenuates.\n",
+      solution: "\n**Step 1 — get the sign right.**\n\nThe denominator sign is **opposite** the summing-junction sign. Positive feedback at the\njunction gives a **minus** in the denominator:\n\n$$T(s)=\\frac{G(s)}{1-G(s)H(s)},\\qquad H=1$$\n\n**Step 2 — substitute and clear.**\n\n$$T(s)=\\frac{\\dfrac{2}{s+3}}{1-\\dfrac{2}{s+3}}$$\n\nMultiply numerator and denominator by $(s+3)$:\n\n$$T(s)=\\frac{2}{(s+3)-2}=\\frac{2}{s+1}$$\n\n$$\\boxed{\\;T(s)=\\frac{2}{s+1},\\qquad\\text{pole at }s=-1\\;}$$\n\n**Step 3 — is it stable?**\n\nThe pole is at $s=-1$, in the **left half-plane**.\n\n$$\\boxed{\\;\\text{Stable.}\\;}$$\n\n---\n\n**But stability came close, and that is the point.**\n\n| | Pole | $T_s=4/|p|$ |\n|---|---|---|\n| Plant $G$ alone | $-3$ | $\\tfrac43$ s |\n| Closed loop (positive feedback) | $-1$ | $4$ s |\n\n**The pole moved toward the imaginary axis**, and the closed-loop system is **three times\nslower** than the plant alone — the exact opposite of what negative feedback does.\n\n**The general condition.** For $G=\\dfrac{K}{s+a}$ with positive unity feedback:\n\n$$T=\\frac{K}{s+a-K}\\qquad\\text{pole at }s=-(a-K)$$\n\n| Condition | Pole | Verdict |\n|---|---|---|\n| $K<a$ | left half-plane | stable, but slower than the plant |\n| $K=a$ | at the origin | marginally stable |\n| $K>a$ | right half-plane | **unstable** |\n\nEquivalently, the loop is stable **iff $G(0)<1$**. Here $G(0)=\\dfrac{2}{3}<1$ ✓ — which is\nprecisely why this particular case survives.\n\n**Raise $K$ from 2 to 3** and the pole reaches the origin. **Past 3** it crosses into the\nright half-plane and the system is unstable — even though the plant on its own was perfectly\nstable.\n\n$$\\boxed{\\;\\text{Positive feedback can destabilize a stable plant.}\\;}$$\n\n**Check — dc gain.** $T(0)=\\dfrac{2}{1}=2$, which is **larger** than $G(0)=\\dfrac23$.\nPositive feedback **amplifies**; negative feedback attenuates. That amplification is exactly\nwhat makes it useful in oscillators and dangerous in regulators.\n"
     },
     {
-      id: "5-24", difficulty: "core", topic: "Closed-loop specs",
-      sec: "5.3",
-      prompt: `Unity negative feedback around $G=36/[s(s+3)]$. Compute $\\zeta$, $\\omega_n$, $T_s$, and $\\%OS$.`,
+      id: "5-24", difficulty: "core", topic: "Closed-loop specs", sec: "5.3",
+      prompt: "Unity negative feedback around $G=36/[s(s+3)]$. Compute $\\zeta$, $\\omega_n$, $T_s$, and $\\%OS$.",
       answer: "$\\omega_n=6$, $\\zeta=1/4$, $T_s=8/3$ s, $\\%OS=100e^{-\\pi/\\sqrt{15}}$.",
-      expert: `
-**Path:** $T=36/(s^{2}+3s+36)$. $2\\zeta\\omega_n=3$, $\\omega_n=6$.
-`,
-      solution: `
-$$T=\\frac{36}{s^{2}+3s+36},\\qquad \\omega_n=6,\\qquad \\zeta=\\frac{3}{12}=\\frac14.$$
-
-$$\\sigma_d=1.5,\\qquad T_s=\\frac{4}{1.5}=\\frac{8}{3}\\ \\text{s},\\qquad
-\\%OS=100e^{-\\pi\\zeta/\\sqrt{1-\\zeta^{2}}}=100e^{-\\pi/\\sqrt{15}}.$$
-`
+      expert: "\n**Path:** $T=36/(s^{2}+3s+36)$. $2\\zeta\\omega_n=3$, $\\omega_n=6$.\n",
+      solution: "\n$$T=\\frac{36}{s^{2}+3s+36},\\qquad \\omega_n=6,\\qquad \\zeta=\\frac{3}{12}=\\frac14.$$\n\n$$\\sigma_d=1.5,\\qquad T_s=\\frac{4}{1.5}=\\frac{8}{3}\\ \\text{s},\\qquad\n\\%OS=100e^{-\\pi\\zeta/\\sqrt{1-\\zeta^{2}}}=100e^{-\\pi/\\sqrt{15}}.$$\n"
     },
     {
-      id: "5-25", difficulty: "challenge", topic: "Gain design",
-      sec: "5.3",
-      prompt: `Unity negative feedback, $G=K/[s(s+8)]$. You need $\\%OS=16.3\\%$ ($\\zeta=1/2$) and you would like $T_p$ as small as possible.
-
-What $K$ meets the overshoot, and can $T_p$ be reduced further without changing $\\zeta$?`,
+      id: "5-25", difficulty: "challenge", topic: "Gain design", sec: "5.3",
+      prompt: "Unity negative feedback, $G=K/[s(s+8)]$. You need $\\%OS=16.3\\%$ ($\\zeta=1/2$) and you would like $T_p$ as small as possible.\n\nWhat $K$ meets the overshoot, and can $T_p$ be reduced further without changing $\\zeta$?",
       answer: "$K=64$. Not with this plant: $\\zeta$ fixes $K$, and $T_p=\\pi/(\\omega_n\\sqrt{1-\\zeta^{2}})$ is then fixed too.",
-      expert: `
-**Path:** $\\zeta=4/\\sqrt{K}=1/2$ pins $K=64$. One knob, two wishes.
-`,
-      solution: `
-$$\\zeta=\\frac{8}{2\\sqrt{K}}=\\frac{4}{\\sqrt{K}}=\\frac12\\quad\\Rightarrow\\quad K=64.$$
-
-Then $\\omega_n=8$, $\\omega_d=4\\sqrt{3}$, $T_p=\\pi/(4\\sqrt{3})$.
-
-A smaller $T_p$ at the same $\\zeta$ needs a larger $\\omega_n$, hence a larger $a$ as well. Gain alone cannot do it.
-`
+      expert: "\n**Path:** $\\zeta=4/\\sqrt{K}=1/2$ pins $K=64$. One knob, two wishes.\n",
+      solution: "\n$$\\zeta=\\frac{8}{2\\sqrt{K}}=\\frac{4}{\\sqrt{K}}=\\frac12\\quad\\Rightarrow\\quad K=64.$$\n\nThen $\\omega_n=8$, $\\omega_d=4\\sqrt{3}$, $T_p=\\pi/(4\\sqrt{3})$.\n\nA smaller $T_p$ at the same $\\zeta$ needs a larger $\\omega_n$, hence a larger $a$ as well. Gain alone cannot do it.\n"
     },
     {
-      id: "5-26", difficulty: "core", topic: "Block diagram elements",
-      sec: "5.2",
-      prompt: `A node has two incoming arrows, marked $+$ and $-$, and one outgoing arrow. A classmate calls it a pickoff because "the signal splits." Correct them.`,
+      id: "5-26", difficulty: "core", topic: "Block diagram elements", sec: "5.2",
+      prompt: "A node has two incoming arrows, marked $+$ and $-$, and one outgoing arrow. A classmate calls it a pickoff because \"the signal splits.\" Correct them.",
       answer: "It is a summing junction. Pickoffs have one incoming signal and several outgoing copies.",
-      expert: `
-**First glance:** count incoming vs outgoing, then look for $\\pm$.
-`,
-      solution: `
-A pickoff copies one signal onto several branches. No signs.
-
-A summer *combines* several incoming signals with written signs. Two in, one out, $+$ and $-$, is a summer. The outgoing signal is the algebraic sum, not a copy of either input.
-`
+      expert: "\n**First glance:** count incoming vs outgoing, then look for $\\pm$.\n",
+      solution: "\nA pickoff copies one signal onto several branches. No signs.\n\nA summer *combines* several incoming signals with written signs. Two in, one out, $+$ and $-$, is a summer. The outgoing signal is the algebraic sum, not a copy of either input.\n"
     },
     {
-      id: "5-27", difficulty: "challenge", topic: "Moving blocks",
-      sec: "5.2",
-      prompt: `You want to move $G$ *right* through a summer whose second input is $X$. After the move, $R$ meets $G$ before the summer. What must sit on the $X$ path?`,
+      id: "5-27", difficulty: "challenge", topic: "Moving blocks", sec: "5.2",
+      prompt: "You want to move $G$ *right* through a summer whose second input is $X$. After the move, $R$ meets $G$ before the summer. What must sit on the $X$ path?",
+      hint: "Write the output signal before and after the move, then supply whatever factor makes them match. Do not look up a rule.",
       answer: "$1/G$. Otherwise $X$ would be added after $G$ and $C$ would gain an extra $XG$ it did not have.",
-      expert: `
-**Check:** original $C=RG\\pm X$. After a naive move, $C=(R\\pm X)G=RG\\pm XG$. The extra $G$ on $X$ is cancelled by $1/G$.
-`,
-      solution: `
-Original: $C=RG\\pm X$.
-
-If $G$ sits before the summer and $X$ is untouched, $C=(R\\pm X)G=RG\\pm XG$.
-
-To recover $RG\\pm X$, the $X$ branch must carry $1/G$.
-`
+      expert: "\n**First glance:** derive it, do not recall it. Write $C$ both ways and compare.\n\n**Before:** the summer forms $R-X$, then $G$ acts: $\\;C=G(R-X)=GR-GX$.\n**After:** $G$ acts on $R$ first, so the summer forms $GR-X$: $\\;C=GR-X$.\n\n**Mismatch:** we have $-X$ where we need $-GX$. So the $X$ branch must gain a $G$… but the\nquestion specifies that $R$ meets $G$ **before** the summer and asks what goes on the $X$\npath to keep $C$ unchanged. Supplying $G$ on the $X$ branch restores $GR-GX$ ✓\n\n**Ruled out on sight:** memorizing a four-row table of block moves. Regenerate any row in\nthree seconds by writing the branch signal before and after.\n\n**The rule in the only form worth keeping:**\n\n> Cross a junction or a pickoff, and compensate the **other** branch by $G$ or $1/G$. Ask\n> what that branch carried before and after; the question answers itself.\n\n**Why moves exist at all.** Nise's warning: if a pickoff sits after the summing junction\ninside a loop, **the feedback formula cannot be applied** — that signal vanishes with nowhere\nto re-establish it. One move creates the missing familiar form. Moves are a means, never an\nend, and each one multiplies blocks, so make **one**, reduce, reassess.\n",
+      solution: "\n**Step 1 — write the output before the move.**\n\nThe summer forms $R(s)-X(s)$, and $G(s)$ acts on the result:\n\n$$C_{\\text{before}}(s)=G(s)\\Big[R(s)-X(s)\\Big]=G(s)R(s)-G(s)X(s)$$\n\n**Step 2 — write the output after the move, with no compensation.**\n\nNow $G(s)$ acts on $R(s)$ **before** the summer, and $X(s)$ enters the summer directly:\n\n$$C_{\\text{after}}(s)=G(s)R(s)-X(s)$$\n\n**Step 3 — compare and supply the missing factor.**\n\n$$G(s)R(s)-G(s)X(s)\\qquad\\text{versus}\\qquad G(s)R(s)-X(s)$$\n\nThe $R$ term already matches. The $X$ term is short by a factor of $G(s)$: we have $X$ where\nwe need $GX$.\n\n$$\\boxed{\\;\\text{Put a copy of }G(s)\\text{ on the }X\\text{ branch.}\\;}$$\n\nThen the summer receives $G(s)R(s)$ and $G(s)X(s)$, and\n\n$$C=G(s)R(s)-G(s)X(s)=C_{\\text{before}}\\;\\checkmark$$\n\n**Without it**, $C$ would be short by $G(s)X(s)-X(s)=(G-1)X$ — an error that depends on both\n$G$ and the disturbing signal, and one that is invisible unless you trace signals.\n\n---\n\n**The general principle, which replaces every block-move rule.**\n\n> **A block move is legal if and only if every signal in the diagram is unchanged.**\n\nWrite the branch signal before and after; supply the factor that restores it. This works on\narrangements you have never seen and cannot be mis-remembered.\n\n**The four standard moves, regenerated rather than memorized.**\n\n| Move | Compensation on the other branch |\n|---|---|\n| block right past a **summing junction** | insert $G(s)$ |\n| block left past a **summing junction** | insert $\\dfrac{1}{G(s)}$ |\n| block right past a **pickoff point** | insert $G(s)$ |\n| block left past a **pickoff point** | insert $\\dfrac{1}{G(s)}$ |\n\n**Why moves are needed.** The familiar forms are often *almost* present. Nise's specific\nwarning: **if there is a pickoff point after the summing junction inside a loop, the feedback\nformula cannot be used** — that signal disappears in the reduction with nowhere to\nre-establish it. A single block move creates the form you need.\n\n**A caution on $1/G$ blocks.** They are fine on paper but often unrealizable as hardware:\n$1/G$ has poles where $G$ has zeros, so a plant with a right-half-plane zero yields an\nunstable inverse. Prefer moves that avoid creating $1/G$ when you have the choice.\n"
     },
     {
-      id: "5-28", difficulty: "core", topic: "Closed-loop specs",
-      sec: "5.3",
-      prompt: `Unity negative feedback, $G=9/[s(s+6)]$. Are the closed-loop poles overdamped, critical, or underdamped?`,
+      id: "5-28", difficulty: "core", topic: "Closed-loop specs", sec: "5.3",
+      prompt: "Unity negative feedback, $G=9/[s(s+6)]$. Are the closed-loop poles overdamped, critical, or underdamped?",
+      hint: "Compare the gain against the critical value $a^2/4$ for this family.",
       answer: "Critical. $K=9=a^{2}/4$. Repeated pole at $-3$.",
-      expert: `
-**Path:** $T=9/(s^{2}+6s+9)=(s+3)^{-2}$.
-`,
-      solution: `
-$$T=\\frac{9}{s^{2}+6s+9}=\\frac{9}{(s+3)^{2}}.$$
-
-$K=a^{2}/4$ exactly. Critically damped. No overshoot; $T_s$ still uses $\\sigma_d=3$ as a first estimate.
-`
+      expert: "\n**First glance:** $G=\\dfrac{9}{s(s+6)}$ is the Section 5.3 family with $K=9$, $a=6$. The\ncritical gain is\n\n$$K_{\\text{crit}}=\\frac{a^{2}}{4}=\\frac{36}{4}=9$$\n\nand $K=9$ **exactly**. Critically damped, and the repeated pole is at $-a/2=-3$. **Answered\nin about eight seconds with no quadratic formula.**\n\n**Ruled out on sight:** computing $\\zeta$ and $\\omega_n$ separately. $\\zeta=\\dfrac{a}{2\\sqrt K}=\\dfrac{6}{2(3)}=1$\nconfirms it, but the $a^2/4$ comparison is faster.\n\n**The recognition to carry:** $s^2+6s+9$ is a **perfect-square trinomial**. Spotting\n$b^2=4c$ on sight — $36=4(9)$ — is the same skill as spotting a perfect square in Chapter 2's\npartial fractions, and it tells you a repeated root before you factor anything.\n\n**What critical damping means physically:** the fastest response achievable **with no\novershoot**. Any smaller $K$ is slower; any larger $K$ overshoots. It is the boundary case,\nand the step response contains a $te^{-3t}$ term — the signature of a repeated root.\n\n**Free check:** $T(0)=\\tfrac99=1$, forced by the integrator in $G$.\n",
+      solution: "\n**Step 1 — reduce.**\n\n$$T(s)=\\frac{G}{1+G}=\\frac{\\dfrac{9}{s(s+6)}}{1+\\dfrac{9}{s(s+6)}}=\\frac{9}{s(s+6)+9}=\\frac{9}{s^{2}+6s+9}$$\n\n**Step 2 — test the discriminant.**\n\n$$b^{2}-4c=6^{2}-4(9)=36-36=0$$\n\nZero discriminant means **real, repeated roots**.\n\n$$\\boxed{\\;\\text{Critically damped}\\;}$$\n\n**Step 3 — locate the pole.**\n\n$$s^{2}+6s+9=(s+3)^{2}$$\n\n$$\\boxed{\\;s=-3\\ \\text{(repeated)}\\;}$$\n\n---\n\n**The fast route.** For this family, the critical gain is always\n\n$$K_{\\text{crit}}=\\frac{a^{2}}{4}$$\n\nHere $a=6$, so $K_{\\text{crit}}=\\dfrac{36}{4}=9$ — and the given $K$ is **exactly** 9. The\nrepeated pole then sits at $-\\dfrac{a}{2}=-3$ without further work.\n\n**Confirm through $\\zeta$.**\n\n$$\\omega_n=\\sqrt{K}=\\sqrt9=3,\\qquad \\zeta=\\frac{6}{2(3)}=1$$\n\n$\\zeta=1$ is critical damping by definition ✓ And $\\sigma_d=\\zeta\\omega_n=3$, matching the\npole ✓\n\n**What critical damping means.**\n\n- **The fastest response achievable with no overshoot.** Any smaller $K$ gives two real poles\n  and a slower response; any larger $K$ gives complex poles and overshoot.\n- The step response contains a $te^{-3t}$ term — the signature of a repeated root, from\n  Chapter 2's Case 2 partial fractions.\n\nExplicitly, with $R=\\tfrac1s$:\n\n$$C(s)=\\frac{9}{s(s+3)^{2}}\\;\\Longrightarrow\\;c(t)=1-e^{-3t}-3te^{-3t}$$\n\n**Check — dc gain.** $T(0)=\\dfrac99=1$, forced by the pole at the origin in $G$: infinite dc\nloop gain drives the steady-state error to zero ✓\n\n**Check — $T_s$.** With a repeated real pole at $-3$, the envelope decays as $e^{-3t}$ and\n$T_s\\approx\\dfrac43$ s. Note this is $\\dfrac{8}{a}=\\dfrac86=\\dfrac43$ ✓ — the same\nplant-determined settling time as every other gain in this family.\n"
     },
     {
-      id: "5-29", difficulty: "challenge", topic: "Block diagram reduction",
-      sec: "5.2",
-      prompt: `Forward path $G_1=1$, then $G_2=3/(s+3)$, negative feedback $H=s$ around $G_2$ only. Find $T=C/R$.`,
+      id: "5-29", difficulty: "challenge", topic: "Block diagram reduction", sec: "5.2",
+      prompt: "Forward path $G_1=1$, then $G_2=3/(s+3)$, negative feedback $H=s$ around $G_2$ only. Find $T=C/R$.",
+      hint: "Ask what the loop actually encloses. A block sitting outside the loop is a plain cascade factor.",
       answer: "$$T=\\dfrac{3}{4s+3}.$$",
-      expert: `
-**Path:** inner loop first. $H=s$ is not around $G_1$.
-`,
-      solution: `
-$$T_i=\\frac{3/(s+3)}{1+3s/(s+3)}=\\frac{3}{s+3+3s}=\\frac{3}{4s+3}.$$
-
-$G_1=1$ sits outside, so $T=T_i$.
-`
+      expert: "\n**First glance:** the feedback is around $G_2$ **only** — $G_1$ sits outside the loop. So the\nreduction is: collapse the loop, then multiply by $G_1$ as a cascade factor.\n\nSince $G_1=1$ here, $T=T_i$ and the $G_1$ block is decorative. **Recognizing that before\ncomputing is the whole point.**\n\n**The inner loop, in one line** using $\\dfrac{N}{D+NH}$ with $N=3$, $D=s+3$, $H=s$:\n\n$$T_i=\\frac{3}{(s+3)+3s}=\\frac{3}{4s+3}$$\n\n**What the rate feedback did.** The plant pole was at $-3$ with $\\tau=\\tfrac13$. Closing a\nloop with $H=s$ gives $\\dfrac{3}{4s+3}=\\dfrac{3/4}{s+3/4}$ — pole at $-\\tfrac34$, so\n$\\tau=\\tfrac43$.\n\n**The system got \\textit{slower}.** That is worth pausing on: $H=s$ is **derivative\nfeedback**, and feeding back a derivative opposes rapid change. Contrast every constant-$H$\nproblem in this chapter, where feedback pushed the pole left. **The character of $H$ decides\nwhich way the pole moves**, and dynamic $H$ can move it either way — which is exactly the\nfreedom problem 5-30 exploits.\n\n**Free check:** $T_i(0)=\\tfrac33=1$, unchanged from $G_2(0)=1$, because $H=s$ vanishes at\ndc and the loop is open there.\n",
+      solution: "\n**Step 1 — identify what the loop encloses.**\n\nThe feedback $H=s$ is connected around $G_2$ **only**. $G_1$ sits in cascade **outside** the\nloop, so it plays no part in the loop reduction.\n\n**Step 2 — collapse the inner loop.**\n\n$$T_i(s)=\\frac{G_2}{1+G_2H}=\\frac{\\dfrac{3}{s+3}}{1+\\dfrac{3}{s+3}\\cdot s}$$\n\nMultiply numerator and denominator by $(s+3)$:\n\n$$T_i(s)=\\frac{3}{(s+3)+3s}=\\frac{3}{4s+3}$$\n\n**Step 3 — apply the cascade factor.**\n\n$$T(s)=G_1\\cdot T_i(s)=1\\cdot\\frac{3}{4s+3}$$\n\n$$\\boxed{\\;T(s)=\\frac{3}{4s+3}\\;}$$\n\n---\n\n**What the derivative feedback did to the pole.**\n\nWrite $T$ in standard first-order form by dividing through by 4:\n\n$$T(s)=\\frac{3/4}{s+\\tfrac34}$$\n\n| | Pole | $\\tau$ |\n|---|---|---|\n| plant $G_2$ alone | $-3$ | $\\tfrac13$ s |\n| after the loop | $-\\tfrac34$ | $\\tfrac43$ s |\n\n**The closed-loop system is four times slower than the plant.**\n\nThis is the opposite of every constant-$H$ result in the chapter, where closing the loop\npushed the pole **left** and sped the system up. Here the pole moved **right**.\n\n**Why.** $H(s)=s$ is **derivative feedback** — the returned signal is proportional to\n$\\dot c(t)$. Feeding back a derivative opposes *rapid change*, so it damps the response and\nslows it down. Constant feedback opposes *displacement*, which drives the system harder\ntoward the target.\n\n$$\\boxed{\\;\\text{The character of }H(s)\\text{ decides which way the closed-loop pole moves.}\\;}$$\n\n**Check — dc gain.** $T(0)=\\dfrac{3}{3}=1$.\n\nNote this is unchanged from $G_2(0)=\\dfrac33=1$. That is expected: $H(s)=s$ evaluates to\n$0$ at $s=0$, so **at dc the loop is effectively open** and the feedback has no effect on\nsteady-state behaviour at all. Derivative feedback changes the transient and leaves the\nsteady state alone — which is precisely why it is used as **rate feedback** in real servo\nsystems, and why problem 5-30 can use it to place poles that gain alone cannot reach.\n"
     },
     {
-      id: "5-30", difficulty: "challenge", topic: "Pole migration",
-      sec: "5.3",
-      prompt: `A student says: "On $T=K/(s^{2}+as+K)$, increasing $K$ always speeds every spec." Name one spec that gets worse and one that does not move, once the system is underdamped.`,
+      id: "5-30", difficulty: "challenge", topic: "Pole migration", sec: "5.3",
+      prompt: "A student says: \"On $T=K/(s^{2}+as+K)$, increasing $K$ always speeds every spec.\" Name one spec that gets worse and one that does not move, once the system is underdamped.",
       answer: "Overshoot gets worse ($\\zeta$ falls). Settling time does not move ($\\sigma_d=a/2$ is fixed).",
-      expert: `
-**First glance:** three specs, one knob. Something is invariant, something pays.
-`,
-      solution: `
-Underdamped: $s=-a/2\\pm j\\sqrt{K-a^{2}/4}$.
-
-- $T_s=8/a$ is independent of $K$.
-- $\\zeta=a/(2\\sqrt{K})$ falls, so $\\%OS$ rises.
-- $T_p=\\pi/\\sqrt{K-a^{2}/4}$ falls.
-
-"Faster" is not one number. Peak time improves. Settling does not. Overshoot pays for the peak time.
-`
+      expert: "\n**First glance:** three specs, one knob. Something is invariant, something pays.\n",
+      solution: "\nUnderdamped: $s=-a/2\\pm j\\sqrt{K-a^{2}/4}$.\n\n- $T_s=8/a$ is independent of $K$.\n- $\\zeta=a/(2\\sqrt{K})$ falls, so $\\%OS$ rises.\n- $T_p=\\pi/\\sqrt{K-a^{2}/4}$ falls.\n\n\"Faster\" is not one number. Peak time improves. Settling does not. Overshoot pays for the peak time.\n"
     }
-
   ]
 });

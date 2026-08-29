@@ -1,16 +1,17 @@
 registerChapter({
   id: 4,
   title: "Time Response",
-  sections: "4.1–4.7",
+  sections: "4.1–4.8",
   brief: "A pole's location is a number you can measure. Real part sets settling, imaginary part sets peak time, angle sets overshoot. $\\omega_n$ only scales the clock. Zeros change how strongly each mode is excited, not which modes exist.",
   sectionList: [
     { id: "4.1", title: "Introduction" },
     { id: "4.2", title: "Poles, zeros, and system response" },
     { id: "4.3", title: "First-order systems" },
-    { id: "4.4", title: "Second-order systems" },
-    { id: "4.5", title: "The underdamped second-order system" },
-    { id: "4.6", title: "System response with additional poles" },
-    { id: "4.7", title: "System response with zeros" }
+    { id: "4.4", title: "Second-order systems: introduction" },
+    { id: "4.5", title: "The general second-order system" },
+    { id: "4.6", title: "Underdamped second-order systems" },
+    { id: "4.7", title: "System response with additional poles" },
+    { id: "4.8", title: "System response with zeros" }
   ],
 
   guide: [
@@ -272,7 +273,7 @@ Compute the discriminant $b^{2}-4c$ before attempting to factor:
     {
       title: "The underdamped response, derived",
       example: "4-09",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 For $0<\\zeta<1$ with a unit step, the response is
 
@@ -317,7 +318,7 @@ which is where the peak time formula comes from.`
     {
       title: "Where each specification comes from",
       example: "4-08",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 Set the derivative to zero to find the peak; use the envelope to find settling; evaluate
 the peak height to find overshoot.
@@ -387,7 +388,7 @@ cleanly was built from one of these five.`
     {
       title: "The $s$-plane as a design canvas",
       example: "4-11",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 Because each specification depends on a different geometric feature, each has its own
 family of constant-value curves. **This picture is the most useful thing in the chapter.**
@@ -442,7 +443,7 @@ That sentence is the entire motivation for Chapter 9.`
     {
       title: "Higher-order systems and dominance",
       example: "4-14",
-      sec: "4.6",
+      sec: "4.7",
       body: `
 Real systems have more than two poles. These sections tell you when you may ignore the
 extras: and knowing when your tools *do not* apply is the hardest judgment in the chapter.
@@ -494,7 +495,7 @@ residue relative to the others.`
     {
       title: "Zeros revisited: the derivative decomposition",
       example: "4-16",
-      sec: "4.7",
+      sec: "4.8",
       body: `
 Zeros never add modes. So how do they change a response? Through one identity that explains
 everything in this section.
@@ -988,7 +989,7 @@ $\\sqrt{2^{2}+(2\\sqrt3)^{2}}=\\sqrt{4+12}=4$ ✓
 
     {
       id: "4-06", difficulty: "warmup", topic: "Underdamped specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "For $$G(s)=\\frac{25}{s^{2}+6s+25}$$ find $T_{p}$, $T_{s}$ and $\\%OS$. Leave every answer exact.",
       hint: "Get $\\zeta$ and $\\omega_n$ first, then the pole location. Peak time needs only the imaginary part; settling time needs only the real part.",
       answer: "$T_{p}=\\dfrac{\\pi}{4}$ s, $T_{s}=\\dfrac{4}{3}$ s, $\\%OS=100e^{-3\\pi/4}$.",
@@ -1134,7 +1135,7 @@ $-2$ pole is far enough away, which it is not ($2<5\\times1$). See problem 4-15.
 
     {
       id: "4-08", difficulty: "core", topic: "Underdamped specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "For $$G(s)=\\frac{100}{s^{2}+12s+100}$$ find $\\omega_{n}$, $\\zeta$, the pole locations, $T_{p}$, $T_{s}$, and $\\%OS$.",
       hint: "Once you have the poles as $-\\sigma_d \\pm j\\omega_d$, every specification is built from those two numbers alone.",
       answer: "$\\omega_{n}=10$, $\\zeta=\\tfrac35$, poles $s=-6\\pm j8$, $T_{p}=\\dfrac{\\pi}{8}$ s, $T_{s}=\\dfrac{2}{3}$ s, $\\%OS=100e^{-3\\pi/4}$.",
@@ -1204,7 +1205,7 @@ $\\omega_{n}$ is a time-axis scale factor.
 
     {
       id: "4-09", difficulty: "core", topic: "Underdamped step response",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "Find the complete unit step response $c(t)$ for $$G(s)=\\frac{25}{s^{2}+6s+25}$$ by partial fraction expansion.",
       hint: "Case 3 partial fractions from Chapter 2. The quadratic is irreducible - complete the square and match the damped sine and cosine pairs.",
       answer: "$$c(t)=1-e^{-3t}\\left(\\cos4t+\\tfrac{3}{4}\\sin4t\\right)$$",
@@ -1301,7 +1302,7 @@ precisely how $T_{p}$ was derived.
 
     {
       id: "4-10", difficulty: "core", topic: "Pole plot",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "A second-order system has poles at $s=-4\\pm j3$. Find $\\omega_{n}$, $\\zeta$, $T_{p}$, $T_{s}$, $\\%OS$, and write the transfer function assuming unity dc gain.",
       hint: "Work backwards from the pole plot. The radial distance is $\\omega_n$ and the cosine of the angle from the negative real axis is $\\zeta$.",
       answer: "$\\omega_{n}=5$, $\\zeta=\\tfrac45$, $T_{p}=\\dfrac{\\pi}{3}$ s, $T_{s}=1$ s, $\\%OS=100e^{-4\\pi/3}$, and $$G(s)=\\frac{25}{s^{2}+8s+25}$$",
@@ -1374,7 +1375,7 @@ damping suppresses the peak.
 
     {
       id: "4-11", difficulty: "core", topic: "Design from specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "Find the transfer function of a second-order system with unity dc gain that has $T_{s}=2$ s and $T_{p}=\\dfrac{\\pi}{4}$ s.",
       hint: "Each specification pins down one part of the pole. Settling time gives the real part; peak time gives the imaginary part.",
       answer: "Poles at $s=-2\\pm j4$, giving $$G(s)=\\frac{20}{s^{2}+4s+20}$$ with $\\omega_{n}=2\\sqrt5$ and $\\zeta=\\dfrac{\\sqrt5}{5}$.",
@@ -1456,7 +1457,7 @@ you need a compensator, which is Chapter 9.
 
     {
       id: "4-12", difficulty: "core", topic: "Design from specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: "A system is required to have $\\%OS=100e^{-\\pi}$. Find the exact damping ratio $\\zeta$, and the angle the poles make with the negative real axis.",
       hint: "Set the overshoot exponent equal to $\\pi$ and solve algebraically. Do not reach for the logarithm formula - the numbers are arranged so you do not need it.",
       answer: "$\\zeta=\\dfrac{\\sqrt2}{2}=\\dfrac{1}{\\sqrt2}$, and the poles lie at $45^{\\circ}$ from the negative real axis.",
@@ -1536,7 +1537,7 @@ $\\zeta=\\tfrac45$ (exponent $\\tfrac{4\\pi}{3}$) from the $3\\text{-}4\\text{-}
 
     {
       id: "4-13", difficulty: "core", topic: "Pole plot",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `Three systems have poles as follows:
 
 **(a)** $-2\\pm j2$ &nbsp;&nbsp; **(b)** $-4\\pm j4$ &nbsp;&nbsp; **(c)** $-2\\pm j6$
@@ -1640,7 +1641,7 @@ overshooting *most*. Fast to the peak and badly damped are not the same thing.
 
     {
       id: "4-14", difficulty: "core", topic: "Additional poles",
-      sec: "4.6",
+      sec: "4.7",
       prompt: "For $$T(s)=\\frac{20}{(s+10)\\left(s^{2}+2s+2\\right)}$$ determine whether a second-order approximation is justified. If it is, write the approximating transfer function and give $T_{p}$, $T_{s}$ and $\\%OS$.",
       hint: "Compare the third pole's distance from the imaginary axis to the dominant pair's. Then match dc gain, not just numerator.",
       answer: "Justified: the third pole at $-10$ is $10\\times$ farther left than $\\sigma_{d}=1$, and $10\\ge5$. The approximation is $$T(s)\\approx\\frac{2}{s^{2}+2s+2}$$ with $T_{p}=\\pi$ s, $T_{s}=4$ s, $\\%OS=100e^{-\\pi}$.",
@@ -1724,7 +1725,7 @@ correct scope of the claim.
 
     {
       id: "4-15", difficulty: "core", topic: "Additional poles",
-      sec: "4.6",
+      sec: "4.7",
       prompt: "For $$T(s)=\\frac{6}{(s+3)\\left(s^{2}+2s+2\\right)}$$ determine whether a second-order approximation is justified, and state precisely what you may and may not conclude.",
       hint: "Same test as the previous problem. The correct answer here may be that the tools do not apply.",
       answer: "**Not justified.** The third pole at $-3$ is only $3\\times$ farther left than $\\sigma_{d}=1$, and $3<5$. The formulas for $T_{p}$, $T_{s}$ and $\\%OS$ **may not be used**. All that can be said is that the response contains a decaying $e^{-3t}$ term alongside a damped oscillation at $1$ rad/s, and settles because all poles are in the left half-plane.",
@@ -1801,7 +1802,7 @@ assume.**
 
     {
       id: "4-16", difficulty: "core", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `Consider
 
 $$T_{1}(s)=\\frac{25}{s^{2}+6s+25}
@@ -1873,7 +1874,7 @@ differ at high frequency, where $T_{2}$ rolls off one order more slowly.
 
     {
       id: "4-17", difficulty: "core", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `A system has
 
 $$G(s)=\\frac{s-2}{(s+1)(s+2)}$$
@@ -1976,7 +1977,7 @@ system. They fundamentally limit achievable performance, which is why they get a
 
     {
       id: "4-18", difficulty: "core", topic: "Pole dominance",
-      sec: "4.6",
+      sec: "4.7",
       prompt: `For $$T(s)=\\frac{20}{(s+1)(s+20)}$$ find the unit step response by partial fractions, then justify a **first-order** approximation using two independent arguments.`,
       hint: "Compute all three residues. Then compare both the pole locations and the residue sizes.",
       answer: "$$c(t)=1-\\tfrac{20}{19}e^{-t}+\\tfrac{1}{19}e^{-20t}$$ The $e^{-20t}$ term is negligible because its pole is $20\\times$ farther left **and** its residue is $20\\times$ smaller. Hence $T(s)\\approx\\dfrac{1}{s+1}$.",
@@ -2229,7 +2230,7 @@ it the other way round leaves two unknowns in one equation.
 
     {
       id: "4-21", difficulty: "challenge", topic: "Additional poles",
-      sec: "4.6",
+      sec: "4.7",
       prompt: `A closed-loop system has
 
 $$T(s)=\\frac{200}{(s+10)\\left(s^{2}+4s+20\\right)}$$
@@ -2340,7 +2341,7 @@ states the limitation: which is what an application exam is actually grading.
 
     {
       id: "4-22", difficulty: "challenge", topic: "Design regions",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A specification requires $T_{s}\\le2$ s **and** $\\%OS\\le100e^{-\\pi}$.
 
 **(a)** Translate both requirements into conditions on the pole location $-\\sigma_{d}\\pm j\\omega_{d}$, and describe the allowable region of the $s$-plane in words.
@@ -2457,7 +2458,7 @@ it is the reason the constant-specification lines from problem 4-13 are standard
 
     {
       id: "4-23", difficulty: "challenge", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `Start from $$T(s)=\\frac{25}{s^{2}+6s+25}$$ whose unit step response is $c(t)=1-e^{-3t}\\left(\\cos4t+\\tfrac34\\sin4t\\right)$ from problem 4-09.
 
 **(a)** Using the decomposition $(s+a)C(s)=sC(s)+aC(s)$, derive the unit step response of the system with a zero added at $s=-5$, scaled to keep unity dc gain.
@@ -2729,7 +2730,7 @@ system despite its unusual initial jump.
 
     {
       id: "4-25", difficulty: "challenge", topic: "Design from specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A translational mechanical system consists of a mass $M=1$ kg connected to a wall by a spring $K$ and a viscous damper $f_{v}$ in parallel, with force $f(t)$ applied to the mass and displacement $x(t)$ as the output.
 
 **(a)** Write $\\dfrac{X(s)}{F(s)}$ symbolically and express $\\omega_{n}$ and $\\zeta$ in terms of $M$, $f_{v}$, $K$.
@@ -2873,7 +2874,7 @@ Using $\\sqrt{20}$ treats the un-normalized polynomial as if it were monic. The 
     },
     {
       id: "4-27", difficulty: "challenge", topic: "Design from specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A second-order pair must satisfy $T_s\\le 1$ s and $\\%OS\\le 100e^{-\\pi}$ (that is, $\\zeta\\ge \\sqrt{2}/2$).
 
 Can both be met with $\\omega_n=3$? If not, what is the smallest $\\omega_n$ that works?`,
@@ -2896,7 +2897,7 @@ $\\omega_n=3$ cannot reach $\\sigma_d=4$ at any $\\zeta\\le 1$. Even critically 
     },
     {
       id: "4-28", difficulty: "challenge", topic: "Pole dominance",
-      sec: "4.6",
+      sec: "4.7",
       prompt: `$$G(s)=\\frac{36\\cdot 10}{(s^{2}+2\\cdot 0.5\\cdot 6\\, s+36)(s+10)}=\\frac{360}{(s^{2}+6s+36)(s+10)}.$$
 
 Is the real pole negligible by the five-times rule? Estimate $\\%OS$ as if it were, then state the direction of the error that the neglected pole introduces.`,
@@ -2917,7 +2918,7 @@ If you drop it anyway you get $\\%OS=100e^{-\\pi/\\sqrt{3}}\\approx 16\\%$. The 
     },
     {
       id: "4-29", difficulty: "challenge", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `A closed-loop system is $\\dfrac{36(s+z)}{z(s^{2}+6s+36)}$ with $z>0$.
 
 For $z=3$ versus $z=30$, which case has more overshoot, and why, without computing $c(t)$?`,
@@ -2940,7 +2941,7 @@ Same poles, different residues. That is the whole content of a zero.
     },
     {
       id: "4-30", difficulty: "challenge", topic: "System identification",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A step test on an unknown underdamped plant shows $T_p=0.5$ s, $T_s=2$ s, and a peak of $1.16$ when the final value is $1$.
 
 Is this consistent with a *pure* second-order model? If you must pick one pair $(\\zeta,\\omega_n)$ anyway, which two of the three numbers would you trust first, and why?`,
