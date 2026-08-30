@@ -51,9 +51,15 @@ const NXW = (function(){
   }
 
   /* --- s-plane geometry -------------------------------------------------- */
-  const PW = 250, PH = 210;          // s-plane viewBox
-  const OX = 176, OY = PH / 2;       // origin, leaves room for the RHP
-  const U  = 20;                     // px per rad/s
+  /* viewBox must be wide enough for the RHP caption: it starts at OX+5 and
+     the mono face runs ~5.6 units per character at font-size 8.5, so
+     'RHP . unstable' needs ~78 units to the right of the origin. */
+  const PW = 272, PH = 210;          // s-plane viewBox
+  const OX = 170, OY = PH / 2;       // origin, leaves room for the RHP
+  /* U is set so that every (zeta, omega_n) the sliders can reach still lands
+     inside the viewBox. Worst case is wd = wn*sqrt(1-z^2) -> wn = 6 as z -> 0,
+     so WD_MAX must exceed 6. At U = 15, WD_MAX = (105-8)/15 = 6.47. */
+  const U  = 15;                     // px per rad/s
   const SIG_MIN = -(OX - 8) / U, SIG_MAX = (PW - OX - 8) / U;
   const WD_MAX  = (OY - 8) / U;
 
@@ -73,20 +79,20 @@ const NXW = (function(){
     el('line', { x1:0, y1:OY, x2:PW, y2:OY, stroke:'var(--muted)', 'stroke-width':1.1 }, g);
     el('line', { x1:OX, y1:0, x2:OX, y2:PH, stroke:'var(--unstable)',
                  'stroke-width':1.4, 'stroke-dasharray':'4 3' }, g);
-    const lab = (x, y, t, fill, anchor) => {
-      const n = el('text', { x, y, fill, 'font-family':'var(--mono)', 'font-size':9,
-                             'letter-spacing':'.06em', 'text-anchor':anchor || 'start' }, g);
+    const lab = (x, y, t, fill, anchor, size) => {
+      const n = el('text', { x, y, fill, 'font-family':'var(--mono)', 'font-size':size || 8.5,
+                             'letter-spacing':'.05em', 'text-anchor':anchor || 'start' }, g);
       n.textContent = t; return n;
     };
-    lab(OX + 5, 12, 'RHP · unstable', 'var(--unstable)');
-    lab(OX - 5, 12, 'LHP · stable', 'var(--stable)', 'end');
-    lab(6, OY - 6, 'jw', 'var(--faint)');
-    lab(PW - 6, OY + 12, 's', 'var(--faint)', 'end');
+    lab(OX + 5, 11.5, 'RHP · unstable', 'var(--unstable)');
+    lab(OX - 5, 11.5, 'LHP · stable', 'var(--stable)', 'end');
+    lab(7, OY - 6, 'jw', 'var(--faint)', 'start', 9);
+    lab(PW - 7, OY + 12, 's', 'var(--faint)', 'end', 9);
     return g;
   }
 
   /* --- step-response geometry -------------------------------------------- */
-  const RW = 250, RH = 210;
+  const RW = 272, RH = 210;
   const L = 30, R = RW - 12, T = 14, B = RH - 26;
   const VMAX = 2;
   const vY = v => B - (v / VMAX) * (B - T);
@@ -129,7 +135,7 @@ const NXW = (function(){
         ).join('') +
       '</div>' +
       '<div class="wctl"><label for="">zeta</label><input type="range" class="rz" min="0" max="1.35" step="0.01"></div>' +
-      '<div class="wctl"><label>omega n</label><input type="range" class="rw" min="0.4" max="8" step="0.05"></div>' +
+      '<div class="wctl"><label>omega n</label><input type="range" class="rw" min="0.4" max="6" step="0.05"></div>' +
       '<div class="wnote"></div>';
 
     const panes  = box.querySelectorAll('.pane');
@@ -256,7 +262,7 @@ const NXW = (function(){
 
       const s2 = specs(sig, wd);
       rz.value = clamp(s2.z, 0, 1.35);
-      rw.value = clamp(s2.wn, 0.4, 8);
+      rw.value = clamp(s2.wn, 0.4, 6);
     }
 
     /* pointer drag */

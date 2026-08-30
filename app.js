@@ -1,7 +1,6 @@
 const STORE_KEY  = 'nexus-lcs:v1';
 const THEME_KEY  = 'nexus-lcs:theme';
 const LEGACY_KEY = 'lcs-companion:v1';
-const TRY_KEY    = 'nexus-lcs:attempts';
 
 /* The instructor's sequence, not Nise's. Chapter 5 gets a light pass at
    5.1-5.3 before Chapter 4 and a full treatment after; it is listed once,
@@ -42,7 +41,7 @@ const WIDGET_SLOTS = { '4.6':'splane', '4.5':'splane' };
 
 let state = {
   view:'home', chapter:0, tab:'guide',
-  solved:{}, attempts:{}, query:'', diff:'all', topic:'all', concept:null
+  solved:{}, query:'', diff:'all', topic:'all', concept:null
 };
 
 /* ---------- storage ------------------------------------------------------ */
@@ -54,14 +53,9 @@ function loadProgress(){
       if (legacy && typeof legacy === 'object') state.solved = legacy;
     }
   } catch (e) { state.solved = {}; }
-  try { state.attempts = JSON.parse(localStorage.getItem(TRY_KEY)) || {}; }
-  catch (e) { state.attempts = {}; }
 }
 function saveProgress(){
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state.solved)); } catch (e) {}
-}
-function saveAttempts(){
-  try { localStorage.setItem(TRY_KEY, JSON.stringify(state.attempts)); } catch (e) {}
 }
 function applyTheme(theme){
   document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -76,6 +70,20 @@ function applyTheme(theme){
 })();
 
 /* ---------- markdown + math (unchanged pipeline) ------------------------- */
+function katexHTML(raw){
+  const s = String(raw);
+  let tex = s, display = false;
+  if (s.startsWith('$$') && s.endsWith('$$')) { tex = s.slice(2, -2); display = true; }
+  else if (s.startsWith('\\[') && s.endsWith('\\]')) { tex = s.slice(2, -2); display = true; }
+  else if (s.startsWith('\\(') && s.endsWith('\\)')) { tex = s.slice(2, -2); }
+  else if (s.startsWith('$') && s.endsWith('$')) { tex = s.slice(1, -1); }
+  if (typeof katex !== 'undefined'){
+    try {
+      return katex.renderToString(tex, { displayMode:display, throwOnError:false, strict:false });
+    } catch (err) {}
+  }
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 function mdMath(src){
   if (!src) return '';
   const figs = [], vault = [];
@@ -91,10 +99,11 @@ function mdMath(src){
   let html = (typeof marked !== 'undefined')
     ? marked.parse(s, { breaks:false, mangle:false, headerIds:false })
     : s.replace(/\n\n/g, '<br><br>');
-  html = html.replace(/@@M(\d+)@@/g, (_, i) => vault[+i]);
+  html = html.replace(/@@M(\d+)@@/g, (_, i) => katexHTML(vault[+i]));
   html = html.replace(/<!--NXFIG(\d+)-->/g, (_, i) => figs[+i]);
   return html;
 }
+
 function mdInline(src){
   return mdMath(src).replace(/^<p>/, '').replace(/<\/p>\s*$/, '').trim();
 }
@@ -200,7 +209,8 @@ function renderNav(){
 /* ---------- section rail + scroll spy ------------------------------------ */
 let spyTargets = [];
 function buildRail(ch){
-  const list = chapterSections(ch).filter(s => (ch.guide || []).some(g => g.sec === s.id));
+  const list = chapterSections(ch).filter(s =>
+    (ch.guide || []).some(g => g.sec === s.id) || WIDGET_SLOTS[s.id]);
   const wrap = document.createElement('aside');
   wrap.className = 'railwrap';
   if (!list.length) return { wrap, strip:document.createElement('div') };
@@ -287,7 +297,7 @@ function renderGuide(main, ch){
   const groups = [];
   list.forEach(s => {
     const members = items.filter(g => g.sec === s.id);
-    if (members.length) groups.push({ sec:s, members });
+    if (members.length || WIDGET_SLOTS[s.id]) groups.push({ sec:s, members });
   });
   const untagged = items.filter(g => !g.sec);
   if (untagged.length) groups.push({ sec:{ id:'', title:'' }, members:untagged });
@@ -328,7 +338,7 @@ function renderGuide(main, ch){
 /* ---------- problems ------------------------------------------------------ */
 function addReveal(body, acts, title, md, label, cls){
   const box = document.createElement('div');
-  box.className = 'reveal hidden' + (cls ? ' ' + cls : '');
+  box.className = 'reveal hidden' + (cls === 'expert' ? ' expert' : '');
   box.innerHTML = '<h4>' + title + '</h4><div class="body"></div>';
   body.appendChild(box);
   const btn = document.createElement('button');
@@ -341,60 +351,6 @@ function addReveal(body, acts, title, md, label, cls){
   };
   acts.appendChild(btn);
   return { box, btn };
-}
-
-/* Solution sits behind one attempt. Not a wall — one click past an empty
-   box — but enough that the default path is to commit to something first. */
-function addSolution(body, acts, p){
-  const gate = document.createElement('div');
-  gate.className = 'attempt';
-  gate.innerHTML = '<div class="attempt-lbl">Your first step</div><textarea rows="2" ' +
-    'placeholder="What is the first thing you would write down? A guess counts."></textarea>';
-  const ta = gate.querySelector('textarea');
-  ta.value = state.attempts[p.id] || '';
-  ta.addEventListener('change', () => {
-    if (ta.value.trim()) state.attempts[p.id] = ta.value; else delete state.attempts[p.id];
-    saveAttempts();
-  });
-  body.appendChild(gate);
-
-  const yours = document.createElement('div');
-  yours.className = 'yours hidden';
-  yours.innerHTML = '<div class="attempt-lbl">You wrote</div><pre></pre>';
-  body.appendChild(yours);
-
-  const box = document.createElement('div');
-  box.className = 'reveal hidden';
-  box.innerHTML = '<h4>Solution</h4><div class="body"></div>';
-  body.appendChild(box);
-
-  const btn = document.createElement('button');
-  btn.className = 'act primary';
-  btn.textContent = 'Show solution';
-  btn.onclick = () => {
-    const open = !box.classList.contains('hidden');
-    if (open){
-      box.classList.add('hidden'); yours.classList.add('hidden');
-      gate.classList.remove('hidden'); btn.textContent = 'Show solution'; return;
-    }
-    if (!ta.value.trim() && btn.dataset.armed !== '1'){
-      btn.dataset.armed = '1';
-      btn.textContent = 'Show it anyway';
-      ta.focus();
-      return;
-    }
-    if (ta.value.trim()){
-      state.attempts[p.id] = ta.value; saveAttempts();
-      yours.querySelector('pre').textContent = ta.value;
-      yours.classList.remove('hidden');
-      gate.classList.add('hidden');
-    }
-    box.classList.remove('hidden');
-    btn.textContent = 'Hide';
-    btn.dataset.armed = '0';
-    if (!box.dataset.rendered){ fill(box.querySelector('.body'), p.solution); box.dataset.rendered = '1'; }
-  };
-  acts.appendChild(btn);
 }
 
 function mountProblemCard(list, p){
@@ -418,7 +374,7 @@ function mountProblemCard(list, p){
   if (p.hint)   addReveal(body, acts, 'Hint', p.hint, 'Hint');
   addReveal(body, acts, 'Answer', p.answer, 'Answer');
   if (p.expert) addReveal(body, acts, 'Expert read', p.expert, 'Expert read', 'expert');
-  addSolution(body, acts, p);
+  addReveal(body, acts, 'Solution', p.solution, 'Show solution', 'primary');
 
   const done = document.createElement('button');
   done.className = 'act' + (state.solved[p.id] ? ' done' : '');
@@ -517,7 +473,7 @@ function renderFormulas(main, ch){
     return;
   }
   const grid = document.createElement('div');
-  grid.className = 'cgrid';
+  grid.className = 'cgrid formulas';
   main.appendChild(grid);
   items.forEach(f => {
     const card = document.createElement('div');
@@ -706,7 +662,7 @@ function renderHome(main){
   hero.innerHTML =
     '<h1>The structure behind the <em>response</em>.</h1>' +
     '<p>Where a pole sits decides how a system answers. Drag one and watch the ' +
-    'consequence — then read the chapter that proves it.</p>';
+    'consequence, then read the chapter that proves it.</p>';
   main.appendChild(hero);
 
   if (typeof NXW !== 'undefined'){
