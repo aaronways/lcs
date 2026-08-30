@@ -1,16 +1,17 @@
 registerChapter({
   id: 4,
   title: "Time Response",
-  sections: "4.1–4.7",
+  sections: "4.1–4.8",
   brief: "A pole's location is a number you can measure. Real part sets settling, imaginary part sets peak time, angle sets overshoot. $\\omega_n$ only scales the clock. Zeros change how strongly each mode is excited, not which modes exist.",
   sectionList: [
     { id: "4.1", title: "Introduction" },
-    { id: "4.2", title: "Poles, zeros, and system response" },
-    { id: "4.3", title: "First-order systems" },
-    { id: "4.4", title: "Second-order systems" },
-    { id: "4.5", title: "The underdamped second-order system" },
-    { id: "4.6", title: "System response with additional poles" },
-    { id: "4.7", title: "System response with zeros" }
+    { id: "4.2", title: "Poles, Zeros, and System Response" },
+    { id: "4.3", title: "First-Order Systems" },
+    { id: "4.4", title: "Second-Order Systems: Introduction" },
+    { id: "4.5", title: "The General Second-Order System" },
+    { id: "4.6", title: "Underdamped Second-Order Systems" },
+    { id: "4.7", title: "System Response with Additional Poles" },
+    { id: "4.8", title: "System Response with Zeros" }
   ],
 
   guide: [
@@ -25,8 +26,8 @@ actually do**, and it delivers the most valuable single idea in the course:
 $$\\boxed{\\;\\text{A pole's location on a page tells you a number you could measure on a bench.}\\;}$$
 
 Not qualitatively. Quantitatively. Given a pole at $-3\\pm j4$ you can state the settling
-time, the peak time, and the percent overshoot in about ten seconds, without solving a
-differential equation, without a partial fraction, without a plot.
+time, the peak time, and the percent overshoot directly, without solving a differential
+equation, without a partial fraction, without a plot.
 
 Everything in this chapter is building that dictionary between **geometry in the
 $s$-plane** and **behaviour in time**. Once you have it, the design chapters become
@@ -46,7 +47,7 @@ $$\\underbrace{\\text{poles \\& zeros}}_{4.2}
       example: "4-01",
       sec: "4.2",
       body: `
-This split governs the entire chapter, so it is worth stating precisely.
+This split governs the entire chapter, so state it precisely.
 
 ### Two sources of poles
 
@@ -82,9 +83,9 @@ mode is excited.
 $$C(s)=\\frac{s+3}{s(s+1)(s+5)}\\;\\Longrightarrow\\;c(t)=A+Be^{-t}+Ce^{-5t}$$
 
 Four poles would give four terms. The zero at $-3$ changes only the values of $A$, $B$,
-$C$. So you can write the *shape* of any response in ten seconds, before computing
-anything: and questions asking only "how many terms," "will it oscillate," or "which term
-lasts longest" are fully answered at that point.
+$C$. So you can write the *shape* of any response before computing anything, and questions
+asking only "how many terms," "will it oscillate," or "which term lasts longest" are
+fully answered at that point.
 
 **Dominance, stated once:** the mode nearest the imaginary axis decays slowest and
 therefore dominates the late response. This is the seed of Sections 4.7 and 4.8.`
@@ -272,7 +273,7 @@ Compute the discriminant $b^{2}-4c$ before attempting to factor:
     {
       title: "The underdamped response, derived",
       example: "4-09",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 For $0<\\zeta<1$ with a unit step, the response is
 
@@ -317,7 +318,7 @@ which is where the peak time formula comes from.`
     {
       title: "Where each specification comes from",
       example: "4-08",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 Set the derivative to zero to find the peak; use the envelope to find settling; evaluate
 the peak height to find overshoot.
@@ -387,7 +388,7 @@ cleanly was built from one of these five.`
     {
       title: "The $s$-plane as a design canvas",
       example: "4-11",
-      sec: "4.5",
+      sec: "4.6",
       body: `
 Because each specification depends on a different geometric feature, each has its own
 family of constant-value curves. **This picture is the most useful thing in the chapter.**
@@ -442,7 +443,7 @@ That sentence is the entire motivation for Chapter 9.`
     {
       title: "Higher-order systems and dominance",
       example: "4-14",
-      sec: "4.6",
+      sec: "4.7",
       body: `
 Real systems have more than two poles. These sections tell you when you may ignore the
 extras: and knowing when your tools *do not* apply is the hardest judgment in the chapter.
@@ -494,7 +495,7 @@ residue relative to the others.`
     {
       title: "Zeros revisited: the derivative decomposition",
       example: "4-16",
-      sec: "4.7",
+      sec: "4.8",
       body: `
 Zeros never add modes. So how do they change a response? Through one identity that explains
 everything in this section.
@@ -627,14 +628,19 @@ Everything from here is about relocating the poles you have just learned to read
     {
       id: "4-01", difficulty: "warmup", topic: "Poles and zeros",
       sec: "4.2",
-      prompt: "For $$G(s)=\frac{s+3}{(s+1)(s+5)}$$ list the poles and zeros, and write the **form** of the unit step response $c(t)$ with unknown constants. Do not compute any residues.",
+      prompt: "For $$G(s)=\\frac{s+3}{(s+1)(s+5)}$$ list the poles and zeros, and write the **form** of the unit step response $c(t)$ with unknown constants. Do not compute any residues.",
       hint: "The input contributes its own pole. Zeros change amplitudes, not the form.",
       answer: "Poles at $s=-1$ and $s=-5$; zero at $s=-3$. $$c(t)=A+Be^{-t}+Ce^{-5t}$$",
-      expert: `The question forbids residues, which means it is only asking what terms exist. Terms come from poles of $C(s)=G(s)/s$, not from poles of $G(s)$ alone and not from zeros.
+      expert: `
+**First glance:** the question says "do not compute residues," which means it is testing whether you know that **poles set the form and zeros set the amplitudes**. Ten seconds of work.
 
-$G$ contributes poles at $-1$ and $-5$. The unit step contributes a pole at the origin. Three poles, three terms: a constant and two real exponentials. The zero at $-3$ changes $A$, $B$, and $C$. It does not add a term or remove one.
+List the poles of $C(s)$, not of $G(s)$: the input contributes one at the origin. Three poles, three terms: a constant and two exponentials.
 
-$e^{-5t}$ is gone while $e^{-t}$ is still visible, because that pole is five times farther from the imaginary axis. If the question had been "which transient dominates," that ratio is the answer and you still never need a residue.
+**Discard:** partial fractions, cover-up, anything numeric. Also ruled out: any term arising from the zero at $-3$. Zeros cannot create or destroy terms.
+
+**Habit:** do this on *every* response problem before starting the algebra. Knowing the shape of the answer in advance tells you how many residues to expect and catches a dropped term immediately.
+
+**Check:** $e^{-5t}$ decays five times faster than $e^{-t}$, so after a couple of time constants the response is essentially $A+Be^{-t}$. If the question had asked "which pole dominates," that is already answered - the one nearest the imaginary axis, always.
 `,
       solution: `
 **Step 1: poles and zeros of $G(s)$.**
@@ -669,11 +675,11 @@ influences the numerical values of $A$, $B$ and $C$, but it cannot create or des
 term. This is the central idea of Section 4.2: **poles determine the form of the
 response; zeros determine the amplitudes.**
 
-**Why this matters on an exam.** You can write down the shape of any response in about
-ten seconds, before doing a single partial fraction. If you are asked only "will it
-oscillate?" or "how many exponential terms?", that ten seconds is the entire answer.
+**Why this matters on an exam.** You can write down the shape of any response before
+doing a single partial fraction. If you are asked only "will it oscillate?" or "how many
+exponential terms?", the pole locations are the whole answer.
 
-**Speed reading of the terms:** $e^{-5t}$ decays five times faster than $e^{-t}$, because
+**Reading the terms against each other:** $e^{-5t}$ decays five times faster than $e^{-t}$, because
 its pole is five times farther from the imaginary axis. By the time the slow term is
 still visible, the fast one is gone.
 `
@@ -682,16 +688,23 @@ still visible, the fast one is gone.
     {
       id: "4-02", difficulty: "warmup", topic: "First-order systems",
       sec: "4.3",
-      prompt: "For $$G(s)=\frac{10}{s+2}$$ find the time constant, rise time, settling time, and the final value of the unit step response.",
+      prompt: "For $$G(s)=\\frac{10}{s+2}$$ find the time constant, rise time, settling time, and the final value of the unit step response.",
       hint: "Put the pole location in evidence first. Every first-order specification is built from that single number.",
-      answer: "$\tau=\tfrac12$ s, $T_{r}=1.1$ s, $T_{s}=2$ s, and $c(\infty)=5$.",
-      expert: `One pole, so every time specification is a multiple of the same number $a=2$:
+      answer: "$\\tau=\\tfrac12$ s, $T_{r}=1.1$ s, $T_{s}=2$ s, and $c(\\infty)=5$.",
+      expert: `
+**First glance:** one pole, so first order, so every specification comes from the single number $a=2$. There is nothing to derive:
 
-$$\tau=\frac1a,\qquad T_r=\frac{2.2}{a},\qquad T_s=\frac4a$$
+$$\\tau=\\frac1a,\\qquad T_{r}=\\frac{2.2}{a},\\qquad T_{s}=\\frac4a$$
 
-That is $\tfrac12$, $1.1$, $2$. They always sit in the ratio $1:2.2:4$. If a later arithmetic slip breaks that order, the slip is in the arithmetic, not in the plant.
+$\\tfrac12$, $1.1$, $2$. Written in one pass.
 
-The numerator is $10$, not $2$. The memorized waveform $1-e^{-at}$ belongs only to $a/(s+a)$. Here $G(0)=5$, and $G(0)$ is the step-response final value. Forming $C(s)$ and invoking the final-value theorem is the same fact with extra symbols.
+**The trap, and it catches people constantly:** the numerator is $10$, not $a=2$. The remembered formula $c(t)=1-e^{-at}$ applies **only** to $\\tfrac{a}{s+a}$. Here the dc gain is $G(0)=\\tfrac{10}{2}=5$, so the response settles at 5, not 1.
+
+An expert checks $G(0)$ reflexively on every transfer function before saying anything about final values.
+
+**Discard:** forming $C(s)$ and applying the final value theorem. $G(0)$ *is* the step-response final value; the theorem is the long way round.
+
+**Free ordering check:** $\\tau<T_{r}<T_{s}$ always, in the fixed ratio $1:2.2:4$. Here $0.5<1.1<2$ ✓ If your three numbers are not in that ratio you have made an arithmetic slip.
 `,
       solution: `
 **Step 1: identify $a$ from the pole.**
@@ -743,14 +756,23 @@ numerator equals $a$. Check the dc gain every time.
     {
       id: "4-03", difficulty: "warmup", topic: "First-order systems",
       sec: "4.3",
-      prompt: "A system's unit step response is measured to be $$c(t)=5\left(1-e^{-4t}\right).$$ Find its transfer function $G(s)$.",
+      prompt: "A system's unit step response is measured to be $$c(t)=5\\left(1-e^{-4t}\\right).$$ Find its transfer function $G(s)$.",
       hint: "Transform the response, then divide by the transform of the input.",
-      answer: "$$G(s)=\frac{20}{s+4}$$",
-      expert: `A measured step response of the form $K(1-e^{-at})$ is already $G(s)$. The exponent is the pole: $a=4$. The multiplier in front of the parentheses is the dc gain: $G(0)=5$. So
+      answer: "$$G(s)=\\frac{20}{s+4}$$",
+      expert: `
+**First glance:** read the parameters straight off the data - do not transform anything.
 
-$$G(s)=\frac{5\cdot 4}{s+4}=\frac{20}{s+4}$$
+$$c(t)=\\frac{K}{a}\\left(1-e^{-at}\\right)$$
 
-The $20$ is $G(0)$ times the pole, not a new measurement. Taking the Laplace transform of $c(t)$ and dividing by $1/s$ works, and it is how you hide from reading the waveform.
+The **exponent is the pole**: $a=4$. The **amplitude is the dc gain**: $K/a=5$, so $K=20$. Answer: $\\tfrac{20}{s+4}$, in about eight seconds.
+
+**Discard:** transforming term by term, combining over a common denominator, dividing by $R(s)$. All correct, all unnecessary once you recognize the standard form.
+
+**The general principle, which carries through the whole chapter:** the exponents appearing in a measured response *are* the system poles. This is the fastest route into any identification problem - 4-19, 4-20 and 4-24 all lean on it.
+
+**Confirm with one limit:** $G(0)=\\tfrac{20}{4}=5$, matching the observed final value ✓
+
+**And note what is being asserted:** no overshoot plus nonzero initial slope is the fingerprint of a first-order system. If the data had shown overshoot, a single pole could not produce it and the whole approach changes.
 `,
       solution: `
 **Step 1: transform the response.**
@@ -793,12 +815,23 @@ response should reach $63\\%$ of $5$, i.e. $5\\left(1-e^{-1}\\right)$, at $t=\\t
     {
       id: "4-04", difficulty: "warmup", topic: "Second-order systems",
       sec: "4.4",
-      prompt: "For $$G(s)=\frac{36}{s^{2}+6s+36}$$ find $\omega_{n}$ and $\zeta$, classify the damping, and locate the poles.",
-      hint: "Compare term by term against the canonical form. Do not use the quadratic formula until you have $\zeta$.",
-      answer: "$\omega_{n}=6$ rad/s, $\zeta=\tfrac12$, underdamped, poles at $s=-3\pm j3\sqrt3$.",
-      expert: `Read the denominator as $s^2+2\zeta\omega_n s+\omega_n^2$. The last coefficient is $\omega_n^2=36$, so $\omega_n=6$. The middle coefficient is $2\zeta\omega_n=6$, so $\zeta=\tfrac12$. Less than one, and the poles are complex.
+      prompt: "For $$G(s)=\\frac{36}{s^{2}+6s+36}$$ find $\\omega_{n}$ and $\\zeta$, classify the damping, and locate the poles.",
+      hint: "Compare term by term against the canonical form. Do not use the quadratic formula until you have $\\zeta$.",
+      answer: "$\\omega_{n}=6$ rad/s, $\\zeta=\\tfrac12$, underdamped, poles at $s=-3\\pm j3\\sqrt3$.",
+      expert: `
+**First glance:** compare with $s^{2}+2\\zeta\\omega_{n}s+\\omega_{n}^{2}$ and read two numbers off. $\\omega_{n}=\\sqrt{36}=6$; then $2\\zeta(6)=6$ gives $\\zeta=\\tfrac12$.
 
-They sit at $-\zeta\omega_n\pm j\omega_n\sqrt{1-\zeta^2}=-3\pm j3\sqrt{3}$. The same two numbers, $3$ and $3\sqrt{3}$, are $\sigma_d$ and $\omega_d$. Completing the square on $s^2+6s+36$ is the same pole and a longer route.
+**But the faster route skips $\\zeta$ entirely.** Complete the square by eye - half of 6 is 3, $3^{2}=9$, $36-9=27$: giving $(s+3)^{2}+27$ and poles $-3\\pm j3\\sqrt3$ directly, since $\\sqrt{27}=3\\sqrt3$.
+
+Experts often go straight to the pole location because **every specification in this chapter is built from the real and imaginary parts**, not from $\\zeta$ and $\\omega_{n}$. Those two are intermediate quantities.
+
+**Discard:** the quadratic formula. Completing the square is faster and gives you the pole in the form you actually want.
+
+**Two checks that cost nothing:**
+- radial distance: $\\sqrt{9+27}=\\sqrt{36}=6=\\omega_{n}$ ✓
+- angle: $\\tan\\theta=\\tfrac{3\\sqrt3}{3}=\\sqrt3\\Rightarrow\\theta=60^{\\circ}$, and $\\cos60^{\\circ}=\\tfrac12=\\zeta$ ✓
+
+**Recognize $\\zeta=\\tfrac12$ on sight.** It is one of the five exact damping ratios standard values, and it always comes with $\\sqrt{1-\\zeta^{2}}=\\tfrac{\\sqrt3}{2}$ and $60^{\\circ}$.
 `,
       solution: `
 **Step 1: compare against the canonical form.**
@@ -862,17 +895,26 @@ $\\arctan\\sqrt3=60^{\\circ}$. ✓
       sec: "4.4",
       prompt: `Classify each system by its damping - undamped, underdamped, critically damped, or overdamped - and give the poles.
 
-**(a)** $\dfrac{16}{s^{2}+10s+16}$ &nbsp;&nbsp; **(b)** $\dfrac{16}{s^{2}+8s+16}$ &nbsp;&nbsp; **(c)** $\dfrac{16}{s^{2}+16}$ &nbsp;&nbsp; **(d)** $\dfrac{16}{s^{2}+4s+16}$`,
-      hint: "All four have the same $\omega_{n}$. Only the $s$ coefficient changes, so only $\zeta$ changes.",
-      answer: "**(a)** overdamped, $s=-2,-8$. **(b)** critically damped, $s=-4$ twice. **(c)** undamped, $s=\pm j4$. **(d)** underdamped, $s=-2\pm j2\sqrt3$.",
-      expert: `Damping is the discriminant of the denominator, or the comparison of the middle coefficient to $2\omega_n$. You do not need four separate procedures.
+**(a)** $\\dfrac{16}{s^{2}+10s+16}$ &nbsp;&nbsp; **(b)** $\\dfrac{16}{s^{2}+8s+16}$ &nbsp;&nbsp; **(c)** $\\dfrac{16}{s^{2}+16}$ &nbsp;&nbsp; **(d)** $\\dfrac{16}{s^{2}+4s+16}$`,
+      hint: "All four have the same $\\omega_{n}$. Only the $s$ coefficient changes, so only $\\zeta$ changes.",
+      answer: "**(a)** overdamped, $s=-2,-8$. **(b)** critically damped, $s=-4$ twice. **(c)** undamped, $s=\\pm j4$. **(d)** underdamped, $s=-2\\pm j2\\sqrt3$.",
+      expert: `
+**First glance:** all four share $\\omega_{n}=4$. Only the middle coefficient changes, so this is a study of $\\zeta$ alone and there is nothing to compute beyond $\\zeta=\\tfrac{b}{8}$ in each case.
 
-(a) $10^2-4\cdot16=36>0$, two different real roots, overdamped: $-2$ and $-8$.
-(b) $8^2-4\cdot16=0$, a repeated real root, critically damped: $-4,-4$.
-(c) no $s$ term, roots on the imaginary axis, undamped: $\pm j4$.
-(d) $4^2-4\cdot16<0$, complex, underdamped: $-2\pm j2\sqrt{3}$.
+**The classification comes from the discriminant, and an expert computes it before attempting to factor:**
 
-The four numerators being equal is irrelevant. Numerator scale is dc gain. The $s^2$ coefficient being $1$ in every part is what lets you read $\omega_n$ off the constant term without dividing first.
+| $b^{2}-4c$ | meaning | what to do |
+|---|---|---|
+| perfect square | rational roots | factor by inspection |
+| $=0$ | repeated | it is $(s+\\tfrac b2)^{2}$ |
+| $<0$ | complex | complete the square, never factor |
+| $>0$, not a square | irrational | quadratic formula, keep the surd |
+
+$36$, $0$, $-64$, $-48$: the four cases in order, decided before any factoring is attempted.
+
+**The one to spot instantly:** $b=0$ means $\\zeta=0$ means poles on the imaginary axis means a sinusoid that never settles. That is also the case where the final value theorem fails.
+
+**The picture to carry:** as $b$ falls from $10$ to $0$, the poles slide together along the real axis, collide at $-\\omega_{n}$, then split onto a **circle of radius $\\omega_{n}$** and travel up it toward the imaginary axis. Every underdamped member of this family sits exactly 4 units from the origin - check (d): $\\sqrt{4+12}=4$ ✓
 `,
       solution: `
 Every one has $\\omega_{n}^{2}=16$, so $\\omega_{n}=4$ throughout. Only the middle
@@ -947,17 +989,25 @@ $\\sqrt{2^{2}+(2\\sqrt3)^{2}}=\\sqrt{4+12}=4$ ✓
 
     {
       id: "4-06", difficulty: "warmup", topic: "Underdamped specifications",
-      sec: "4.5",
-      prompt: "For $$G(s)=\frac{25}{s^{2}+6s+25}$$ find $T_{p}$, $T_{s}$ and $\%OS$. Leave every answer exact.",
-      hint: "Get $\zeta$ and $\omega_n$ first, then the pole location. Peak time needs only the imaginary part; settling time needs only the real part.",
-      answer: "$T_{p}=\dfrac{\pi}{4}$ s, $T_{s}=\dfrac{4}{3}$ s, $\%OS=100e^{-3\pi/4}$.",
-      expert: `$25$ and $6$ are $\omega_n^2$ and $2\sigma_d$. So $\omega_n=5$ and $\sigma_d=3$, and the missing side of the right triangle is $\omega_d=4$. The pole is already $-3\pm j4$. That is a $3$-$4$-$5$ triangle, which is why every specification in the answer is rational.
+      sec: "4.6",
+      prompt: "For $$G(s)=\\frac{25}{s^{2}+6s+25}$$ find $T_{p}$, $T_{s}$ and $\\%OS$. Leave every answer exact.",
+      hint: "Get $\\zeta$ and $\\omega_n$ first, then the pole location. Peak time needs only the imaginary part; settling time needs only the real part.",
+      answer: "$T_{p}=\\dfrac{\\pi}{4}$ s, $T_{s}=\\dfrac{4}{3}$ s, $\\%OS=100e^{-3\\pi/4}$.",
+      expert: `
+**First glance:** $25$ and $6$ mean $\\omega_{n}=5$ and $\\sigma_{d}=3$, and $5\\text{-}3$ forces $\\omega_{d}=4$: a **3-4-5 triangle**. Recognizing that pattern is the whole problem; every number will be rational.
 
-The three formulas you actually want live on the pole, not on $\zeta$:
+**The form an expert actually uses**, which eliminates $\\zeta$ and $\\omega_{n}$ from the arithmetic entirely:
 
-$$T_p=\frac{\pi}{\omega_d},\qquad T_s=\frac{4}{\sigma_d},\qquad \%OS=100\,e^{-\pi\sigma_d/\omega_d}$$
+$$T_{p}=\\frac{\\pi}{\\omega_{d}},\\qquad T_{s}=\\frac{4}{\\sigma_{d}},\\qquad \\%OS=100\\,e^{-\\pi\\sigma_{d}/\\omega_{d}}$$
 
-$\pi/4$, $4/3$, $100e^{-3\pi/4}$. Computing $\zeta=3/5$ and then $\sqrt{1-\zeta^2}=4/5$ is correct. It is how you reconstruct a triangle you already had.
+Once you have the pole $-3\\pm j4$, all three specs come from the numbers $3$ and $4$:
+$\\tfrac{\\pi}{4}$, $\\tfrac43$, $100e^{-3\\pi/4}$. No $\\zeta$, no $\\sqrt{1-\\zeta^{2}}$, no square roots at all.
+
+**Discard:** computing $\\zeta=\\tfrac35$, then $\\sqrt{1-\\zeta^{2}}=\\tfrac45$, then $\\zeta\\pi/\\sqrt{1-\\zeta^{2}}$. All correct, all a detour.
+
+**The two exact triangles standard values** so you can spot them from the coefficients: $3\\text{-}4\\text{-}5$ gives $\\zeta=\\tfrac35$ or $\\tfrac45$ with exponents $\\tfrac{3\\pi}{4}$ and $\\tfrac{4\\pi}{3}$. Any problem whose numbers come out this cleanly was built around one of them.
+
+**And stop at the exponential.** $100e^{-3\\pi/4}$ is the finished answer.
 `,
       solution: `
 **Step 1: extract $\\omega_{n}$ and $\\zeta$.**
@@ -1014,14 +1064,19 @@ it removes $\\zeta$ and $\\omega_{n}$ from the arithmetic entirely.
     {
       id: "4-07", difficulty: "core", topic: "Poles and zeros",
       sec: "4.2",
-      prompt: "Write the **form** of $c(t)$, with unknown constants, for $$C(s)=\frac{s+4}{s(s+2)\left(s^{2}+2s+5\right)}.$$ Do not evaluate any residue. State which term dominates at large $t$ and why.",
+      prompt: "Write the **form** of $c(t)$, with unknown constants, for $$C(s)=\\frac{s+4}{s(s+2)\\left(s^{2}+2s+5\\right)}.$$ Do not evaluate any residue. State which term dominates at large $t$ and why.",
       hint: "Test the quadratic's discriminant. A complex pair generates one damped-sinusoid term, not two exponentials.",
-      answer: "$$c(t)=A+Be^{-2t}+e^{-t}\left(C\cos2t+D\sin2t\right)$$ At large $t$ the constant $A$ dominates; among the transients the $e^{-t}$ pair decays slowest because its poles are closest to the imaginary axis.",
-      expert: `Poles of $C(s)$: $0$, $-2$, and the quadratic $s^2+2s+5=(s+1)^2+4$, so $-1\pm j2$. Four poles, four terms. A constant from the origin, a real exponential from $-2$, and a damped sinusoid $e^{-t}(C\cos 2t+D\sin 2t)$ from the complex pair.
+      answer: "$$c(t)=A+Be^{-2t}+e^{-t}\\left(C\\cos2t+D\\sin2t\\right)$$ At large $t$ the constant $A$ dominates; among the transients the $e^{-t}$ pair decays slowest because its poles are closest to the imaginary axis.",
+      expert: `
+**First glance:** test the quadratic's discriminant before anything else. $4-20=-16<0$, so that pair is complex and produces **one** damped-sinusoid term with two constants: not two separate exponentials.
 
-The zero at $-4$ is not a term.
+Four poles, three terms. Counting correctly is the entire problem.
 
-At large $t$ the constant remains. Among the things that die, the complex pair dies like $e^{-t}$ and the real pole dies like $e^{-2t}$. Closest to the imaginary axis wins the transient, so the oscillation outlasts $Be^{-2t}$. Distance to the axis is the time scale. Distance up the axis is only the wiggle rate.
+**Discard:** factoring $s^{2}+2s+5$, computing any residue, and writing the complex pair as $Ce^{(-1+j2)t}+De^{(-1-j2)t}$: technically valid, but not a real-valued form and not what is wanted.
+
+**Reading dominance without computing:** compare distances from the imaginary axis. The real pole is at $-2$; the complex pair sits at $-1$. The pair decays **half as fast**, so the oscillation is the last thing to disappear. Nearest the imaginary axis always wins.
+
+**The trap for later:** having identified the dominant pair, the instinct is to quote $T_{s}=4/1=4$ and $T_{p}=\\pi/2$. Do not - the real pole at $-2$ is only $2\\times$ farther out, failing the five-times rule. An expert notices the temptation and refuses it. That exact scenario is problem 4-15.
 `,
       solution: `
 **Step 1: inventory the poles.**
@@ -1080,15 +1135,25 @@ $-2$ pole is far enough away, which it is not ($2<5\\times1$). See problem 4-15.
 
     {
       id: "4-08", difficulty: "core", topic: "Underdamped specifications",
-      sec: "4.5",
-      prompt: "For $$G(s)=\frac{100}{s^{2}+12s+100}$$ find $\omega_{n}$, $\zeta$, the pole locations, $T_{p}$, $T_{s}$, and $\%OS$.",
-      hint: "Once you have the poles as $-\sigma_d \pm j\omega_d$, every specification is built from those two numbers alone.",
-      answer: "$\omega_{n}=10$, $\zeta=\tfrac35$, poles $s=-6\pm j8$, $T_{p}=\dfrac{\pi}{8}$ s, $T_{s}=\dfrac{2}{3}$ s, $\%OS=100e^{-3\pi/4}$.",
-      expert: `Same reading as $4$-$06$, different triangle. $\omega_n=10$, $2\sigma_d=12$ so $\sigma_d=6$, and $\omega_d=8$. The pole is $-6\pm j8$, a $6$-$8$-$10$ triangle, which is the $3$-$4$-$5$ scaled by two.
+      sec: "4.6",
+      prompt: "For $$G(s)=\\frac{100}{s^{2}+12s+100}$$ find $\\omega_{n}$, $\\zeta$, the pole locations, $T_{p}$, $T_{s}$, and $\\%OS$.",
+      hint: "Once you have the poles as $-\\sigma_d \\pm j\\omega_d$, every specification is built from those two numbers alone.",
+      answer: "$\\omega_{n}=10$, $\\zeta=\\tfrac35$, poles $s=-6\\pm j8$, $T_{p}=\\dfrac{\\pi}{8}$ s, $T_{s}=\\dfrac{2}{3}$ s, $\\%OS=100e^{-3\\pi/4}$.",
+      expert: `
+**First glance:** $100$ and $12$ give $\\omega_{n}=10$ and $\\sigma_{d}=6$, so $\\omega_{d}=8$ - the 3-4-5 triangle scaled by 2. Poles $-6\\pm j8$, and all three specifications follow from $6$ and $8$ alone.
 
-$$T_p=\frac{\pi}{8},\qquad T_s=\frac{4}{6}=\frac{2}{3},\qquad \%OS=100e^{-\pi\cdot 6/8}=100e^{-3\pi/4}$$
+$$T_{p}=\\frac{\\pi}{8},\\qquad T_{s}=\\frac{4}{6}=\\frac23,\\qquad \\%OS=100e^{-6\\pi/8}=100e^{-3\\pi/4}$$
 
-$\zeta=6/10=3/5$ if someone asks for it. The overshoot matches $4$-$06$ because overshoot depends only on the ratio $\sigma_d/\omega_d=3/4$, and that ratio is the same in both triangles.
+**The recognition that makes this nearly free:** this is problem 4-06 with both pole parts doubled. An expert who has just done 4-06 sees $-6\\pm j8$ as $2\\times(-3\\pm j4)$ and knows instantly that:
+
+- $\\zeta$ is unchanged, so $\\%OS$ is **identical**
+- both times **halve**
+
+because scaling both parts of a pole scales $\\omega_{n}$ and leaves the angle alone.
+
+**The general principle:** $\\omega_{n}$ is a **time-axis scale factor**. It changes how fast the response happens, never its shape. Only the angle (that is, $\\zeta$) changes shape.
+
+**Free check:** $\\sqrt{36+64}=\\sqrt{100}=10=\\omega_{n}$ ✓
 `,
       solution: `
 **Step 1: $\\omega_{n}$ and $\\zeta$.**
@@ -1140,17 +1205,24 @@ $\\omega_{n}$ is a time-axis scale factor.
 
     {
       id: "4-09", difficulty: "core", topic: "Underdamped step response",
-      sec: "4.5",
-      prompt: "Find the complete unit step response $c(t)$ for $$G(s)=\frac{25}{s^{2}+6s+25}$$ by partial fraction expansion.",
+      sec: "4.6",
+      prompt: "Find the complete unit step response $c(t)$ for $$G(s)=\\frac{25}{s^{2}+6s+25}$$ by partial fraction expansion.",
       hint: "Case 3 partial fractions from Chapter 2. The quadratic is irreducible - complete the square and match the damped sine and cosine pairs.",
-      answer: "$$c(t)=1-e^{-3t}\left(\cos4t+\tfrac{3}{4}\sin4t\right)$$",
-      expert: `You already know the pole is $-3\pm j4$ from the coefficients, so you already know the waveform shape:
+      answer: "$$c(t)=1-e^{-3t}\\left(\\cos4t+\\tfrac{3}{4}\\sin4t\\right)$$",
+      expert: `
+**First glance:** this is a Chapter 2 Case 3 partial fraction wearing a Chapter 4 hat. The discriminant is negative, so complete the square and match the damped-sine and damped-cosine pairs.
 
-$$c(t)=1-e^{-3t}(A\cos 4t+B\sin 4t)$$
+**The pattern that skips the coefficient balancing.** For $\\dfrac{\\omega_{n}^{2}}{s\\left(s^{2}+bs+\\omega_{n}^{2}\\right)}$ the expansion is **always**
 
-The $1$ is $G(0)$. The rest is the free response of those poles. Partial fractions only find $A$ and $B$. Matching $c(0^+)=0$ (strictly proper $G$) gives $A=1$. Matching the initial derivative, or covering up the complex residue, gives $B=3/4$.
+$$\\frac{1}{s}-\\frac{s+b}{s^{2}+bs+\\omega_{n}^{2}}$$
 
-Writing $C(s)=25/(s(s^2+6s+25))$ and grinding every coefficient from scratch is valid. It is also how you fail to notice that two of the three numbers in the answer were visible in the denominator before you started.
+Residue at the origin is 1 (it is the dc gain), and the remaining numerator is forced to be $s+b$. An expert writes that down and goes straight to completing the square.
+
+**Splitting the numerator:** $s+6=(s+3)+3$, and since $\\omega=4$ the sine coefficient is $\\tfrac34$. Read it as "leftover over omega."
+
+**Two checks:** $c(0)=1-1=0$: a second-order system with no zeros always starts at zero. And the envelope $e^{-3t}$ must match $\\sigma_{d}=3$, the oscillation $4$ rad/s must match $\\omega_{d}=4$ ✓
+
+**Worth keeping:** the derivative collapses beautifully to $\\dot c=\\tfrac{25}{4}e^{-3t}\\sin4t$: pure sine, no cosine. It is zero at $t=0$ and again at $\\omega_{d}t=\\pi$, which is *why* $T_{p}=\\pi/\\omega_{d}$. You will need this exact result in 4-23.
 `,
       solution: `
 **Step 1: form $C(s)$.**
@@ -1230,15 +1302,24 @@ precisely how $T_{p}$ was derived.
 
     {
       id: "4-10", difficulty: "core", topic: "Pole plot",
-      sec: "4.5",
-      prompt: "A second-order system has poles at $s=-4\pm j3$. Find $\omega_{n}$, $\zeta$, $T_{p}$, $T_{s}$, $\%OS$, and write the transfer function assuming unity dc gain.",
-      hint: "Work backwards from the pole plot. The radial distance is $\omega_n$ and the cosine of the angle from the negative real axis is $\zeta$.",
-      answer: "$\omega_{n}=5$, $\zeta=\tfrac45$, $T_{p}=\dfrac{\pi}{3}$ s, $T_{s}=1$ s, $\%OS=100e^{-4\pi/3}$, and $$G(s)=\frac{25}{s^{2}+8s+25}$$",
-      expert: `The pole *is* $\sigma_d$ and $\omega_d$: $4$ and $3$. Then $\omega_n=5$ and $\zeta=4/5$, another $3$-$4$-$5$. Specs come off $3$ and $4$ the same way as $4$-$06$:
+      sec: "4.6",
+      prompt: "A second-order system has poles at $s=-4\\pm j3$. Find $\\omega_{n}$, $\\zeta$, $T_{p}$, $T_{s}$, $\\%OS$, and write the transfer function assuming unity dc gain.",
+      hint: "Work backwards from the pole plot. The radial distance is $\\omega_n$ and the cosine of the angle from the negative real axis is $\\zeta$.",
+      answer: "$\\omega_{n}=5$, $\\zeta=\\tfrac45$, $T_{p}=\\dfrac{\\pi}{3}$ s, $T_{s}=1$ s, $\\%OS=100e^{-4\\pi/3}$, and $$G(s)=\\frac{25}{s^{2}+8s+25}$$",
+      expert: `
+**First glance:** $-4\\pm j3$ is a 3-4-5 triangle, so $\\omega_{n}=5$ without computing a square root, and $\\zeta=\\tfrac45$ by the adjacent-over-hypotenuse reading.
 
-$$T_p=\frac{\pi}{3},\qquad T_s=\frac{4}{4}=1,\qquad \%OS=100e^{-4\pi/3}$$
+All three specs come straight from $4$ and $3$: $T_{p}=\\tfrac{\\pi}{3}$, $T_{s}=\\tfrac44=1$, $\\%OS=100e^{-4\\pi/3}$.
 
-Unity dc gain means the numerator equals $\omega_n^2=25$, and the denominator is $s^2+2\sigma_d s+\omega_n^2=s^2+8s+25$. There is no separate "find $G(s)$" step after you have the pole and the dc gain.
+**Building the transfer function without $\\zeta$ at all:**
+
+$$(s+\\sigma_{d})^{2}+\\omega_{d}^{2}=s^{2}+2\\sigma_{d}s+\\omega_{n}^{2}$$
+
+So the middle coefficient is **twice the real part** and the constant is $\\omega_{n}^{2}$: $s^{2}+8s+25$. Numerator $25$ for unity dc gain.
+
+**Discard:** computing $\\zeta$, then $2\\zeta\\omega_{n}$, then assembling. Same answer, three times the arithmetic.
+
+**The comparison worth making:** 4-08 had $-6\\pm j8$ and this has $-4\\pm j3$: same triangle, **legs swapped**. Larger $\\zeta$ ($\\tfrac45$ vs $\\tfrac35$) means a larger exponent magnitude means **less** overshoot, exactly as more damping should. Checking that the direction of change makes physical sense costs two seconds and catches reversed ratios.
 `,
       solution: `
 **Step 1: read the pole directly.**
@@ -1294,17 +1375,24 @@ damping suppresses the peak.
 
     {
       id: "4-11", difficulty: "core", topic: "Design from specifications",
-      sec: "4.5",
-      prompt: "Find the transfer function of a second-order system with unity dc gain that has $T_{s}=2$ s and $T_{p}=\dfrac{\pi}{4}$ s.",
+      sec: "4.6",
+      prompt: "Find the transfer function of a second-order system with unity dc gain that has $T_{s}=2$ s and $T_{p}=\\dfrac{\\pi}{4}$ s.",
       hint: "Each specification pins down one part of the pole. Settling time gives the real part; peak time gives the imaginary part.",
-      answer: "Poles at $s=-2\pm j4$, giving $$G(s)=\frac{20}{s^{2}+4s+20}$$ with $\omega_{n}=2\sqrt5$ and $\zeta=\dfrac{\sqrt5}{5}$.",
-      expert: `$T_s=2$ is $\sigma_d=2$. $T_p=\pi/4$ is $\omega_d=4$. The pole is $-2\pm j4$. That is the whole design.
+      answer: "Poles at $s=-2\\pm j4$, giving $$G(s)=\\frac{20}{s^{2}+4s+20}$$ with $\\omega_{n}=2\\sqrt5$ and $\\zeta=\\dfrac{\\sqrt5}{5}$.",
+      expert: `
+**First glance:** two time-domain specs, two parts of a pole. They map one-to-one and there is nothing to solve simultaneously:
 
-$$\omega_n=\sqrt{4+16}=2\sqrt{5},\qquad \zeta=\frac{2}{2\sqrt{5}}=\frac{\sqrt{5}}{5}$$
+$$T_{s}\\;\\to\\;\\sigma_{d}=\\frac{4}{T_{s}}=2,
+\\qquad
+T_{p}\\;\\to\\;\\omega_{d}=\\frac{\\pi}{T_{p}}=4$$
 
-Unity dc gain puts $20$ in the numerator. The denominator is $s^2+4s+20$.
+Poles $-2\\pm j4$. Denominator $s^{2}+4s+20$ by the twice-the-real-part rule. Numerator 20 for unity dc gain.
 
-Going through $\%OS$ or $\zeta$ first is backwards. Those two specifications were chosen so that each one is one coordinate of the pole. Read them that way.
+**Notice the specification was given as $\\pi/4$, not $0.785$.** When a peak time carries a $\\pi$, it cancels against the $\\pi$ in $T_{p}=\\pi/\\omega_{d}$, so $\\omega_{d}$ comes out an integer.
+
+**Discard:** solving for $\\zeta$ and $\\omega_{n}$ first. You would end up at $\\omega_{n}=2\\sqrt5$ and $\\zeta=\\tfrac{1}{\\sqrt5}$ - correct but irrational, and unnecessary, because the pole parts are integers.
+
+**The structural point:** two knobs, three specifications. Fixing $T_{s}$ and $T_{p}$ **forces** $\\%OS=100e^{-\\pi/2}$ whether you like it or not. If that third number is unacceptable, no second-order system can satisfy all three: you need a compensator. That is the situation compensator design in Chapter 9 addresses.
 `,
       solution: `
 This is 4-10 run in reverse, and it is the shape most design questions take: you are
@@ -1369,13 +1457,23 @@ you need a compensator, which is Chapter 9.
 
     {
       id: "4-12", difficulty: "core", topic: "Design from specifications",
-      sec: "4.5",
-      prompt: "A system is required to have $\%OS=100e^{-\pi}$. Find the exact damping ratio $\zeta$, and the angle the poles make with the negative real axis.",
-      hint: "Set the overshoot exponent equal to $\pi$ and solve algebraically. Do not reach for the logarithm formula - the numbers are arranged so you do not need it.",
-      answer: "$\zeta=\dfrac{\sqrt2}{2}=\dfrac{1}{\sqrt2}$, and the poles lie at $45^{\circ}$ from the negative real axis.",
-      expert: `$\%OS=100e^{-\pi}$ is the overshoot of the $45^\circ$ ray. The exponent is $-\pi\sigma_d/\omega_d$, so $\sigma_d/\omega_d=1$, so the pole makes a $45^\circ$ angle with the negative real axis, so $\zeta=\cos 45^\circ=1/\sqrt{2}$.
+      sec: "4.6",
+      prompt: "A system is required to have $\\%OS=100e^{-\\pi}$. Find the exact damping ratio $\\zeta$, and the angle the poles make with the negative real axis.",
+      hint: "Set the overshoot exponent equal to $\\pi$ and solve algebraically. Do not reach for the logarithm formula - the numbers are arranged so you do not need it.",
+      answer: "$\\zeta=\\dfrac{\\sqrt2}{2}=\\dfrac{1}{\\sqrt2}$, and the poles lie at $45^{\\circ}$ from the negative real axis.",
+      expert: `
+**First glance:** the overshoot is quoted as $100e^{-\\pi}$, not as a percentage. That phrasing is the giveaway that the exponents are meant to be matched directly, not run through the logarithm formula.
 
-No $\omega_n$ appears because overshoot does not use $\omega_n$. The specification is a wedge in the $s$-plane, not a point. Any pair on that ray has this overshoot; settling time then picks how far out on the ray you sit.
+$$\\frac{\\zeta\\pi}{\\sqrt{1-\\zeta^{2}}}=\\pi\\;\\Longrightarrow\\;\\zeta=\\sqrt{1-\\zeta^{2}}\\;\\Longrightarrow\\;\\zeta=\\frac{1}{\\sqrt2}$$
+
+Three lines, no calculator, no logarithm.
+
+**Discard:**
+$\\zeta=\\dfrac{-\\ln(\\%OS/100)}{\\sqrt{\\pi^{2}+\\ln^{2}(\\%OS/100)}}$. It gives the same answer, but it is the tool for when $\\%OS$ is a decimal you cannot match by inspection - which on a closed-book exam it will not be.
+
+**The geometric reading, which is faster still:** $\\zeta=\\tfrac{\\sqrt2}{2}$ means $\\theta=45^{\\circ}$ means $\\sigma_{d}=\\omega_{d}$. **Any pole of the form $-k\\pm jk$ has this damping ratio.** So the moment you see equal real and imaginary parts anywhere in this chapter, $\\%OS=100e^{-\\pi}$ with no computation.
+
+**Memorize the five exact pairs**: $\\zeta=\\tfrac12,\\tfrac{\\sqrt2}{2},\\tfrac{\\sqrt3}{2},\\tfrac35,\\tfrac45$ with exponents $\\tfrac{\\pi}{\\sqrt3},\\pi,\\sqrt3\\pi,\\tfrac{3\\pi}{4},\\tfrac{4\\pi}{3}$. Every non-calculator problem in this chapter is built from one of them.
 `,
       solution: `
 **Step 1: set the exponents equal.**
@@ -1439,19 +1537,37 @@ $\\zeta=\\tfrac45$ (exponent $\\tfrac{4\\pi}{3}$) from the $3\\text{-}4\\text{-}
 
     {
       id: "4-13", difficulty: "core", topic: "Pole plot",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `Three systems have poles as follows:
 
-**(a)** $-2\pm j2$ &nbsp;&nbsp; **(b)** $-4\pm j4$ &nbsp;&nbsp; **(c)** $-2\pm j6$
+**(a)** $-2\\pm j2$ &nbsp;&nbsp; **(b)** $-4\\pm j4$ &nbsp;&nbsp; **(c)** $-2\\pm j6$
 
 Without computing any transfer function, rank them by percent overshoot and by settling time, and justify each ranking from the pole plot alone.`,
       hint: "Overshoot depends on the angle from the negative real axis. Settling time depends on the horizontal distance from the imaginary axis.",
-      answer: "**Overshoot:** (a) and (b) are **equal** (both at $45^{\circ}$, $\%OS=100e^{-\pi}$); (c) has **more** ($\%OS=100e^{-\pi/3}$). **Settling time:** (b) is fastest ($T_{s}=1$ s); (a) and (c) are **equal and slower** ($T_{s}=2$ s each).",
-      expert: `Overshoot is the angle of the pole from the negative real axis. Settling time is the real part.
+      answer: "**Overshoot:** (a) and (b) are **equal** (both at $45^{\\circ}$, $\\%OS=100e^{-\\pi}$); (c) has **more** ($\\%OS=100e^{-\\pi/3}$). **Settling time:** (b) is fastest ($T_{s}=1$ s); (a) and (c) are **equal and slower** ($T_{s}=2$ s each).",
+      expert: `
+**First glance:** no transfer functions needed, no formulas evaluated. Both rankings are geometry.
 
-(a) and (b) both sit on the $45^\circ$ ray, so they have the same overshoot, $100e^{-\pi}$. (b) is twice as far from the origin along that ray, so it settles twice as fast: $T_s=1$ against $T_s=2$. (c) has the same real part as (a), so the same $T_s=2$, but a much steeper angle, so more overshoot.
+$$\\%OS\\;\\leftrightarrow\\;\\textbf{angle from the negative real axis}
+\\qquad
+T_{s}\\;\\leftrightarrow\\;\\textbf{horizontal distance from the imaginary axis}$$
 
-Two systems can share overshoot and differ in speed. Two can share speed and differ in overshoot. The $s$-plane treats those as perpendicular facts. Computing three transfer functions to rank six numbers is how you avoid looking at the figure.
+(a) and (b) both have $\\omega_{d}=\\sigma_{d}$, so both sit on the $45^{\\circ}$ line - **identical overshoot**, spotted without arithmetic. (c) is steeper, so less damped, so more overshoot.
+
+(a) and (c) share $\\sigma_{d}=2$, so they sit on the same vertical line - **identical settling time**, again by inspection.
+
+**The four families of constant-specification lines**, which an expert has as a mental picture:
+
+| constant | locus |
+|---|---|
+| $\\%OS$, $\\zeta$ | radial lines through the origin |
+| $T_{s}$ | vertical lines |
+| $T_{p}$ | horizontal lines |
+| $\\omega_{n}$ | circles about the origin |
+
+**Discard:** building $s^{2}+2\\sigma_{d}s+\\omega_{n}^{2}$ for each and evaluating three formulas nine times.
+
+**The counterintuitive result worth noticing:** (c) has the *shortest* peak time ($\\pi/6$) and the *worst* overshoot. Fast to the peak and well damped are different things - $T_{p}$ lives on the imaginary axis, damping lives in the angle.
 `,
       solution: `
 The whole point of this problem is that both rankings are visible on the pole plot with
@@ -1525,15 +1641,24 @@ overshooting *most*. Fast to the peak and badly damped are not the same thing.
 
     {
       id: "4-14", difficulty: "core", topic: "Additional poles",
-      sec: "4.6",
-      prompt: "For $$T(s)=\frac{20}{(s+10)\left(s^{2}+2s+2\right)}$$ determine whether a second-order approximation is justified. If it is, write the approximating transfer function and give $T_{p}$, $T_{s}$ and $\%OS$.",
+      sec: "4.7",
+      prompt: "For $$T(s)=\\frac{20}{(s+10)\\left(s^{2}+2s+2\\right)}$$ determine whether a second-order approximation is justified. If it is, write the approximating transfer function and give $T_{p}$, $T_{s}$ and $\\%OS$.",
       hint: "Compare the third pole's distance from the imaginary axis to the dominant pair's. Then match dc gain, not just numerator.",
-      answer: "Justified: the third pole at $-10$ is $10\times$ farther left than $\sigma_{d}=1$, and $10\ge5$. The approximation is $$T(s)\approx\frac{2}{s^{2}+2s+2}$$ with $T_{p}=\pi$ s, $T_{s}=4$ s, $\%OS=100e^{-\pi}$.",
-      expert: `The complex pair is at $-1\pm j1$, so $\sigma_d=1$. The extra pole is at $-10$. The ratio is $10$, which clears the usual factor-of-five test, so the $e^{-10t}$ term is gone while the pair is still moving.
+      answer: "Justified: the third pole at $-10$ is $10\\times$ farther left than $\\sigma_{d}=1$, and $10\\ge5$. The approximation is $$T(s)\\approx\\frac{2}{s^{2}+2s+2}$$ with $T_{p}=\\pi$ s, $T_{s}=4$ s, $\\%OS=100e^{-\\pi}$.",
+      expert: `
+**First glance:** three poles, one real and one complex pair. The question is only ever "how far out is the extra pole compared to $\\sigma_{d}$?" - a single ratio.
 
-The approximating second-order system has to keep the same dc gain. $T(0)=20/(10\cdot 2)=1$, so the reduced model is $2/(s^2+2s+2)$, not $20/(s^2+2s+2)$. Dropping the factor $10$ and leaving the numerator alone would invent a dc gain of $10$.
+$s^{2}+2s+2\\Rightarrow(s+1)^{2}+1$, so $\\sigma_{d}=1$. Third pole at $-10$. Ratio $=10\\ge5$. **Approximate.** That decision takes about eight seconds.
 
-Specs then belong to $-1\pm j1$: $T_p=\pi$, $T_s=4$, $\%OS=100e^{-\pi}$.
+**The dc-matching shortcut nobody should skip:** replace the deleted factor by its value at $s=0$.
+
+$$\\frac{20}{(s+10)\\left(s^{2}+2s+2\\right)}\\;\\longrightarrow\\;\\frac{20}{(10)\\left(s^{2}+2s+2\\right)}=\\frac{2}{s^{2}+2s+2}$$
+
+One line. Simply crossing out $(s+10)$ changes the steady-state value by a factor of ten and is the most common error in this section.
+
+**Recognize the pole:** $-1\\pm j1$ has equal parts, so $45^{\\circ}$, so $\\zeta=\\tfrac{\\sqrt2}{2}$, so $\\%OS=100e^{-\\pi}$ instantly: no exponent arithmetic at all.
+
+**State the scope, because graders look for it:** the approximation is good for $T_{p}$, $T_{s}$ and $\\%OS$; it is not a claim that the two transfer functions are equal, and the very early response still contains a real $e^{-10t}$ term.
 `,
       solution: `
 **Step 1: locate the dominant pair.**
@@ -1600,13 +1725,25 @@ correct scope of the claim.
 
     {
       id: "4-15", difficulty: "core", topic: "Additional poles",
-      sec: "4.6",
-      prompt: "For $$T(s)=\frac{6}{(s+3)\left(s^{2}+2s+2\right)}$$ determine whether a second-order approximation is justified, and state precisely what you may and may not conclude.",
+      sec: "4.7",
+      prompt: "For $$T(s)=\\frac{6}{(s+3)\\left(s^{2}+2s+2\\right)}$$ determine whether a second-order approximation is justified, and state precisely what you may and may not conclude.",
       hint: "Same test as the previous problem. The correct answer here may be that the tools do not apply.",
-      answer: "**Not justified.** The third pole at $-3$ is only $3\times$ farther left than $\sigma_{d}=1$, and $3<5$. The formulas for $T_{p}$, $T_{s}$ and $\%OS$ **may not be used**. All that can be said is that the response contains a decaying $e^{-3t}$ term alongside a damped oscillation at $1$ rad/s, and settles because all poles are in the left half-plane.",
-      expert: `Same complex pair as $4$-$14$, $\sigma_d=1$, but the third pole is at $-3$. The ratio is $3$, which is less than $5$. The $e^{-3t}$ term is still comparable to $e^{-t}$ over the time the pair is settling. Second-order $T_p$, $T_s$, and $\%OS$ are tables for a pair. They are not licensed here.
+      answer: "**Not justified.** The third pole at $-3$ is only $3\\times$ farther left than $\\sigma_{d}=1$, and $3<5$. The formulas for $T_{p}$, $T_{s}$ and $\\%OS$ **may not be used**. All that can be said is that the response contains a decaying $e^{-3t}$ term alongside a damped oscillation at $1$ rad/s, and settles because all poles are in the left half-plane.",
+      expert: `
+**First glance:** identical dominant pair to 4-14, only the third pole moved from $-10$ to $-3$. Ratio $3/1=3<5$. **The tools do not apply, and saying so is the answer.**
 
-What remains true without the approximation: every pole is in the left half-plane, so the step settles; there is an oscillation at $1$ rad/s; there is also a real exponential at rate $3$. That is a qualitative sketch, not a specification sheet.
+**This is the most important habit in the chapter.** The formulas will happily produce $T_{p}=\\pi$, $T_{s}=4$, $\\%OS=100e^{-\\pi}$: three confidently wrong numbers. Nothing in the algebra warns you. Only the test does.
+
+**Run the test first, always.** Before writing a single specification, compute $\\alpha_{r}/\\sigma_{d}$. It costs three seconds and it is the difference between a correct answer and a plausible one.
+
+**What you can still say, and should**: an expert never answers "cannot be done" and stops:
+
+- poles $-3$ and $-1\\pm j1$, all left-half-plane, so **stable**
+- response form $A+Be^{-3t}+e^{-t}\\left(C\\cos t+D\\sin t\\right)$, by inspection
+- dc gain $\\tfrac{6}{(3)(2)}=1$, so $c(\\infty)=1$
+- the complex pair still decays slowest, so it still dominates in that sense - it just is not dominant *enough* for two-pole formulas
+
+**The pattern to recognize:** any problem presenting two nearly identical systems is testing the boundary between them, not the arithmetic. Find the discriminating feature.
 `,
       solution: `
 **Step 1: the dominant pair is the same as in 4-14.**
@@ -1651,11 +1788,10 @@ You can still say all of this without any approximation:
 
 ---
 
-**Why this problem exists.** On an application exam the hardest judgment is knowing when
-your tools do not apply. A student who computes $T_{p}=\\pi$, $T_{s}=4$,
-$\\%OS=100e^{-\\pi}$ here has produced three confidently wrong numbers. The student who
-writes "the five-times rule fails, so I cannot use the second-order specifications" has
-the correct answer.
+**Why this case matters.** The hardest judgment on an application exam is knowing when
+your tools do not apply. Computing $T_{p}=\\pi$, $T_{s}=4$, $\\%OS=100e^{-\\pi}$ here
+produces three wrong numbers. The correct answer is that the five-times rule fails, so
+the second-order specifications cannot be used.
 
 **Compare directly with 4-14.** Identical dominant pair, identical dc gain, only the third
 pole moved from $-10$ to $-3$. Same question, opposite answer. **Always run the test; never
@@ -1665,19 +1801,26 @@ assume.**
 
     {
       id: "4-16", difficulty: "core", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `Consider
 
-$$T_{1}(s)=\frac{25}{s^{2}+6s+25}
-\qquad\text{and}\qquad
-T_{2}(s)=\frac{25\,(s+20)}{20\left(s^{2}+6s+25\right)}$$
+$$T_{1}(s)=\\frac{25}{s^{2}+6s+25}
+\\qquad\\text{and}\\qquad
+T_{2}(s)=\\frac{25\\,(s+20)}{20\\left(s^{2}+6s+25\\right)}$$
 
 $T_{2}$ is $T_{1}$ with a zero added at $s=-20$, scaled to preserve the dc gain. Determine whether the zero can be neglected, and explain your criterion.`,
       hint: "The same five-times yardstick applies to zeros. Compare the zero's distance from the imaginary axis to the dominant poles'.",
-      answer: "The zero **can** be neglected: it sits at $-20$ while $\sigma_{d}=3$, a ratio of $\tfrac{20}{3}>5$. Both systems have dc gain 1, so $T_{2}(s)\approx T_{1}(s)$ and the specifications $T_{p}=\tfrac{\pi}{4}$, $T_{s}=\tfrac43$, $\%OS=100e^{-3\pi/4}$ apply to both.",
-      expert: `The same factor-of-five rule, now on a zero. $\sigma_d=3$, zero at $-20$, ratio $20/3>5$. A zero that far out looks like a constant over the bandwidth of the pair, and the $20$ in the denominator of $T_2$ is there so that constant is $1$ rather than $20$. After that scaling, $T_2\approx T_1$ and the specs of $4$-$06$ apply to both.
+      answer: "The zero **can** be neglected: it sits at $-20$ while $\\sigma_{d}=3$, a ratio of $\\tfrac{20}{3}>5$. Both systems have dc gain 1, so $T_{2}(s)\\approx T_{1}(s)$ and the specifications $T_{p}=\\tfrac{\\pi}{4}$, $T_{s}=\\tfrac43$, $\\%OS=100e^{-3\\pi/4}$ apply to both.",
+      expert: `
+**First glance:** same five-times yardstick as additional poles, now applied to a zero. $\\sigma_{d}=3$, zero at $-20$, ratio $\\tfrac{20}{3}>\\tfrac{15}{3}=5$. **Negligible.** Ten seconds.
 
-Without the $20$ in the denominator you would be comparing a system to a twenty-times-larger copy of itself and calling the difference "the effect of the zero."
+**Check the dc gains match before comparing anything.** The $20$ in the denominator of $T_{2}$ exists precisely to make $T_{2}(0)=1$. Without that normalization the comparison is meaningless - you would be comparing a system to a 20-times-larger copy of itself.
+
+**Why a distant zero acts like a plain gain**, which is the reasoning behind the rule: in the partial fraction expansion, a far-off zero at $-a$ multiplies **every** residue by approximately the same factor $-a$. Same scaling everywhere means unchanged *relative* amplitudes means unchanged shape. Divide the gain back out and you recover the original response.
+
+**The contrast that makes this a real distinction:** a *near* zero scales the residues by *different* factors, changing relative amplitudes and therefore the shape - specifically increasing overshoot. That is problem 4-23.
+
+**Be precise about the claim.** "Negligible" means the transient shape and the three specifications survive. The two transfer functions are not equal - they differ at high frequency, where $T_{2}$ rolls off one order more slowly.
 `,
       solution: `
 **Step 1: locate the dominant poles.**
@@ -1730,18 +1873,33 @@ differ at high frequency, where $T_{2}$ rolls off one order more slowly.
 
     {
       id: "4-17", difficulty: "core", topic: "Zeros",
-      sec: "4.7",
+      sec: "4.8",
       prompt: `A system has
 
-$$G(s)=\frac{s-2}{(s+1)(s+2)}$$
+$$G(s)=\\frac{s-2}{(s+1)(s+2)}$$
 
 **(a)** Find the initial value, initial slope, and final value of the unit step response, without computing $c(t)$ in full.
 **(b)** Describe what makes this response qualitatively unusual, and name the property.`,
       hint: "Use the initial and final value theorems. Compare the sign of the initial slope with the sign of the final value.",
-      answer: "**(a)** $c(0^{+})=0$, initial slope $\dot c(0^{+})=+1$, $c(\infty)=-1$. **(b)** The response initially moves in the **positive** direction but settles at a **negative** value - it starts off in the wrong direction. This is a **nonminimum-phase** system, caused by the zero at $s=+2$ in the right half-plane.",
-      expert: `You do not need $c(t)$ to get the three edge values. $G$ is strictly proper, so $c(0^+)=G(\infty)=0$. The final value is $G(0)=(0-2)/(1\cdot 2)=-1$. The initial slope of a step response is the high-frequency coefficient of $s^{-1}$ in $G(s)$, here $1$: $\dot c(0^+)=1$.
+      answer: "**(a)** $c(0^{+})=0$, initial slope $\\dot c(0^{+})=+1$, $c(\\infty)=-1$. **(b)** The response initially moves in the **positive** direction but settles at a **negative** value - it starts off in the wrong direction. This is a **nonminimum-phase** system, caused by the zero at $s=+2$ in the right half-plane.",
+      expert: `
+**First glance:** $s-2$ in the numerator. A **right-half-plane zero**, and an expert names the consequence before computing anything: *nonminimum phase, the response starts off in the wrong direction.*
 
-So the output starts at $0$, immediately goes positive, and later sits at $-1$. It left the origin in the opposite direction from where it will live. That is what a right-half-plane zero does. The name is nonminimum phase. The sign change between $\dot c(0^+)$ and $c(\infty)$ is the symptom; the zero at $+2$ is the cause. A left-half-plane zero can change overshoot. It cannot reverse the start.
+**The two limits that prove it, with no inverse transform:**
+
+$$\\dot c(0^{+})=\\lim_{s\\to\\infty}s^{2}C(s)=+1
+\\qquad
+c(\\infty)=\\lim_{s\\to0}sC(s)=-1$$
+
+Initial slope positive, final value negative. Opposite signs - that *is* the reversal, established in two limits.
+
+**Discard:** partial fractions. The question asks about initial and final behaviour, and limit theorems answer that directly. Compute $c(t)$ only to check.
+
+**The mechanism:** the zero at $+a$ gives $-sC(s)+aC(s)$: the derivative term enters with a **flipped sign** relative to the left-half-plane case. Early on the derivative dominates, so the output goes the wrong way; later the scaled term takes over.
+
+**Same decomposition, opposite sign, opposite behaviour** - compare with 4-23, where an LHP zero *adds* the derivative and increases overshoot.
+
+**The design consequence worth knowing now:** you cannot cancel an RHP zero with a controller pole - that would put an RHP pole in the loop. Nonminimum-phase systems have a hard performance ceiling, which is why they get a name.
 `,
       solution: `
 ## Part (a)
@@ -1818,17 +1976,25 @@ system. They fundamentally limit achievable performance, which is why they get a
 
     {
       id: "4-18", difficulty: "core", topic: "Pole dominance",
-      sec: "4.6",
-      prompt: `For $$T(s)=\frac{20}{(s+1)(s+20)}$$ find the unit step response by partial fractions, then justify a **first-order** approximation using two independent arguments.`,
+      sec: "4.7",
+      prompt: `For $$T(s)=\\frac{20}{(s+1)(s+20)}$$ find the unit step response by partial fractions, then justify a **first-order** approximation using two independent arguments.`,
       hint: "Compute all three residues. Then compare both the pole locations and the residue sizes.",
-      answer: "$$c(t)=1-\tfrac{20}{19}e^{-t}+\tfrac{1}{19}e^{-20t}$$ The $e^{-20t}$ term is negligible because its pole is $20\times$ farther left **and** its residue is $20\times$ smaller. Hence $T(s)\approx\dfrac{1}{s+1}$.",
-      expert: `Two real poles an order of magnitude apart, dc gain $1$. Partial fractions will produce
+      answer: "$$c(t)=1-\\tfrac{20}{19}e^{-t}+\\tfrac{1}{19}e^{-20t}$$ The $e^{-20t}$ term is negligible because its pole is $20\\times$ farther left **and** its residue is $20\\times$ smaller. Hence $T(s)\\approx\\dfrac{1}{s+1}$.",
+      expert: `
+**First glance:** poles at $-1$ and $-20$, twenty to one. Wildly separated poles mean the fast one is irrelevant and the system behaves first-order. An expert predicts the conclusion before computing residues.
 
-$$c(t)=1-\tfrac{20}{19}e^{-t}+\tfrac{1}{19}e^{-20t}$$
+**But this problem wants both arguments, and they are genuinely independent:**
 
-The fast term is small for two independent reasons at once: the pole is twenty times farther left, and its residue is twenty times smaller than the slow residue. Either observation is enough to drop it. Both together are why $T(s)\approx 1/(s+1)$ is not a casual cancellation.
+1. **Location**: $\\tfrac{20}{1}=20\\ge5$, so the fast term is gone in $\\tfrac14$ s while the slow one has a 1-second time constant.
+2. **Residue size**: $\\left|\\tfrac{K_{3}}{K_{2}}\\right|=\\tfrac{1/19}{20/19}=\\tfrac{1}{20}$, so even at its largest the fast term is 5% of the slow one.
 
-A first-order model with $\tau=1$ then carries the settling. The $e^{-20t}$ spike is over before you would have looked at a plot.
+**Why both are needed:** a pole can be far away and still carry a large residue, or be close and nearly cancelled by a zero and carry almost none. Location alone is a heuristic; residues are the evidence.
+
+**The residue arithmetic: where errors happen:** $(-20)(-19)=+380$. Negative times negative. Write the two factor values down separately before multiplying.
+
+**Free check:** residues must sum to zero here (denominator exceeds numerator by 3): $1-\\tfrac{20}{19}+\\tfrac{1}{19}=0$ ✓
+
+**The reduction, with dc matching:** replace $(s+20)$ by 20, giving $\\tfrac{1}{s+1}$. Then $\\tau=1$, $T_{s}=4$, no overshoot - both poles real.
 `,
       solution: `
 **Step 1: form $C(s)$ and expand.**
@@ -1896,16 +2062,26 @@ real.
     {
       id: "4-19", difficulty: "core", topic: "System identification",
       sec: "4.2",
-      prompt: "A step of amplitude $2$ is applied to an unknown system. The response has no overshoot, rises with a nonzero initial slope, settles at $8$, and reaches $63\%$ of its final value at $t=\tfrac15$ s. Find $G(s)$.",
+      prompt: "A step of amplitude $2$ is applied to an unknown system. The response has no overshoot, rises with a nonzero initial slope, settles at $8$, and reaches $63\\%$ of its final value at $t=\\tfrac15$ s. Find $G(s)$.",
       hint: "The two identifying features tell you the order before you compute anything. Watch that the input is not a unit step.",
-      answer: "$$G(s)=\frac{20}{s+5}$$",
-      expert: `No overshoot plus a single visible time constant is first order. $63\%$ of the final value at $t=1/5$ is the definition of $\tau$, so $a=5$. A nonzero initial slope on a step means $G$ is strictly proper of relative degree one, which a first-order $K/(s+a)$ already is.
+      answer: "$$G(s)=\\frac{20}{s+5}$$",
+      expert: `
+**First glance:** the two qualitative facts settle the order before any numbers are used.
 
-The step amplitude is $2$ and the output settles at $8$, so the dc gain is $4$, not $8$. $G(0)=K/a=4$ gives $K=20$.
+- **no overshoot** rules out an underdamped pair
+- **nonzero initial slope** rules out *any* two-pole system with a constant numerator, because those have $\\dot c(0^{+})=0$
 
-$$G(s)=\frac{20}{s+5}$$
+Both together: first order. An expert reads the description, writes $G=\\tfrac{K}{s+a}$, and only then looks at the data.
 
-Reading the $8$ as $K$ is the usual miss. $8$ is $G(0)$ times the step size.
+**The trap, and it is the content of the problem:** the input is a step of amplitude **2**. So
+
+$$c(\\infty)=\\underbrace{G(0)}_{\\text{dc gain}}\\times\\underbrace{2}_{\\text{input}}$$
+
+Assuming a unit step gives $K=40$: twice too large: and nothing downstream looks wrong. Experts check the input amplitude *every time* before using a final value.
+
+**Reading the parameters:** $63\\%$ point at $t=\\tfrac15$ means $\\tau=\\tfrac15$ means $a=5$, by definition. Then $\\tfrac{2K}{5}=8\\Rightarrow K=20$.
+
+**Confirm:** $G(0)=\\tfrac{20}{5}=4$, and $4\\times2=8$ ✓ Getting the dc gain and the final value to differ by exactly the input amplitude is the check that the trap was avoided.
 `,
       solution: `
 **Step 1: identify the order from the description, before any algebra.**
@@ -1968,14 +2144,23 @@ $63\\%$ point ✓
     {
       id: "4-20", difficulty: "core", topic: "System identification",
       sec: "4.2",
-      prompt: "A second-order system with unity dc gain is measured to have $\%OS=100e^{-\pi/\sqrt3}$ and $T_{s}=2$ s. Find $\zeta$, $\omega_{n}$, the poles, $T_{p}$, and $G(s)$.",
-      hint: "Overshoot gives $\zeta$ on its own. Settling time then gives $\omega_n$, because $T_s$ involves the product $\zeta\omega_n$.",
-      answer: "$\zeta=\tfrac12$, $\omega_{n}=4$, poles $s=-2\pm j2\sqrt3$, $T_{p}=\dfrac{\pi\sqrt3}{6}$ s, and $$G(s)=\frac{16}{s^{2}+4s+16}$$",
-      expert: `$\%OS=100e^{-\pi/\sqrt{3}}$ is the overshoot of $\zeta=1/2$. The exponent identity is $-\pi\zeta/\sqrt{1-\zeta^2}=-\pi/\sqrt{3}$, which is $\zeta=\tfrac12$ on sight if you know the standard values. $T_s=2$ is $\sigma_d=2$. Then $\omega_n=\sigma_d/\zeta=4$, $\omega_d=2\sqrt{3}$, poles $-2\pm j2\sqrt{3}$, $T_p=\pi/(2\sqrt{3})=\pi\sqrt{3}/6$, and
+      prompt: "A second-order system with unity dc gain is measured to have $\\%OS=100e^{-\\pi/\\sqrt3}$ and $T_{s}=2$ s. Find $\\zeta$, $\\omega_{n}$, the poles, $T_{p}$, and $G(s)$.",
+      hint: "Overshoot gives $\\zeta$ on its own. Settling time then gives $\\omega_n$, because $T_s$ involves the product $\\zeta\\omega_n$.",
+      answer: "$\\zeta=\\tfrac12$, $\\omega_{n}=4$, poles $s=-2\\pm j2\\sqrt3$, $T_{p}=\\dfrac{\\pi\\sqrt3}{6}$ s, and $$G(s)=\\frac{16}{s^{2}+4s+16}$$",
+      expert: `
+**First glance:** the order of operations is forced, and getting it wrong leaves you with two unknowns in one equation.
 
-$$G(s)=\frac{16}{s^2+4s+16}$$
+$$\\%OS\\;\\longrightarrow\\;\\zeta\\;\\;\\text{(alone)},\\qquad\\text{then any time spec}\\;\\longrightarrow\\;\\omega_{n}$$
 
-The overshoot fixed the ray. The settling time fixed the distance along the ray. Together they are a point, which is a unique pair.
+**$\\%OS$ depends on $\\zeta$ and nothing else.** That is why it always goes first.
+
+**Recognize $\\pi/\\sqrt3$ on sight** rather than solving for it. From the memorized table, exponent $\\tfrac{\\pi}{\\sqrt3}$ $\\Leftrightarrow$ $\\zeta=\\tfrac12$ $\\Leftrightarrow$ $60^{\\circ}$. If you have the five exact pairs, this step is instant; if not, it is three lines of algebra. Either works, but on a timed exam the table wins.
+
+**Then $T_{s}=\\tfrac{4}{\\zeta\\omega_{n}}$ pins $\\omega_{n}$:** $\\zeta\\omega_{n}=2$, so $\\omega_{n}=4$ and $\\sigma_{d}=2$ directly. Note $\\sigma_{d}$ came out of the settling time without needing $\\omega_{n}$ at all.
+
+**Rationalize the peak time.** $T_{p}=\\tfrac{\\pi}{2\\sqrt3}=\\tfrac{\\pi\\sqrt3}{6}$. Leaving a surd in a denominator is the expected form to fix, and on a closed-book exam it is the only presentable answer.
+
+**Close by verifying all given specs against the finished $G(s)$** - $\\omega_{n}=\\sqrt{16}=4$, $\\zeta=\\tfrac48=\\tfrac12$, $T_{s}=\\tfrac42=2$ ✓ Round-tripping is faster than re-deriving.
 `,
       solution: `
 **Step 1: overshoot gives $\\zeta$, and nothing else does.**
@@ -2044,19 +2229,28 @@ it the other way round leaves two unknowns in one equation.
 
     {
       id: "4-21", difficulty: "challenge", topic: "Additional poles",
-      sec: "4.6",
+      sec: "4.7",
       prompt: `A closed-loop system has
 
-$$T(s)=\frac{200}{(s+10)\left(s^{2}+4s+20\right)}$$
+$$T(s)=\\frac{200}{(s+10)\\left(s^{2}+4s+20\\right)}$$
 
 **(a)** Decide whether the response can be characterized using second-order specifications, showing the test explicitly.
-**(b)** If so, give $T_{p}$, $T_{s}$, and $\%OS$ exactly.
+**(b)** If so, give $T_{p}$, $T_{s}$, and $\\%OS$ exactly.
 **(c)** State one thing your answer to (b) does **not** guarantee.`,
       hint: "The test lands exactly on the boundary. That is deliberate - say what the rule permits and be precise about its limits.",
-      answer: "**(a)** The dominant poles are $-2\pm j4$ so $\sigma_{d}=2$; the third pole is at $-10$ and $\tfrac{10}{2}=5$, which **meets** the five-times criterion exactly, so the approximation is permitted. **(b)** $T_{p}=\dfrac{\pi}{4}$ s, $T_{s}=2$ s, $\%OS=100e^{-\pi/2}$. **(c)** It does not guarantee the accuracy of the very early response, where the neglected $e^{-10t}$ term is still significant.",
-      expert: `Dominant pair $-2\pm j4$, so $\sigma_d=2$. Third pole at $-10$. The ratio is exactly $5$. The usual test says the approximation is allowed, on the boundary.
+      answer: "**(a)** The dominant poles are $-2\\pm j4$ so $\\sigma_{d}=2$; the third pole is at $-10$ and $\\tfrac{10}{2}=5$, which **meets** the five-times criterion exactly, so the approximation is permitted. **(b)** $T_{p}=\\dfrac{\\pi}{4}$ s, $T_{s}=2$ s, $\\%OS=100e^{-\\pi/2}$. **(c)** It does not guarantee the accuracy of the very early response, where the neglected $e^{-10t}$ term is still significant.",
+      expert: `
+**First glance:** the ratio is **exactly 5**, which places the problem on the boundary of the five-times rule. The answer turns on stating precisely what the rule permits at equality.
 
-Then the specs are the pair's specs: $T_p=\pi/4$, $T_s=2$, $\%OS=100e^{-\pi/2}$. What the test does not claim: that $c(t)$ looks like the second-order waveform from $t=0$. The neglected $e^{-10t}$ is large for a short time and then disappears. Early slope and the first fraction of a rise can disagree with the two-pole formulas even when $T_p$, $T_s$, and overshoot are acceptable.
+$s^{2}+4s+20\\Rightarrow(s+2)^{2}+16$, so $\\sigma_{d}=2$, $\\omega_{d}=4$. Third pole $-10$. $\\tfrac{10}{2}=5$.
+
+**The criterion is $\\ge5$, not $>5$.** Meeting it exactly qualifies. Answering "no, $5$ is not greater than $5$" misreads the inequality; answering "yes" without showing the ratio does not establish that the test was applied.
+
+**Specifications read off the pole:** $T_{p}=\\tfrac{\\pi}{4}$, $T_{s}=\\tfrac42=2$, $\\%OS=100e^{-2\\pi/4}=100e^{-\\pi/2}$.
+
+**Part (c) has no formula.** The third pole contributes a genuine $e^{-10t}$ with time constant $\\tfrac{1}{10}$ s, significant until roughly $t=0.5$ s. The first peak is at $T_{p}=\\pi/4\\approx0.79$ s, *after* that. So $T_{p}$, $T_{s}$ and $\\%OS$ are trustworthy while the early rise and the exact peak height are not.
+
+At a ratio of exactly 5 the margin is thin, and the true peak comes in slightly below the second-order prediction. State that limitation explicitly.
 `,
       solution: `
 ## Part (a)
@@ -2136,31 +2330,40 @@ frequency, where the true system rolls off one order faster.
 
 ---
 
-**Why this problem is worth the effort.** The ratio is exactly $5$, the boundary of the
-rule. A student who reflexively answers "yes, approximate" without showing the test gets
-the right conclusion for no reason. A student who answers "no, it's not $>5$" has
-misread a $\\ge$. The correct response states the number, states the criterion, and
-states the limitation: which is what an application exam is actually grading.
+**Why the boundary case matters.** The ratio is exactly $5$, the boundary of the rule.
+Answering "yes, approximate" without showing the test reaches the right conclusion
+without support; answering "no, it's not $>5$" misreads a $\\ge$. The complete response
+states the ratio, states the criterion, and states the limitation.
 `
     },
 
     {
       id: "4-22", difficulty: "challenge", topic: "Design regions",
-      sec: "4.5",
-      prompt: `A specification requires $T_{s}\le2$ s **and** $\%OS\le100e^{-\pi}$.
+      sec: "4.6",
+      prompt: `A specification requires $T_{s}\\le2$ s **and** $\\%OS\\le100e^{-\\pi}$.
 
-**(a)** Translate both requirements into conditions on the pole location $-\sigma_{d}\pm j\omega_{d}$, and describe the allowable region of the $s$-plane in words.
-**(b)** Determine which of these candidate pole pairs are acceptable: $-3\pm j2$, &nbsp; $-1\pm j1$, &nbsp; $-4\pm j6$, &nbsp; $-2\pm j2$.
+**(a)** Translate both requirements into conditions on the pole location $-\\sigma_{d}\\pm j\\omega_{d}$, and describe the allowable region of the $s$-plane in words.
+**(b)** Determine which of these candidate pole pairs are acceptable: $-3\\pm j2$, &nbsp; $-1\\pm j1$, &nbsp; $-4\\pm j6$, &nbsp; $-2\\pm j2$.
 **(c)** One candidate fails only one of the two tests. Which one, and what would you change about it?`,
       hint: "Each specification becomes a simple geometric constraint. One is a vertical boundary; the other is an angular one.",
-      answer: "**(a)** $\sigma_{d}\ge2$ (at or left of the vertical line $\sigma=-2$) **and** $\omega_{d}\le\sigma_{d}$ (within $45^{\circ}$ of the negative real axis). **(b)** Acceptable: $-3\pm j2$ and $-2\pm j2$. Rejected: $-1\pm j1$ and $-4\pm j6$. **(c)** $-4\pm j6$ passes settling time easily ($T_{s}=1$ s) but fails overshoot; reduce $\omega_{d}$ to at most 4.",
-      expert: `No plant is given. Two inequalities are two walls in the $s$-plane.
+      answer: "**(a)** $\\sigma_{d}\\ge2$ (at or left of the vertical line $\\sigma=-2$) **and** $\\omega_{d}\\le\\sigma_{d}$ (within $45^{\\circ}$ of the negative real axis). **(b)** Acceptable: $-3\\pm j2$ and $-2\\pm j2$. Rejected: $-1\\pm j1$ and $-4\\pm j6$. **(c)** $-4\\pm j6$ passes settling time easily ($T_{s}=1$ s) but fails overshoot; reduce $\\omega_{d}$ to at most 4.",
+      expert: `
+**First glance:** two specifications, two geometric boundaries. Nothing here needs a transfer function.
 
-$T_s\le 2$ is $\sigma_d\ge 2$: on or left of the vertical line $\sigma=-2$. $\%OS\le 100e^{-\pi}$ is $\zeta\ge 1/\sqrt{2}$, which is the $45^\circ$ wedge, which is $\omega_d\le\sigma_d$. The legal region is the intersection.
+$$T_{s}\\le2\\;\\Longrightarrow\\;\\sigma_{d}\\ge2\\quad\\text{(vertical line, poles to its left)}$$
+$$\\%OS\\le100e^{-\\pi}\\;\\Longrightarrow\\;\\zeta\\ge\\tfrac{\\sqrt2}{2}\\;\\Longrightarrow\\;\\theta\\le45^{\\circ}\\;\\Longrightarrow\\;\\omega_{d}\\le\\sigma_{d}$$
 
-$-3\pm j2$: $\sigma_d=3\ge 2$ and $2<3$, inside. $-2\pm j2$: on both boundaries, still inside if the inequalities are non-strict. $-1\pm j1$: same angle, too close to the axis, $T_s=4$. $-4\pm j6$: $\sigma_d=4$ is fine, $\omega_d=6>4$ is too steep, overshoot fails.
+**Both inequalities flip when you rearrange, and that is where points are lost.** Smaller $T_{s}$ needs *larger* $\\sigma_{d}$; smaller $\\%OS$ needs *larger* $\\zeta$ but a *smaller* angle. An expert says the direction out loud before writing.
 
-The last one is the interesting rejection. It settles in one second and then rings too much. The repair is to reduce $\omega_d$ to at most $4$, not to "increase damping" as an abstract slogan. On this plot that is a downward move at constant real part.
+**Recognize $100e^{-\\pi}$ instantly as the $45^{\\circ}$ line**: from 4-12. That turns the overshoot condition into the simple comparison $\\omega_{d}\\le\\sigma_{d}$, which you can apply to a candidate by eye.
+
+**Then the test is two comparisons per candidate, no arithmetic:**
+- is the real part at least 2?
+- is the imaginary part no bigger than the real part?
+
+$-2\\pm j2$ sits exactly on **both** boundaries. Since both specs were written with $\\le$, it qualifies - it is the corner of the wedge. With strict inequalities it would fail both. Reading the inequality symbol matters.
+
+**Where this is used:** in Chapters 8 and 9 you *place* poles to meet specifications. This translation is the step that makes that possible.
 `,
       solution: `
 ## Part (a)
@@ -2253,20 +2456,30 @@ it is the reason the constant-specification lines from problem 4-13 are standard
 
     {
       id: "4-23", difficulty: "challenge", topic: "Zeros",
-      sec: "4.7",
-      prompt: `Start from $$T(s)=\frac{25}{s^{2}+6s+25}$$ whose unit step response is $c(t)=1-e^{-3t}\left(\cos4t+\tfrac34\sin4t\right)$ from problem 4-09.
+      sec: "4.8",
+      prompt: `Start from $$T(s)=\\frac{25}{s^{2}+6s+25}$$ whose unit step response is $c(t)=1-e^{-3t}\\left(\\cos4t+\\tfrac34\\sin4t\\right)$ from problem 4-09.
 
 **(a)** Using the decomposition $(s+a)C(s)=sC(s)+aC(s)$, derive the unit step response of the system with a zero added at $s=-5$, scaled to keep unity dc gain.
 **(b)** Explain from your result why the overshoot increases, and predict what happens as the zero moves toward the origin.`,
       hint: "The derivative of the original step response has a very clean closed form. Compute it, then assemble the two pieces.",
-      answer: "**(a)** $$c_{z}(t)=1-e^{-3t}\left(\cos4t-\tfrac12\sin4t\right)$$ **(b)** The added derivative term is $+\tfrac54e^{-3t}\sin4t$, which is **positive** through the first half-cycle and so adds to the first peak. As the zero moves toward the origin ($a$ decreasing) the factor $1/a$ grows, the derivative term dominates, and overshoot increases without bound.",
-      expert: `A unity-dc zero at $-a$ turns the old step response $c(t)$ into
+      answer: "**(a)** $$c_{z}(t)=1-e^{-3t}\\left(\\cos4t-\\tfrac12\\sin4t\\right)$$ **(b)** The added derivative term is $+\\tfrac54e^{-3t}\\sin4t$, which is **positive** through the first half-cycle and so adds to the first peak. As the zero moves toward the origin ($a$ decreasing) the factor $1/a$ grows, the derivative term dominates, and overshoot increases without bound.",
+      expert: `
+**First glance:** the decomposition does all the work here. In words:
 
-$$c_z(t)=c(t)+\frac1a\dot c(t)$$
+$$\\text{response with a zero}=\\text{original response}+\\frac{1}{a}\\times\\text{its own derivative}$$
 
-That is the identity $(s+a)C=sC+aC$ after you cancel the extra $a$ that was inserted to keep $G(0)$ the same. You already have $c(t)$ from $4$-$09$, so $\dot c$ is a derivative you can write down, and $a=5$. The new sinusoid coefficients follow. The result in the answer is that derivative mix, not a new partial-fraction problem.
+Everything about zeros and transients follows from that one line.
 
-$\dot c$ of an underdamped step is positive through the rise and through the first peak. Adding a positive multiple of it raises the first peak. That is why a left-half-plane zero increases overshoot. As $a$ shrinks, $1/a$ grows, the derivative term takes over, and the overshoot grows without a finite cap. A zero on top of the pair is no longer a mild perturbation; it is a different shape.
+**The derivative of an underdamped step response is pure sine** (no cosine) with a clean closed form:
+
+$$\\dot c=\\frac{\\omega_{n}}{\\sqrt{1-\\zeta^{2}}}e^{-\\sigma_{d}t}\\sin\\omega_{d}t
+=\\frac{25}{4}e^{-3t}\\sin4t$$
+
+An expert quotes this rather than differentiating. If you do differentiate, the cosine terms cancel exactly - that cancellation is confirmation you did it right.
+
+**Why the overshoot must increase, argued before any algebra:** $\\sin\\omega_{d}t$ is positive for $0<\\omega_{d}t<\\pi$, and the first peak occurs at exactly $\\omega_{d}t=\\pi$. So the added term is positive **throughout the entire rise and right up to the peak.** It cannot do anything but raise the peak.
+
+**And the limiting behaviour, read off the $\\tfrac1a$ weight:** $a$ large $\\Rightarrow$ term vanishes $\\Rightarrow$ recovers 4-16. $a$ small $\\Rightarrow$ derivative dominates $\\Rightarrow$ overshoot grows without bound. One coefficient explains both ends.
 `,
       solution: `
 ## Part (a)
@@ -2387,12 +2600,27 @@ $$c(t)=2+e^{-t}-2e^{-2t}$$
 **(b)** Find $G(s)$.
 **(c)** Verify your answer with two independent limit checks.`,
       hint: "Evaluate $c(0^+)$ from the data first. For a strictly proper transfer function driven by a step, what must it equal?",
-      answer: "**(a)** $c(0^{+})=1\ne0$, so the numerator and denominator of $G(s)$ must have **equal degree** - $G$ is proper but not strictly proper. **(b)** $$G(s)=\frac{s^{2}+6s+4}{s^{2}+3s+2}=\frac{s^{2}+6s+4}{(s+1)(s+2)}$$ **(c)** $G(0)=2=c(\infty)$ ✓ and $G(\infty)=1=c(0^{+})$ ✓",
-      expert: `$c(0^+)=2+1-2=1$, not $0$. A strictly proper $G$ cannot do that. Relative degree zero: numerator and denominator of $G$ have the same degree. That is part (a), and it tells you $G(\infty)=1$ before you compute $G$.
+      answer: "**(a)** $c(0^{+})=1\\ne0$, so the numerator and denominator of $G(s)$ must have **equal degree** - $G$ is proper but not strictly proper. **(b)** $$G(s)=\\frac{s^{2}+6s+4}{s^{2}+3s+2}=\\frac{s^{2}+6s+4}{(s+1)(s+2)}$$ **(c)** $G(0)=2=c(\\infty)$ ✓ and $G(\\infty)=1=c(0^{+})$ ✓",
+      expert: `
+**First glance:** evaluate $c(0)$ *before doing anything else.* $2+1-2=1\\ne0$.
 
-Laplace of $c(t)$ is $C(s)$. Divide by $1/s$ to get $G(s)$. The poles of $c$ are the poles of $G$, here $-1$ and $-2$, so the denominator is $(s+1)(s+2)$. The numerator has to be quadratic with leading coefficient $1$ to match $G(\infty)=1$, and $G(0)=c(\infty)=2$ fixes the constant term as $4$. The remaining coefficient is the $6$ in $s^2+6s+4$.
+**That single number determines the structure of the answer.** For a unit-step input,
 
-The two checks in part (c) are those same two limits: $G(0)=2$ and $G(\infty)=1$. They are not extra work. They are the two facts you used to write the numerator.
+$$c(0^{+})=G(\\infty)$$
+
+so a nonzero initial value means $\\deg N=\\deg D$ - the transfer function is proper but **not strictly proper**, with leading coefficients in ratio 1.
+
+Every second-order system earlier in this chapter started at zero. This one does not, and knowing that in advance tells you the $s^{2}$ terms will **survive** the numerator collection rather than cancel. In problem 2-24 they cancelled, because that response started at rest. Same algebra, opposite expectation, decided by one arithmetic evaluation.
+
+**Poles straight off the exponents:** $e^{-t}$, $e^{-2t}$ $\\Rightarrow$ denominator $(s+1)(s+2)$. Written down immediately.
+
+**The two-limit close-out, which pins both ends of the time axis:**
+
+$$G(0)=\\tfrac42=2=c(\\infty)\\;\\checkmark
+\\qquad
+G(\\infty)=\\tfrac11=1=c(0^{+})\\;\\checkmark$$
+
+**What it means physically:** long division gives $G=1+\\tfrac{3s+2}{(s+1)(s+2)}$ - a direct feedthrough plus a strictly proper part. Some of the input reaches the output without passing through any energy-storage element. And note the zeros $-3\\pm\\sqrt5$ are both left-half-plane, so despite the jump this is **not** nonminimum phase.
 `,
       solution: `
 ## Part (a)
@@ -2500,23 +2728,30 @@ system despite its unusual initial jump.
 
     {
       id: "4-25", difficulty: "challenge", topic: "Design from specifications",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A translational mechanical system consists of a mass $M=1$ kg connected to a wall by a spring $K$ and a viscous damper $f_{v}$ in parallel, with force $f(t)$ applied to the mass and displacement $x(t)$ as the output.
 
-**(a)** Write $\dfrac{X(s)}{F(s)}$ symbolically and express $\omega_{n}$ and $\zeta$ in terms of $M$, $f_{v}$, $K$.
-**(b)** Choose $f_{v}$ and $K$ so that the system settles in $T_{s}=2$ s with $\%OS=100e^{-\pi}$.
+**(a)** Write $\\dfrac{X(s)}{F(s)}$ symbolically and express $\\omega_{n}$ and $\\zeta$ in terms of $M$, $f_{v}$, $K$.
+**(b)** Choose $f_{v}$ and $K$ so that the system settles in $T_{s}=2$ s with $\\%OS=100e^{-\\pi}$.
 **(c)** With those values, what is the steady-state displacement under a constant $16$ N force, and what is the peak time?`,
-      hint: "Chapter 2 gives you the transfer function; Chapter 4 gives you the specifications. Work the overshoot requirement first, because it fixes $\zeta$ alone.",
-      answer: "**(a)** $\dfrac{X}{F}=\dfrac{1}{Ms^{2}+f_{v}s+K}$, with $\omega_{n}=\sqrt{K/M}$ and $\zeta=\dfrac{f_{v}}{2\sqrt{KM}}$. **(b)** $f_{v}=4$ N-s/m and $K=8$ N/m, giving poles $-2\pm j2$. **(c)** $x_{ss}=2$ m and $T_{p}=\dfrac{\pi}{2}$ s.",
-      expert: `Force into mass-spring-damper with output $x$ is the textbook second-order plant
+      hint: "Chapter 2 gives you the transfer function; Chapter 4 gives you the specifications. Work the overshoot requirement first, because it fixes $\\zeta$ alone.",
+      answer: "**(a)** $\\dfrac{X}{F}=\\dfrac{1}{Ms^{2}+f_{v}s+K}$, with $\\omega_{n}=\\sqrt{K/M}$ and $\\zeta=\\dfrac{f_{v}}{2\\sqrt{KM}}$. **(b)** $f_{v}=4$ N-s/m and $K=8$ N/m, giving poles $-2\\pm j2$. **(c)** $x_{ss}=2$ m and $T_{p}=\\dfrac{\\pi}{2}$ s.",
+      expert: `
+**First glance:** this is Chapter 2 and Chapter 4 bolted together. Get the transfer function, normalize it, then run the specifications backwards.
 
-$$\frac{X}{F}=\frac{1}{Ms^2+f_v s+K}$$
+**The step people skip, and it invalidates everything after it:** you cannot read $\\omega_{n}$ and $\\zeta$ off $Ms^{2}+f_{v}s+K$. The leading coefficient must be 1. Divide through by $M$ first:
 
-and $M=1$ is already sitting there, so $\omega_n=\sqrt{K}$ and $\zeta=f_v/(2\sqrt{K})$.
+$$\\omega_{n}=\\sqrt{\\frac{K}{M}},\\qquad \\zeta=\\frac{f_{v}}{2\\sqrt{KM}}$$
 
-$\%OS=100e^{-\pi}$ is the $45^\circ$ ray, $\sigma_d=\omega_d$. $T_s=2$ is $\sigma_d=2$. The pole is $-2\pm j2$. Then $2\zeta\omega_n=4=f_v$ and $\omega_n^2=8=K$.
+With $M=1$ they happen to coincide with the raw coefficients, which is exactly why the habit must be built on problems where they do not.
 
-A constant force of $16$ N sees only the spring. $x_{ss}=16/K=2$. Peak time is $\pi/\omega_d=\pi/2$. The damper does not appear in the steady displacement of a step of force; it cannot, because a damper does not hold a static load.
+**Order of operations is forced:** $\\%OS\\to\\zeta$ first (it depends on nothing else), then $T_{s}\\to\\omega_{n}$, then hardware. Recognize $100e^{-\\pi}\\Rightarrow\\zeta=\\tfrac{\\sqrt2}{2}$ instantly.
+
+**The surd arithmetic, done cleanly:** $\\omega_{n}=\\tfrac{2}{\\sqrt2/2}=\\tfrac{4}{\\sqrt2}=2\\sqrt2$, so $K=M\\omega_{n}^{2}=8$ and $f_{v}=2\\zeta\\sqrt{KM}=\\sqrt2\\cdot2\\sqrt2=4$. Rationalize as you go rather than at the end.
+
+**Verify by rebuilding:** $s^{2}+4s+8=(s+2)^{2}+4$, poles $-2\\pm j2$: equal parts, so $45^{\\circ}$, so $\\%OS=100e^{-\\pi}$ ✓ and $T_{s}=\\tfrac42=2$ ✓ Round-tripping is the fastest confirmation.
+
+**The design lesson:** two specs consumed both free parameters exactly. $T_{p}$ and $x_{ss}$ then followed with no choice left. A third requirement would have no knob to turn - which is the argument for compensation.
 `,
       solution: `
 ## Part (a)
@@ -2617,16 +2852,15 @@ argument for Chapter 9.
     {
       id: "4-26", difficulty: "challenge", topic: "Second-order systems",
       sec: "4.4",
-      prompt: `A classmate reads $G(s)=\dfrac{20}{2s^{2}+4s+20}$ as $\omega_n=\sqrt{20}$ and $\zeta=4/(2\sqrt{20})$.
+      prompt: `A classmate reads $G(s)=\\dfrac{20}{2s^{2}+4s+20}$ as $\\omega_n=\\sqrt{20}$ and $\\zeta=4/(2\\sqrt{20})$.
 
-Correct them, then compute $\omega_n$ and $\zeta$.`,
+Correct them, then compute $\\omega_n$ and $\\zeta$.`,
       hint: "Leading coefficient of the denominator must be $1$.",
-      answer: "Divide by $2$ first: $G=10/(s^{2}+2s+10)$. Then $\omega_n=\sqrt{10}$, $\zeta=1/\sqrt{10}$.",
-      expert: `$\omega_n$ and $\zeta$ are defined on a monic denominator. The $2$ in front of $s^2$ is not optional. Divide through:
+      answer: "Divide by $2$ first: $G=10/(s^{2}+2s+10)$. Then $\\omega_n=\\sqrt{10}$, $\\zeta=1/\\sqrt{10}$.",
+      expert: `
+**First glance:** $2s^{2}$ is the trap. $\\omega_n^{2}$ is the *normalized* constant term.
 
-$$G(s)=\frac{10}{s^2+2s+10}$$
-
-Then $\omega_n=\sqrt{10}$ and $2\zeta\omega_n=2$, so $\zeta=1/\sqrt{10}$. Reading $\sqrt{20}$ off the constant term of an unnormalized quadratic is the same mistake as reading $\zeta$ from $b$ in $as^2+bs+c$ without the $2\sqrt{ac}$.
+**Path:** $s^{2}+2s+10$, $\\omega_n=\\sqrt{10}$, $2\\zeta\\omega_n=2$ so $\\zeta=1/\\omega_n=1/\\sqrt{10}$.
 `,
       solution: `
 $$G(s)=\\frac{20}{2s^{2}+4s+20}=\\frac{10}{s^{2}+2s+10}.$$
@@ -2638,15 +2872,16 @@ Using $\\sqrt{20}$ treats the un-normalized polynomial as if it were monic. The 
     },
     {
       id: "4-27", difficulty: "challenge", topic: "Design from specifications",
-      sec: "4.5",
-      prompt: `A second-order pair must satisfy $T_s\le 1$ s and $\%OS\le 100e^{-\pi}$ (that is, $\zeta\ge \sqrt{2}/2$).
+      sec: "4.6",
+      prompt: `A second-order pair must satisfy $T_s\\le 1$ s and $\\%OS\\le 100e^{-\\pi}$ (that is, $\\zeta\\ge \\sqrt{2}/2$).
 
-Can both be met with $\omega_n=3$? If not, what is the smallest $\omega_n$ that works?`,
-      hint: "$T_s=4/(\zeta\omega_n)$. The tighter $\zeta$ makes $T_s$ larger for fixed $\omega_n$.",
-      answer: "No. At $\zeta=\sqrt{2}/2$ and $\omega_n=3$, $T_s=4/(\tfrac{\sqrt{2}}{2}\cdot 3)=8/(3\sqrt{2})\approx 1.89>1$. Need $\zeta\omega_n\ge 4$, so $\omega_n\ge 4\sqrt{2}$ at this $\zeta$.",
-      expert: `$T_s\le 1$ demands $\sigma_d=\zeta\omega_n\ge 4$. The overshoot cap demands $\zeta\ge 1/\sqrt{2}$. At $\omega_n=3$ the largest $\sigma_d$ you can have on that wedge is $3/\sqrt{2}\approx 2.12$, which is short of $4$. Even if you leave the wedge and go to $\zeta=1$, you only get $\sigma_d=3$. The number $3$ cannot reach a vertical line at $4$.
+Can both be met with $\\omega_n=3$? If not, what is the smallest $\\omega_n$ that works?`,
+      hint: "$T_s=4/(\\zeta\\omega_n)$. The tighter $\\zeta$ makes $T_s$ larger for fixed $\\omega_n$.",
+      answer: "No. At $\\zeta=\\sqrt{2}/2$ and $\\omega_n=3$, $T_s=4/(\\tfrac{\\sqrt{2}}{2}\\cdot 3)=8/(3\\sqrt{2})\\approx 1.89>1$. Need $\\zeta\\omega_n\\ge 4$, so $\\omega_n\\ge 4\\sqrt{2}$ at this $\\zeta$.",
+      expert: `
+**First glance:** $T_s$ is a vertical line $\\sigma_d=4$. $\\zeta=\\sqrt{2}/2$ is a $45^{\\circ}$ ray. Their intersection is $\\omega_n=4\\sqrt{2}$.
 
-The smallest $\omega_n$ that works is the one that puts the $45^\circ$ ray on $\sigma_d=4$: $\omega_n=4\sqrt{2}$. Below that, settling time and this overshoot cap cannot be satisfied together.
+**Path:** $\\omega_n=3$ sits inside the $\\zeta$ wedge only if $\\sigma_d=\\zeta\\omega_n\\ge 3/\\sqrt{2}\\approx 2.12<4$. Too close to the axis.
 `,
       solution: `
 $\\%OS\\le 100e^{-\\pi}$ means $\\zeta\\ge \\sqrt{2}/2$, so the poles lie inside the $45^{\\circ}$ wedge.
@@ -2660,15 +2895,16 @@ $\\omega_n=3$ cannot reach $\\sigma_d=4$ at any $\\zeta\\le 1$. Even critically 
     },
     {
       id: "4-28", difficulty: "challenge", topic: "Pole dominance",
-      sec: "4.6",
-      prompt: `$$G(s)=\frac{36\cdot 10}{(s^{2}+2\cdot 0.5\cdot 6\, s+36)(s+10)}=\frac{360}{(s^{2}+6s+36)(s+10)}.$$
+      sec: "4.7",
+      prompt: `$$G(s)=\\frac{36\\cdot 10}{(s^{2}+2\\cdot 0.5\\cdot 6\\, s+36)(s+10)}=\\frac{360}{(s^{2}+6s+36)(s+10)}.$$
 
-Is the real pole negligible by the five-times rule? Estimate $\%OS$ as if it were, then state the direction of the error that the neglected pole introduces.`,
-      hint: "Compare $10$ to $\sigma_d=3$. Extra real poles pull overshoot *down*.",
-      answer: "No: $10/3\approx 3.3<5$. Treating it as second order gives $\zeta=0.5$, $\%OS=100e^{-\pi/\sqrt{3}}$. The real pole, being too close, will reduce the actual overshoot below that estimate.",
-      expert: `The pair is $\omega_n=6$, $\zeta=0.5$, so $\sigma_d=3$. The real pole is at $-10$. The ratio $10/3\approx 3.3$ fails the factor-of-five test. The $e^{-10t}$ term is still present while the pair is peaking.
+Is the real pole negligible by the five-times rule? Estimate $\\%OS$ as if it were, then state the direction of the error that the neglected pole introduces.`,
+      hint: "Compare $10$ to $\\sigma_d=3$. Extra real poles pull overshoot *down*.",
+      answer: "No: $10/3\\approx 3.3<5$. Treating it as second order gives $\\zeta=0.5$, $\\%OS=100e^{-\\pi/\\sqrt{3}}$. The real pole, being too close, will reduce the actual overshoot below that estimate.",
+      expert: `
+**First glance:** $\\sigma_d=3$, third pole at $-10$, ratio $3.3$. The rule fails.
 
-If you ignore that and use the pair anyway, $\%OS=100e^{-\pi/\sqrt{3}}$. The real pole that you were not supposed to ignore pulls the first peak down. The second-order number is therefore an overestimate of the overshoot you will measure. The error has a sign: neglected left-half-plane poles reduce overshoot.
+**Check:** a left-half-plane pole is a lag. It slows the rise and trims the peak. The second-order $\\%OS$ is an upper bound here, not a prediction.
 `,
       solution: `
 The quadratic is $s^{2}+6s+36$, so $\\omega_n=6$, $\\zeta=1/2$, $\\sigma_d=3$.
@@ -2680,17 +2916,16 @@ If you drop it anyway you get $\\%OS=100e^{-\\pi/\\sqrt{3}}\\approx 16\\%$. The 
     },
     {
       id: "4-29", difficulty: "challenge", topic: "Zeros",
-      sec: "4.7",
-      prompt: `A closed-loop system is $\dfrac{36(s+z)}{z(s^{2}+6s+36)}$ with $z>0$.
+      sec: "4.8",
+      prompt: `A closed-loop system is $\\dfrac{36(s+z)}{z(s^{2}+6s+36)}$ with $z>0$.
 
 For $z=3$ versus $z=30$, which case has more overshoot, and why, without computing $c(t)$?`,
       hint: "A zero is a weighted derivative of the zero-free response. Closer zeros mean heavier derivative.",
-      answer: "More overshoot at $z=3$. The zero is closer to the imaginary axis, so the $c_{\text{zero-free}}+\frac{1}{z}\dot c_{\text{zero-free}}$ mix puts more weight on the derivative, which peaks earlier and higher.",
-      expert: `Both plants share the pair $-3\pm j3\sqrt{3}$ from $s^2+6s+36$. The zero is the only difference, and it is already normalized so $G(0)$ is the same. The mix is $c+\frac1z\dot c$ of the zero-free response.
+      answer: "More overshoot at $z=3$. The zero is closer to the imaginary axis, so the $c_{\\text{zero-free}}+\\frac{1}{z}\\dot c_{\\text{zero-free}}$ mix puts more weight on the derivative, which peaks earlier and higher.",
+      expert: `
+**First glance:** both have the same poles. Only the zero moves. Overshoot is an amplitude effect.
 
-At $z=3$ the zero sits on top of the real part of the pair. $\frac1z$ is not small, and the derivative term is a large part of $c_z$. At $z=30$ the zero is ten times farther left; $\frac1z$ is small and the waveform is almost the pair's own step response.
-
-The derivative of an underdamped step is positive through the first peak, so more weight on $\dot c$ means a higher first peak. Closer zero, more overshoot. You do not need $c(t)$ for either value of $z$ to know which way it goes.
+**Path:** $C(s)=\\big(1+s/z\\big)C_{\\text{nf}}(s)$ for a step into the no-zero system scaled to the same DC. Small $z$ is a large $1/z$.
 `,
       solution: `
 Write the no-zero step response as $c_{\\text{nf}}(t)$, DC gain $1$. Then
@@ -2699,24 +2934,21 @@ $$c(t)=c_{\\text{nf}}(t)+\\frac{1}{z}\\dot c_{\\text{nf}}(t).$$
 
 $\\dot c_{\\text{nf}}$ is a signed pulse around the rise. Adding a large multiple of it ($z=3$) lifts the peak. $z=30$ is a small multiple; the response is nearly $c_{\\text{nf}}$.
 
-Same poles, different residues. That is the whole content of a zero.
+Same poles, different residues. That is what a zero does.
 `
     },
     {
       id: "4-30", difficulty: "challenge", topic: "System identification",
-      sec: "4.5",
+      sec: "4.6",
       prompt: `A step test on an unknown underdamped plant shows $T_p=0.5$ s, $T_s=2$ s, and a peak of $1.16$ when the final value is $1$.
 
-Is this consistent with a *pure* second-order model? If you must pick one pair $(\zeta,\omega_n)$ anyway, which two of the three numbers would you trust first, and why?`,
-      hint: "Pure second order: $\%OS$ fixes $\zeta$, $T_s$ fixes $\sigma_d$, $T_p$ fixes $\omega_d$. Check whether $\zeta=\sigma_d/\omega_n$ agrees.",
-      answer: "$\%OS=16\%$ is $\zeta\approx 0.5$. $T_s=2$ gives $\sigma_d=2$. $T_p=0.5$ gives $\omega_d=2\pi\approx 6.28$. Then $\omega_n\approx 6.6$ and $\zeta=\sigma_d/\omega_n\approx 0.30$, which does not match $0.5$. The three numbers are inconsistent with one pair. Trust $T_s$ and $T_p$ for the pole *location*; treat extra overshoot or extra damping as a zero or a third pole.",
-      expert: `A second-order pair has two parameters. The test gave three numbers, so they cannot all belong to one pair.
+Is this consistent with a *pure* second-order model? If you must pick one pair $(\\zeta,\\omega_n)$ anyway, which two of the three numbers would you trust first, and why?`,
+      hint: "Pure second order: $\\%OS$ fixes $\\zeta$, $T_s$ fixes $\\sigma_d$, $T_p$ fixes $\\omega_d$. Check whether $\\zeta=\\sigma_d/\\omega_n$ agrees.",
+      answer: "$\\%OS=16\\%$ is $\\zeta\\approx 0.5$. $T_s=2$ gives $\\sigma_d=2$. $T_p=0.5$ gives $\\omega_d=2\\pi\\approx 6.28$. Then $\\omega_n\\approx 6.6$ and $\\zeta=\\sigma_d/\\omega_n\\approx 0.30$, which does not match $0.5$. The three numbers are inconsistent with one pair. Trust $T_s$ and $T_p$ for the pole *location*; treat extra overshoot or extra damping as a zero or a third pole.",
+      expert: `
+**First glance:** three measurements, two parameters. A contradiction is information: the plant is not that pair.
 
-$T_s=2$ puts $\sigma_d=2$. $T_p=0.5$ puts $\omega_d=2\pi$. That is the pole $-2\pm j2\pi$. For that pole the overshoot is fixed: $\sigma_d/\omega_d=1/\pi$ gives $\zeta\approx 0.30$ and about $37\%$. The step test peaked at $16\%$. The peak is too small for the pole that the timing just drew.
-
-An extra left-half-plane pole reduces overshoot. A left-half-plane zero increases it. Something besides the pair is in the plant.
-
-If you still have to report one $(\zeta,\omega_n)$, take it from $T_s$ and $T_p$. Those two locate the dominant pole. Overshoot is where a hidden pole or zero shows up first, so it is the number you do not use to fit a pair that is not there.
+**Path:** $\\sigma_d=4/T_s=2$, $\\omega_d=\\pi/T_p=2\\pi$. That *is* a pole location. $\\%OS$ then has to match $\\sigma_d/\\omega_d=1/\\pi$, i.e. $\\zeta=1/\\sqrt{1+\\pi^{2}}\\approx 0.30$, not $0.5$. The overshoot is too small for those poles, which is what an extra left-half-plane pole would do.
 `,
       solution: `
 Pure second order has only two degrees of freedom. Three independent specs overdetermine it.
