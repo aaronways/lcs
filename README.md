@@ -12,9 +12,27 @@ so `_template.js` is not ignored by Jekyll.
 
 Hash routes:
 
-- `#/` map
+- `#/` course map
+- `#/concepts` concept index
+- `#/concept/damping` one thread across chapters
 - `#/ref` tables
 - `#/ch/4/problems` Chapter 4 problems
+
+Files: `index.html` (shell + all CSS), `app.js` (router, views), `widgets.js`
+(interactive figures), `reference.js`, `chapters/chNN.js` (content only).
+
+## Two rules that are easy to break
+
+1. **Never set `max-width` or `height` on an `svg` inside `.katex`.** KaTeX draws
+   `\sqrt` as an svg with `width='400em' height='1.08em'` and
+   `preserveAspectRatio='xMinYMin slice'`, clipped by `.hide-tail{overflow:hidden}`.
+   Overriding either attribute collapses the radical hook and leaves a bare
+   overline. Any responsive svg rule must be scoped to direct children.
+2. **Keep the stash step in `mdMath()`.** Math is pulled out before
+   `marked.parse` and put back after, so markdown cannot mangle LaTeX.
+
+`COURSE_ORDER` and `CONCEPTS` at the top of `app.js` drive navigation. Adding a
+chapter file is enough to make it appear; no other edit is required.
 
 ## Authoring
 
