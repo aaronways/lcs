@@ -58,3 +58,14 @@ Copy `chapters/_template.js` to `chapters/chNN.js` and add a script tag in
 `index.html`. Inside template literals, double every LaTeX backslash.
 
 Do not copy textbook problems or host the book PDF.
+
+## Figures
+
+Diagrams are inline SVG inside `<figure class="nx-frame"><svg class="nx-fig">`.
+Strokes use `currentColor` and fills use `var(--panel)`, so `.nx-schematic`
+(applied in `fill()` to every non-KaTeX svg) themes them in light and dark
+without edits. Give each figure's arrowhead `<marker>` a unique id.
+
+`tools-ch05-figures.py` generates the Chapter 5 diagrams from computed
+geometry rather than hand-typed coordinates. Run it, then re-insert; it
+validates every figure as XML before writing.
