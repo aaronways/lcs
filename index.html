@@ -42,6 +42,7 @@
   --shadow:0 1px 2px rgba(16,22,28,.05), 0 8px 22px -14px rgba(16,22,28,.28);
 }
 html.dark{
+  color-scheme:dark;
   --paper:#0D1218; --panel:#141B22; --panel-2:#1C252E; --sunk:#101821;
   --ink:#E6ECF2; --muted:#8C9BA9; --faint:#697887;
   --line:#25303A; --hair:#1B242C;
@@ -260,6 +261,16 @@ h1.chap{
   color:var(--faint);font-weight:500;border-bottom-color:var(--ink);
 }
 .guide-body tr:last-child td{border-bottom:0}
+
+/* Schematics (problems / notes). Class is applied in fill() only to
+   non-KaTeX svgs so radicals keep their own stroke/fill. */
+svg.nx-schematic{color:var(--ink);max-width:100%}
+svg.nx-schematic text{fill:var(--ink)}
+svg.nx-schematic rect{fill:var(--panel-2);stroke:var(--ink)}
+svg.nx-schematic :is(path,line,polyline,circle,ellipse,polygon){stroke:var(--ink)}
+svg.nx-schematic [stroke="none"]{stroke:none}
+svg.nx-schematic [fill="none"]{fill:none}
+svg.nx-schematic [fill="currentColor"]{fill:var(--ink)}
 /* direct children only — must never reach a KaTeX svg */
 .guide-body figure>svg,.guide-body>svg{max-width:100%}
 .nx-fig{max-width:100%;display:block;margin:0 auto}

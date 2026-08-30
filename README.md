@@ -30,6 +30,24 @@ Files: `index.html` (shell + all CSS), `app.js` (router, views), `widgets.js`
    overline. Any responsive svg rule must be scoped to direct children.
 2. **Keep the stash step in `mdMath()`.** Math is pulled out before
    `marked.parse` and put back after, so markdown cannot mangle LaTeX.
+3. **Double every LaTeX backslash inside a chapter string.** Write `\\frac`,
+   not `\frac`. JavaScript reads `\f` as a form feed, `\t` as a tab and `\r`
+   as a carriage return, and silently drops the backslash on `\p`, `\c`, `\q`.
+   The file still looks correct in an editor; the damage only appears when the
+   browser parses the string. Run the check below before committing a chapter.
+
+## Check before committing
+
+```
+node -e "const k=require('katex');global.registerChapter=c=>{const w=(o)=>{
+ if(typeof o==='string'){(o.match(/\$\$[\s\S]*?\$\$|\$[^\$\n]+?\$/g)||[])
+ .forEach(m=>{try{k.renderToString(m.replace(/^\$+|\$+$/g,''),{throwOnError:true})}
+ catch(e){console.log('BAD:',m.slice(0,60))}})}
+ else if(o&&typeof o==='object')Object.values(o).forEach(w)};w(c)};
+ global.registerReference=()=>{};require('./chapters/ch04.js')"
+```
+
+Silence means every expression in that file parses.
 
 `COURSE_ORDER` and `CONCEPTS` at the top of `app.js` drive navigation. Adding a
 chapter file is enough to make it appear; no other edit is required.

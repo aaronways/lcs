@@ -11,28 +11,28 @@ const COURSE_ORDER = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 3, 12];
    views on these, not separate topics. */
 const CONCEPTS = [
   { slug:'transfer-function', name:'The transfer function',
-    blurb:'Output over input, zero initial conditions. Built once, reused everywhere.',
+    blurb:'C(s)/R(s) with zero initial conditions.',
     secs:['2.3','2.4','2.5','5.2'] },
   { slug:'poles-zeros', name:'Poles and zeros',
-    blurb:'Where the denominator vanishes sets the terms; where the numerator vanishes sets their weights.',
+    blurb:'Poles of C(s) set the terms in c(t). Zeros set the residues.',
     secs:['2.3','4.2','4.3','4.7','4.8','5.3'] },
   { slug:'damping', name:'Damping ratio and natural frequency',
-    blurb:'The angle of the pole fixes the shape; the distance fixes the time scale.',
+    blurb:'ζ from the angle of the pole, ωn from its distance to the origin.',
     secs:['4.4','4.5','4.6','5.3'] },
   { slug:'closed-loop', name:'Closing the loop',
-    blurb:'G/(1+GH). What feedback buys, and what it costs.',
+    blurb:'T = G/(1+GH). Disturbance rejection versus the usual gain trade-offs.',
     secs:['1.3','5.1','5.2','5.3'] },
   { slug:'characteristic-equation', name:'The characteristic equation',
-    blurb:'1 + G(s)H(s) = 0. Stability, root locus, and design all reduce to this.',
+    blurb:'1 + G(s)H(s) = 0. The closed-loop poles are its roots.',
     secs:['4.2','5.2','5.3'] },
   { slug:'laplace', name:'Laplace and the s-domain',
-    blurb:'Why differentiation becomes multiplication, and what that buys.',
+    blurb:'Differentiation becomes multiplication by s. Differential equations become algebra.',
     secs:['2.2','2.3'] },
   { slug:'linearization', name:'Nonlinearity and linearization',
     blurb:'Operating point, deviation variables, and the slope you actually use.',
     secs:['2.10','2.11'] },
   { slug:'specifications', name:'Transient specifications',
-    blurb:'%OS, Tp, Ts, Tr — read off a pole rather than solved for.',
+    blurb:'%OS, Tp, Ts, Tr from the dominant-pair coordinates.',
     secs:['1.4','4.6','4.7','5.3'] }
 ];
 
@@ -119,8 +119,13 @@ function typeset(el){
     throwOnError:false, strict:false
   });
 }
-function fill(el, md){ el.innerHTML = mdMath(md); typeset(el); }
-function fillInline(el, md){ el.innerHTML = mdInline(md); typeset(el); }
+function markSchematics(el){
+  el.querySelectorAll('svg').forEach(svg => {
+    if (!svg.closest('.katex')) svg.classList.add('nx-schematic');
+  });
+}
+function fill(el, md){ el.innerHTML = mdMath(md); markSchematics(el); typeset(el); }
+function fillInline(el, md){ el.innerHTML = mdInline(md); markSchematics(el); typeset(el); }
 
 /* ---------- helpers ------------------------------------------------------ */
 function esc(s){
@@ -477,7 +482,7 @@ function renderFormulas(main, ch){
   main.appendChild(grid);
   items.forEach(f => {
     const card = document.createElement('div');
-    card.className = 'ccard';
+    card.className = 'ccard formula-card';
     card.style.cursor = 'default';
     const eq = document.createElement('div');
     eq.style.overflowX = 'auto';
@@ -554,9 +559,8 @@ function renderSearch(main, q){
 function renderConceptIndex(main){
   main.insertAdjacentHTML('beforeend',
     '<div class="eyebrow">Concepts</div>' +
-    '<h1 class="chap">Eight objects, twelve chapters.</h1>' +
-    '<div class="brief"><p>The chapters are not separate topics. They are views on the ' +
-    'same handful of objects. Pick one and see every place the course touches it.</p></div>' +
+    '<h1 class="chap">Concepts</h1>' +
+    '<div class="brief"><p>Each page lists the notes and problems that use one idea, across the chapters that are written.</p></div>' +
     '<div class="sect-label">Threads</div>');
   const grid = document.createElement('div');
   grid.className = 'cgrid';
@@ -660,9 +664,8 @@ function renderHome(main){
   const hero = document.createElement('div');
   hero.className = 'hero';
   hero.innerHTML =
-    '<h1>The structure behind the <em>response</em>.</h1>' +
-    '<p>Where a pole sits decides how a system answers. Drag one and watch the ' +
-    'consequence, then read the chapter that proves it.</p>';
+    '<h1>Poles and the step response</h1>' +
+    '<p>The figure is a second-order pair. Drag the pole to change settling time, peak time, and overshoot. Chapters 1, 2, 4, and 5 work out the corresponding algebra.</p>';
   main.appendChild(hero);
 
   if (typeof NXW !== 'undefined'){
