@@ -4,11 +4,13 @@ registerChapter({
   sections: "1.1–1.7",
   brief: "A control system produces a specified output from a specified input. Closed loop means measure and correct. Performance splits into transient response, steady-state error, and stability. Natural response belongs to the system; forced response belongs to the input. Those two cuts are not the same.",
   sectionList: [
-    { id: "1.1", title: "What a control system is" },
-    { id: "1.2", title: "History" },
-    { id: "1.3", title: "Open loop versus closed loop" },
-    { id: "1.4", title: "Analysis and design objectives" },
-    { id: "1.5", title: "The design process" }
+    { id: "1.1", title: "Introduction" },
+    { id: "1.2", title: "A History of Control Systems" },
+    { id: "1.3", title: "System Configurations" },
+    { id: "1.4", title: "Analysis and Design Objectives" },
+    { id: "1.5", title: "The Design Process" },
+    { id: "1.6", title: "Computer-Aided Design" },
+    { id: "1.7", title: "The Control Systems Engineer" }
   ],
 
   guide: [
@@ -29,7 +31,7 @@ exists because gain alone cannot break that trade-off.
 `
     },
     {
-      title: "1.1: What a control system is",
+      title: "1.1: Introduction — what a control system is",
       example: "1-02",
       sec: "1.1",
       body: `
@@ -55,7 +57,7 @@ framing, **the input is the desired output**.
 `
     },
     {
-      title: "1.3: Open loop versus closed loop",
+      title: "1.3: System configurations — open loop versus closed loop",
       example: "1-03",
       sec: "1.3",
       body: `
@@ -81,7 +83,7 @@ neither. That sentence is the definition: not "has a loop drawn on it."
 
 The signal out of the first summing junction is the **actuating signal**. It is called
 the **error** only when both input and output transducers have unity gain, so that the
-actuating signal equals the true input-minus-output difference. The distinction is load-bearing in Chapter 7.
+actuating signal equals the true input-minus-output difference. The distinction matters in Chapter 7.
 
 Redesigning the controller to fix performance is **compensation**; the resulting
 hardware is a **compensator**.
@@ -94,7 +96,7 @@ take on supervisory scheduling.
 `
     },
     {
-      title: "1.4: The three analysis and design objectives",
+      title: "1.4: Analysis and design objectives",
       example: "1-05",
       sec: "1.4",
       body: `
@@ -174,7 +176,7 @@ motor voltage and the faster it turns.
 `
     },
     {
-      title: "1.5: The design process and the map of the book",
+      title: "1.5: The design process",
       example: "1-10",
       sec: "1.5",
       body: `
@@ -215,7 +217,7 @@ $$a_n\\frac{d^{n}c}{dt^{n}}+\\cdots+a_0c(t)=b_m\\frac{d^{m}r}{dt^{m}}+\\cdots+b_
 `
     },
     {
-      title: "Standard test inputs: memorize this",
+      title: "1.5: Standard test inputs",
       example: "1-11",
       sec: "1.5",
       body: `
@@ -238,12 +240,12 @@ a commanded position; a step into a velocity system means a commanded speed.
 `
     },
     {
-      title: "1.2: History, the part that is useful",
+      title: "1.2: A history of control systems",
       example: "1-18",
       sec: "1.2",
       body: `
-Most of Section 1.2 is color. What is worth retaining is that a handful of names map
-directly onto techniques you are about to learn.
+Section 1.2 is background. What carries forward is that a handful of names map directly
+onto techniques used later in the course.
 
 | Name | Contribution | Where it returns |
 |---|---|---|
@@ -254,6 +256,28 @@ directly onto techniques you are about to learn.
 | Minorsky (1920s) | Theory for automatic ship steering. | PID control, Ch. 9 and 11 |
 | Nyquist and Bode (late 1920s–30s, Bell Labs) | Feedback amplifier analysis. | Frequency response, Ch. 10 and 11 |
 | Evans (1948) | Graphical plot of characteristic-equation roots as a parameter varies. | Root locus, Ch. 8, 9, 13 |
+`
+    },
+    {
+      title: "1.6–1.7: Computer-aided design and the control systems engineer",
+      sec: "1.6",
+      body: `
+Two short sections. Neither introduces a technique, but both set expectations for how the
+rest of the book is used.
+
+**1.6 Computer-Aided Design.** Analysis and design in this course produce repeated
+root-finding, repeated simulation, and repeated iteration on parameters. MATLAB and the
+Control System Toolbox, Simulink, and LabVIEW are the tools Nise uses to carry that load;
+the Cyber Exploration Laboratory sections at the end of each chapter are built around
+them. The point of the tool is to check work and to iterate quickly, not to replace the
+hand analysis: the exam is closed-calculator, so every technique in this course is
+designed to be executable by hand on the problem sizes you will be given.
+
+**1.7 The Control Systems Engineer.** Control systems is a cross-disciplinary field. The
+same block diagram covers an electrical amplifier, a mechanical load, a chemical process
+and a hydraulic actuator, because the mathematics is the same regardless of the physics.
+A control systems engineer works with the specialists who own each subsystem and is
+responsible for the behaviour of the assembled loop.
 `
     }
   ],
@@ -366,8 +390,8 @@ Only when both transducers amplify their input by exactly 1 does the actuating s
 value equal the actual input-minus-output difference: and only then is it properly
 called the **error**.
 
-This distinction becomes load-bearing in Chapter 7, where steady-state error for
-nonunity-feedback systems requires separate treatment.
+This distinction matters in Chapter 7, where steady-state error for nonunity-feedback
+systems requires separate treatment.
 `
     },
     {
@@ -1029,7 +1053,7 @@ What is wrong, and which of the three design objectives is being ignored?`,
       hint: "Stability is a property of the natural response.",
       answer: "The natural response grows. The system is unstable. Transient specs and steady-state error are not defined as design objectives until the natural response dies or stays bounded.",
       expert: `
-**First glance:** $e^{+2t}$ is the whole story. Two seconds of a bounded input cannot cancel an unstable mode.
+**First glance:** the $e^{+2t}$ term settles it. A bounded input cannot cancel a growing natural mode.
 
 **Discard:** "the forced response looked fine." Forced response is the wrong cut for stability.
 `,

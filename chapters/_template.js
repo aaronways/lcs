@@ -47,19 +47,27 @@ $$\\frac{C(s)}{R(s)} = \\frac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^
       hint: "Optional. Omit the field entirely if there is no hint.",
       expert: `
 Optional but strongly recommended. This renders behind its own "Expert read"
-button, separate from the full solution. It is NOT a summary of the solution - it is the
-recognition narrative:
+button, separate from the full solution. It is the recognition narrative, not a
+summary of the solution. Four beats, always in this order, and no others:
 
-**First glance:** what the form of the equation or the specific numbers signal
-immediately, before any work.
+**First glance:** what the form of the equation or the specific numbers tell you
+before any work is done.
 
-**Discard:** methods a beginner would reasonably consider and why an expert
-discards them in under a second.
+**Discard:** the methods that would also reach the answer, and the concrete reason
+each is the slower or more error-prone route here.
 
-**Path:** the two or three lines that actually get the answer.
+**Path:** the two or three lines that actually produce the answer.
 
-**Check:** the structural feature that made it obvious, and the
-ten-second sanity check an expert runs without being asked.
+**Check:** the structural feature the recognition rested on, and the sanity check
+that confirms the result.
+
+Rules for this field:
+- No commentary about what "an expert" notices, says, or does. Write the observation
+  itself.
+- No claims about how long a step takes.
+- No commentary about what students get wrong, or what an exam is grading. If an error
+  is common, name the error and its cause.
+- No "not X, it is Y" framing. State what the thing is.
 `,
       answer: "$$\\text{short final answer}$$",
       solution: `

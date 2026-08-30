@@ -5,13 +5,13 @@ registerChapter({
   brief: "A pole's location is a number you can measure. Real part sets settling, imaginary part sets peak time, angle sets overshoot. $\\omega_n$ only scales the clock. Zeros change how strongly each mode is excited, not which modes exist.",
   sectionList: [
     { id: "4.1", title: "Introduction" },
-    { id: "4.2", title: "Poles, zeros, and system response" },
-    { id: "4.3", title: "First-order systems" },
-    { id: "4.4", title: "Second-order systems: introduction" },
-    { id: "4.5", title: "The general second-order system" },
-    { id: "4.6", title: "Underdamped second-order systems" },
-    { id: "4.7", title: "System response with additional poles" },
-    { id: "4.8", title: "System response with zeros" }
+    { id: "4.2", title: "Poles, Zeros, and System Response" },
+    { id: "4.3", title: "First-Order Systems" },
+    { id: "4.4", title: "Second-Order Systems: Introduction" },
+    { id: "4.5", title: "The General Second-Order System" },
+    { id: "4.6", title: "Underdamped Second-Order Systems" },
+    { id: "4.7", title: "System Response with Additional Poles" },
+    { id: "4.8", title: "System Response with Zeros" }
   ],
 
   guide: [
@@ -26,8 +26,8 @@ actually do**, and it delivers the most valuable single idea in the course:
 $$\\boxed{\\;\\text{A pole's location on a page tells you a number you could measure on a bench.}\\;}$$
 
 Not qualitatively. Quantitatively. Given a pole at $-3\\pm j4$ you can state the settling
-time, the peak time, and the percent overshoot in about ten seconds, without solving a
-differential equation, without a partial fraction, without a plot.
+time, the peak time, and the percent overshoot directly, without solving a differential
+equation, without a partial fraction, without a plot.
 
 Everything in this chapter is building that dictionary between **geometry in the
 $s$-plane** and **behaviour in time**. Once you have it, the design chapters become
@@ -47,7 +47,7 @@ $$\\underbrace{\\text{poles \\& zeros}}_{4.2}
       example: "4-01",
       sec: "4.2",
       body: `
-This split governs the entire chapter, so it is worth stating precisely.
+This split governs the entire chapter, so state it precisely.
 
 ### Two sources of poles
 
@@ -83,9 +83,9 @@ mode is excited.
 $$C(s)=\\frac{s+3}{s(s+1)(s+5)}\\;\\Longrightarrow\\;c(t)=A+Be^{-t}+Ce^{-5t}$$
 
 Four poles would give four terms. The zero at $-3$ changes only the values of $A$, $B$,
-$C$. So you can write the *shape* of any response in ten seconds, before computing
-anything: and questions asking only "how many terms," "will it oscillate," or "which term
-lasts longest" are fully answered at that point.
+$C$. So you can write the *shape* of any response before computing anything, and questions
+asking only "how many terms," "will it oscillate," or "which term lasts longest" are
+fully answered at that point.
 
 **Dominance, stated once:** the mode nearest the imaginary axis decays slowest and
 therefore dominates the late response. This is the seed of Sections 4.7 and 4.8.`
@@ -675,11 +675,11 @@ influences the numerical values of $A$, $B$ and $C$, but it cannot create or des
 term. This is the central idea of Section 4.2: **poles determine the form of the
 response; zeros determine the amplitudes.**
 
-**Why this matters on an exam.** You can write down the shape of any response in about
-ten seconds, before doing a single partial fraction. If you are asked only "will it
-oscillate?" or "how many exponential terms?", that ten seconds is the entire answer.
+**Why this matters on an exam.** You can write down the shape of any response before
+doing a single partial fraction. If you are asked only "will it oscillate?" or "how many
+exponential terms?", the pole locations are the whole answer.
 
-**Speed reading of the terms:** $e^{-5t}$ decays five times faster than $e^{-t}$, because
+**Reading the terms against each other:** $e^{-5t}$ decays five times faster than $e^{-t}$, because
 its pole is five times farther from the imaginary axis. By the time the slow term is
 still visible, the fast one is gone.
 `
@@ -914,7 +914,7 @@ $36$, $0$, $-64$, $-48$: the four cases in order, decided before any factoring i
 
 **The one to spot instantly:** $b=0$ means $\\zeta=0$ means poles on the imaginary axis means a sinusoid that never settles. That is also the case where the final value theorem fails.
 
-**The picture worth carrying:** as $b$ falls from $10$ to $0$, the poles slide together along the real axis, collide at $-\\omega_{n}$, then split onto a **circle of radius $\\omega_{n}$** and travel up it toward the imaginary axis. Every underdamped member of this family sits exactly 4 units from the origin - check (d): $\\sqrt{4+12}=4$ ✓
+**The picture to carry:** as $b$ falls from $10$ to $0$, the poles slide together along the real axis, collide at $-\\omega_{n}$, then split onto a **circle of radius $\\omega_{n}$** and travel up it toward the imaginary axis. Every underdamped member of this family sits exactly 4 units from the origin - check (d): $\\sqrt{4+12}=4$ ✓
 `,
       solution: `
 Every one has $\\omega_{n}^{2}=16$, so $\\omega_{n}=4$ throughout. Only the middle
@@ -1151,7 +1151,7 @@ $$T_{p}=\\frac{\\pi}{8},\\qquad T_{s}=\\frac{4}{6}=\\frac23,\\qquad \\%OS=100e^{
 
 because scaling both parts of a pole scales $\\omega_{n}$ and leaves the angle alone.
 
-**The general principle worth internalizing:** $\\omega_{n}$ is a **time-axis scale factor**. It changes how fast the response happens, never its shape. Only the angle (that is, $\\zeta$) changes shape.
+**The general principle:** $\\omega_{n}$ is a **time-axis scale factor**. It changes how fast the response happens, never its shape. Only the angle (that is, $\\zeta$) changes shape.
 
 **Free check:** $\\sqrt{36+64}=\\sqrt{100}=10=\\omega_{n}$ ✓
 `,
@@ -1315,11 +1315,11 @@ All three specs come straight from $4$ and $3$: $T_{p}=\\tfrac{\\pi}{3}$, $T_{s}
 
 $$(s+\\sigma_{d})^{2}+\\omega_{d}^{2}=s^{2}+2\\sigma_{d}s+\\omega_{n}^{2}$$
 
-So the middle coefficient is **twice the real part** and the constant is $\\omega_{n}^{2}$: $s^{2}+8s+25$. Numerator $25$ for unity dc gain. Written in one line.
+So the middle coefficient is **twice the real part** and the constant is $\\omega_{n}^{2}$: $s^{2}+8s+25$. Numerator $25$ for unity dc gain.
 
 **Discard:** computing $\\zeta$, then $2\\zeta\\omega_{n}$, then assembling. Same answer, three times the arithmetic.
 
-**The comparison an expert makes automatically:** 4-08 had $-6\\pm j8$ and this has $-4\\pm j3$: same triangle, **legs swapped**. Larger $\\zeta$ ($\\tfrac45$ vs $\\tfrac35$) means a larger exponent magnitude means **less** overshoot, exactly as more damping should. Checking that the direction of change makes physical sense costs two seconds and catches reversed ratios.
+**The comparison worth making:** 4-08 had $-6\\pm j8$ and this has $-4\\pm j3$: same triangle, **legs swapped**. Larger $\\zeta$ ($\\tfrac45$ vs $\\tfrac35$) means a larger exponent magnitude means **less** overshoot, exactly as more damping should. Checking that the direction of change makes physical sense costs two seconds and catches reversed ratios.
 `,
       solution: `
 **Step 1: read the pole directly.**
@@ -1386,13 +1386,13 @@ $$T_{s}\\;\\to\\;\\sigma_{d}=\\frac{4}{T_{s}}=2,
 \\qquad
 T_{p}\\;\\to\\;\\omega_{d}=\\frac{\\pi}{T_{p}}=4$$
 
-Poles $-2\\pm j4$. Denominator $s^{2}+4s+20$ by the twice-the-real-part rule. Numerator 20 for unity dc gain. Under thirty seconds.
+Poles $-2\\pm j4$. Denominator $s^{2}+4s+20$ by the twice-the-real-part rule. Numerator 20 for unity dc gain.
 
-**Notice the specification was given as $\\pi/4$, not $0.785$.** Whenever a peak time arrives with a $\\pi$ in it, the $\\pi$ is meant to cancel. That is a deliberate signal from the problem author that the numbers will be clean.
+**Notice the specification was given as $\\pi/4$, not $0.785$.** When a peak time carries a $\\pi$, it cancels against the $\\pi$ in $T_{p}=\\pi/\\omega_{d}$, so $\\omega_{d}$ comes out an integer.
 
 **Discard:** solving for $\\zeta$ and $\\omega_{n}$ first. You would end up at $\\omega_{n}=2\\sqrt5$ and $\\zeta=\\tfrac{1}{\\sqrt5}$ - correct but irrational, and unnecessary, because the pole parts are integers.
 
-**The structural insight an expert states unprompted:** two knobs, three specifications. Fixing $T_{s}$ and $T_{p}$ **forces** $\\%OS=100e^{-\\pi/2}$ whether you like it or not. If that third number is unacceptable, no second-order system can satisfy all three: you need a compensator. That observation is the reason Chapter 9 exists.
+**The structural point:** two knobs, three specifications. Fixing $T_{s}$ and $T_{p}$ **forces** $\\%OS=100e^{-\\pi/2}$ whether you like it or not. If that third number is unacceptable, no second-order system can satisfy all three: you need a compensator. That is the situation compensator design in Chapter 9 addresses.
 `,
       solution: `
 This is 4-10 run in reverse, and it is the shape most design questions take: you are
@@ -1788,11 +1788,10 @@ You can still say all of this without any approximation:
 
 ---
 
-**Why this problem exists.** On an application exam the hardest judgment is knowing when
-your tools do not apply. A student who computes $T_{p}=\\pi$, $T_{s}=4$,
-$\\%OS=100e^{-\\pi}$ here has produced three confidently wrong numbers. The student who
-writes "the five-times rule fails, so I cannot use the second-order specifications" has
-the correct answer.
+**Why this case matters.** The hardest judgment on an application exam is knowing when
+your tools do not apply. Computing $T_{p}=\\pi$, $T_{s}=4$, $\\%OS=100e^{-\\pi}$ here
+produces three wrong numbers. The correct answer is that the five-times rule fails, so
+the second-order specifications cannot be used.
 
 **Compare directly with 4-14.** Identical dominant pair, identical dc gain, only the third
 pole moved from $-10$ to $-3$. Same question, opposite answer. **Always run the test; never
@@ -1896,7 +1895,7 @@ Initial slope positive, final value negative. Opposite signs - that *is* the rev
 
 **Discard:** partial fractions. The question asks about initial and final behaviour, and limit theorems answer that directly. Compute $c(t)$ only to check.
 
-**The mechanism in one line:** the zero at $+a$ gives $-sC(s)+aC(s)$: the derivative term enters with a **flipped sign** relative to the left-half-plane case. Early on the derivative dominates, so the output goes the wrong way; later the scaled term takes over.
+**The mechanism:** the zero at $+a$ gives $-sC(s)+aC(s)$: the derivative term enters with a **flipped sign** relative to the left-half-plane case. Early on the derivative dominates, so the output goes the wrong way; later the scaled term takes over.
 
 **Same decomposition, opposite sign, opposite behaviour** - compare with 4-23, where an LHP zero *adds* the derivative and increases overshoot.
 
@@ -2241,17 +2240,17 @@ $$T(s)=\\frac{200}{(s+10)\\left(s^{2}+4s+20\\right)}$$
       hint: "The test lands exactly on the boundary. That is deliberate - say what the rule permits and be precise about its limits.",
       answer: "**(a)** The dominant poles are $-2\\pm j4$ so $\\sigma_{d}=2$; the third pole is at $-10$ and $\\tfrac{10}{2}=5$, which **meets** the five-times criterion exactly, so the approximation is permitted. **(b)** $T_{p}=\\dfrac{\\pi}{4}$ s, $T_{s}=2$ s, $\\%OS=100e^{-\\pi/2}$. **(c)** It does not guarantee the accuracy of the very early response, where the neglected $e^{-10t}$ term is still significant.",
       expert: `
-**First glance:** the ratio is **exactly 5**. That is not an accident - the problem is built on the boundary of the rule, and the grading is about how precisely you state what the rule permits.
+**First glance:** the ratio is **exactly 5**, which places the problem on the boundary of the five-times rule. The answer turns on stating precisely what the rule permits at equality.
 
 $s^{2}+4s+20\\Rightarrow(s+2)^{2}+16$, so $\\sigma_{d}=2$, $\\omega_{d}=4$. Third pole $-10$. $\\tfrac{10}{2}=5$.
 
-**The criterion is $\\ge5$, not $>5$.** Meeting it exactly qualifies. A student who writes "$5$ is not greater than $5$, so no" has misread an inequality; a student who writes "yes" without showing the ratio got there by luck.
+**The criterion is $\\ge5$, not $>5$.** Meeting it exactly qualifies. Answering "no, $5$ is not greater than $5$" misreads the inequality; answering "yes" without showing the ratio does not establish that the test was applied.
 
-**Specs off the pole, as always:** $T_{p}=\\tfrac{\\pi}{4}$, $T_{s}=\\tfrac42=2$, $\\%OS=100e^{-2\\pi/4}=100e^{-\\pi/2}$.
+**Specifications read off the pole:** $T_{p}=\\tfrac{\\pi}{4}$, $T_{s}=\\tfrac42=2$, $\\%OS=100e^{-2\\pi/4}=100e^{-\\pi/2}$.
 
-**Part (c) is the real question**, and it has no formula. What an expert says: the third pole contributes a genuine $e^{-10t}$ with time constant $\\tfrac{1}{10}$ s, significant until roughly $t=0.5$ s. The first peak is at $T_{p}=\\pi/4\\approx0.79$ s, *after* that. So $T_{p}$, $T_{s}$ and $\\%OS$ are trustworthy while the early rise and the exact peak height are not.
+**Part (c) has no formula.** The third pole contributes a genuine $e^{-10t}$ with time constant $\\tfrac{1}{10}$ s, significant until roughly $t=0.5$ s. The first peak is at $T_{p}=\\pi/4\\approx0.79$ s, *after* that. So $T_{p}$, $T_{s}$ and $\\%OS$ are trustworthy while the early rise and the exact peak height are not.
 
-At a ratio of exactly 5 the margin is thin, and numerically the true peak comes in slightly below the second-order prediction. Naming the limitation precisely is what an application exam is grading.
+At a ratio of exactly 5 the margin is thin, and the true peak comes in slightly below the second-order prediction. State that limitation explicitly.
 `,
       solution: `
 ## Part (a)
@@ -2331,11 +2330,10 @@ frequency, where the true system rolls off one order faster.
 
 ---
 
-**Why this problem is worth the effort.** The ratio is exactly $5$, the boundary of the
-rule. A student who reflexively answers "yes, approximate" without showing the test gets
-the right conclusion for no reason. A student who answers "no, it's not $>5$" has
-misread a $\\ge$. The correct response states the number, states the criterion, and
-states the limitation: which is what an application exam is actually grading.
+**Why the boundary case matters.** The ratio is exactly $5$, the boundary of the rule.
+Answering "yes, approximate" without showing the test reaches the right conclusion
+without support; answering "no, it's not $>5$" misreads a $\\ge$. The complete response
+states the ratio, states the criterion, and states the limitation.
 `
     },
 
@@ -2365,7 +2363,7 @@ $$\\%OS\\le100e^{-\\pi}\\;\\Longrightarrow\\;\\zeta\\ge\\tfrac{\\sqrt2}{2}\\;\\L
 
 $-2\\pm j2$ sits exactly on **both** boundaries. Since both specs were written with $\\le$, it qualifies - it is the corner of the wedge. With strict inequalities it would fail both. Reading the inequality symbol matters.
 
-**Why this problem exists:** in Chapters 8 and 9 you *place* poles to meet specs. This translation is the step that makes that possible.
+**Where this is used:** in Chapters 8 and 9 you *place* poles to meet specifications. This translation is the step that makes that possible.
 `,
       solution: `
 ## Part (a)
@@ -2466,7 +2464,7 @@ it is the reason the constant-specification lines from problem 4-13 are standard
       hint: "The derivative of the original step response has a very clean closed form. Compute it, then assemble the two pieces.",
       answer: "**(a)** $$c_{z}(t)=1-e^{-3t}\\left(\\cos4t-\\tfrac12\\sin4t\\right)$$ **(b)** The added derivative term is $+\\tfrac54e^{-3t}\\sin4t$, which is **positive** through the first half-cycle and so adds to the first peak. As the zero moves toward the origin ($a$ decreasing) the factor $1/a$ grows, the derivative term dominates, and overshoot increases without bound.",
       expert: `
-**First glance:** the decomposition is the whole tool, and it is worth having memorized in words:
+**First glance:** the decomposition does all the work here. In words:
 
 $$\\text{response with a zero}=\\text{original response}+\\frac{1}{a}\\times\\text{its own derivative}$$
 
@@ -2936,7 +2934,7 @@ $$c(t)=c_{\\text{nf}}(t)+\\frac{1}{z}\\dot c_{\\text{nf}}(t).$$
 
 $\\dot c_{\\text{nf}}$ is a signed pulse around the rise. Adding a large multiple of it ($z=3$) lifts the peak. $z=30$ is a small multiple; the response is nearly $c_{\\text{nf}}$.
 
-Same poles, different residues. That is the whole content of a zero.
+Same poles, different residues. That is what a zero does.
 `
     },
     {

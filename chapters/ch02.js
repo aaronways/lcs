@@ -5,10 +5,10 @@ registerChapter({
   brief: "A transfer function separates input, system, and output so $C(s)=R(s)G(s)$. Poles are the modes; zeros only set residues. Impedances turn circuit and mechanical laws into the same algebra. Linearization is how a nonlinear plant earns a $G(s)$ near one operating point.",
   sectionList: [
     { id: "2.1", title: "Introduction" },
-    { id: "2.2", title: "Laplace transform" },
-    { id: "2.3", title: "The transfer function" },
-    { id: "2.4", title: "Electrical network transfer functions" },
-    { id: "2.5", title: "Translational mechanical systems" },
+    { id: "2.2", title: "Laplace Transform Review" },
+    { id: "2.3", title: "The Transfer Function" },
+    { id: "2.4", title: "Electrical Network Transfer Functions" },
+    { id: "2.5", title: "Translational Mechanical System Transfer Functions" },
     { id: "2.10", title: "Nonlinearities" },
     { id: "2.11", title: "Linearization" }
   ],
@@ -67,7 +67,7 @@ Differentiating $e^{st}$ gives back **the same function, multiplied by a number.
 other elementary function does this. Sines and cosines turn into each other; polynomials
 change degree; only the exponential survives differentiation intact.
 
-That is the whole trick. If you can rewrite an arbitrary signal as a sum of exponentials,
+That is the mechanism. If you can rewrite an arbitrary signal as a sum of exponentials,
 then differentiating that signal becomes *multiplying each piece by its own $s$* - and
 multiplication is algebra.
 
@@ -144,8 +144,8 @@ is the single most useful structural fact in the chapter, and it is why you can 
 
 $$C(s)=\\frac{s+3}{s(s+1)(s+5)}\\;\\Longrightarrow\\;c(t)=A+Be^{-t}+Ce^{-5t}$$
 
-in ten seconds without computing a single residue. Four poles would give four terms; the
-zero changes only $A$, $B$, $C$.
+without computing a single residue. Four poles would give four terms; the zero changes
+only $A$, $B$, $C$.
 
 ### Why this matters for exams
 
@@ -572,7 +572,7 @@ transfer function you want out of resistors and capacitors.** That is how compen
 physically built, and it is the bridge from the paper designs of Chapters 9 and 11 to real
 hardware.
 
-Two standing results worth having:
+Two standing results:
 
 $$R\\parallel C=\\frac{R}{RCs+1},\\qquad R+\\frac{1}{Cs}=\\frac{RCs+1}{Cs}$$
 
@@ -766,7 +766,7 @@ $$\\mathcal{L}\\left\\{t^{n}e^{-at}\\right\\}=\\frac{n!}{(s+a)^{n+1}}$$
 
 $n=2$, so $2!=2$, times the leading 3 gives 6; $a=4$ pushes the pole to $-4$ with multiplicity $n+1=3$. Answer written down: $\\dfrac{6}{(s+4)^{3}}$.
 
-**Ruled out immediately:** integrating the definition (only if the problem says "from the definition"), and treating the shift as a separate second step - fine while learning, wasted motion once the combined pair is memorized.
+**Discard:** integrating the definition (only if the problem says "from the definition"), and treating the shift as a separate second step - fine while learning, wasted motion once the combined pair is memorized.
 
 **The tell:** *any* product of a polynomial and one exponential is a repeated-pole pair. The polynomial degree sets the multiplicity; the exponential sets the pole. You should be able to go the other way just as fast - $\\dfrac{5}{(s+3)^{4}}$ is $\\tfrac{5}{6}t^{3}e^{-3t}$ on sight, because $3!=6$.
 `,
@@ -832,7 +832,7 @@ using $\\int_{0}^{\\infty}t^{n}e^{-pt}dt=n!/p^{n+1}$ with $p=s+4$. Same answer, 
 
 Written straight down, left to right: constant $\\to \\tfrac4s$, exponential $\\to -\\tfrac{2}{s+3}$, ramp $\\to \\tfrac{5}{s^{2}}$. Ten seconds.
 
-**Ruled out immediately:** combining over a common denominator. Students do this reflexively because it "looks finished," but a sum of simple terms *is* the partial fraction expansion. Combining it only means you or someone else has to take it apart again.
+**Discard:** combining over a common denominator. Students do this reflexively because it "looks finished," but a sum of simple terms *is* the partial fraction expansion. Combining it only means you or someone else has to take it apart again.
 
 **The tell for the sign:** $e^{-3t}$ decays, so its pole must be at $s=-3$, so the denominator reads $s+3$. If you ever write $s-3$ for a decaying exponential you have described a growing one.
 
@@ -898,9 +898,9 @@ $t^{3}\\to \\dfrac{3!}{s^{4}}=\\dfrac{6}{s^{4}}$: the factorial is the trap. $2\
 
 **The discipline that prevents both:** say the rule out loud as you write. "$n$ factorial over $s$ to the $n$ plus one." "Sine puts omega on top, cosine puts $s$ on top." Two sentences, and the two most common transform errors in the course disappear.
 
-**Ruled out immediately:** any attempt to combine over a common denominator, and any expansion of $\\sin 5t$ into exponentials.
+**Discard:** any attempt to combine over a common denominator, and any expansion of $\\sin 5t$ into exponentials.
 
-**What an expert notices without being asked:** neither term settles. $\\tfrac{6}{s^{4}}$ is a fourfold pole at the origin and $\\tfrac{10}{s^{2}+25}$ has poles on the imaginary axis. So if a later part of the question asks for a final value, the answer is "the theorem does not apply" - spotted from the pole locations alone, before any computation.
+**Check:** neither term settles. $\\tfrac{6}{s^{4}}$ is a fourfold pole at the origin and $\\tfrac{10}{s^{2}+25}$ has poles on the imaginary axis. So if a later part of the question asks for a final value, the answer is "the theorem does not apply" - spotted from the pole locations alone, before any computation.
 `,
       solution: `
 Two lookups joined by linearity.
@@ -948,7 +948,7 @@ the final value theorem would be invalid on this $F(s)$.
       id: "2-04", difficulty: "warmup", topic: "Partial fractions",
       sec: "2.2",
       prompt: "Find the inverse Laplace transform of $$F(s)=\\frac{5}{(s+2)(s+7)}.$$",
-      hint: "Two distinct real roots. Use the cover-up method: one residue per factor, about five seconds each.",
+      hint: "Two distinct real roots. Use the cover-up method: one residue per factor.",
       answer: "$$f(t)=\\left(e^{-2t}-e^{-7t}\\right)u(t)$$",
       expert: `
 **First glance:** proper fraction, two distinct real linear factors, constant on top. Case 1. This is a cover-up problem done mentally.
@@ -1026,15 +1026,15 @@ $\\lim_{s\\to\\infty}sF(s)=\\lim_{s\\to\\infty}\\dfrac{5s}{s^{2}+9s+14}=0\\;\\ch
       hint: "Zero initial conditions. Replace each $d^{n}/dt^{n}$ with $s^{n}$ and each lowercase function with its capital.",
       answer: "$$G(s)=\\frac{2s+5}{4s^{2}+8s+3}=\\frac{2s+5}{(2s+1)(2s+3)}$$ Poles at $s=-\\tfrac12$ and $s=-\\tfrac32$, both real and in the left half-plane.",
       expert: `
-**First glance:** this is not a problem, it is a transcription. Output coefficients become the denominator, input coefficients become the numerator, in the same order they appear.
+**First glance:** no transform work is required. Output coefficients become the denominator, input coefficients become the numerator, in the same order they appear.
 
 $$4,8,3\\;\\to\\;4s^{2}+8s+3
 \\qquad
 2,5\\;\\to\\;2s+5$$
 
-Written in one pass without transforming anything term by term.
+The substitution is done in one pass, with no term-by-term transforming.
 
-**Ruled out immediately:** actually applying the differentiation theorem with its initial-condition terms. The problem says "transfer function," which *means* zero initial conditions, which *means* the substitution $d^{n}/dt^{n}\\to s^{n}$ and nothing else.
+**Discard:** actually applying the differentiation theorem with its initial-condition terms. The problem says "transfer function," which *means* zero initial conditions, which *means* the substitution $d^{n}/dt^{n}\\to s^{n}$ and nothing else.
 
 **On the poles:** an expert checks the discriminant before reaching for the quadratic formula. $64-48=16$, a perfect square, so the roots are rational and the polynomial factors by inspection. Two numbers multiplying to $4\\cdot3=12$ and adding to $8$: that is $2$ and $6$, giving $(2s+1)(2s+3)$ and roots $-\\tfrac12,-\\tfrac32$.
 
@@ -1059,7 +1059,7 @@ $$\\left(4s^{2}+8s+3\\right)C(s)=\\left(2s+5\\right)R(s)$$
 
 $$\\boxed{\\;G(s)=\\frac{C(s)}{R(s)}=\\frac{2s+5}{4s^{2}+8s+3}\\;}$$
 
-The pattern worth having: **output terms become the denominator, input terms become
+The pattern: **output terms become the denominator, input terms become
 the numerator.**
 
 ---
@@ -1096,11 +1096,11 @@ Verify: $(2s+1)(2s+3)=4s^{2}+6s+2s+3=4s^{2}+8s+3\\;\\checkmark$
 
 $$\\ddot c+2\\dot c+10c=3\\dot r$$
 
-**The one place people lose a point:** writing $+3r$ on the right. There is no constant term in the numerator, so there is no $r(t)$ term. Read the numerator as a polynomial with $b_{1}=3$ and $b_{0}=0$, and the missing term is obvious.
+**Common error:** writing $+3r$ on the right. There is no constant term in the numerator, so there is no $r(t)$ term. Read the numerator as a polynomial with $b_{1}=3$ and $b_{0}=0$, and the missing term is obvious.
 
-**Ruled out immediately:** inverse-transforming anything. No partial fractions, no table, no $t$-domain work at all: this is pure notation.
+**Discard:** inverse-transforming anything. No partial fractions, no table, no $t$-domain work at all: this is pure notation.
 
-**What an expert reads off in passing, unasked:** discriminant $4-40=-36<0$, so complex poles; completing the square gives $(s+1)^{2}+3^{2}$, so $s=-1\\pm j3$. Underdamped, oscillating at 3 rad/s, envelope $e^{-t}$. That takes five seconds and means you can answer any follow-up about the response without going back.
+**Worth reading off now:** discriminant $4-40=-36<0$, so the poles are complex; completing the square gives $(s+1)^{2}+3^{2}$, so $s=-1\\pm j3$. Underdamped, oscillating at 3 rad/s, envelope $e^{-t}$. Any follow-up about the response is then already answered.
 `,
       solution: `
 **Step 1: write out what the transfer function means.**
@@ -1339,13 +1339,13 @@ problem has no $t$ multiplying an exponential, you dropped a term.
       expert: `
 **First glance:** check the discriminant of $s^{2}+4s+8$ *before* anything else. $16-32=-16<0$: complex. That single test decides the whole method: keep the quadratic intact, linear numerator, Case 3.
 
-**What an expert does not do:** try to factor it, hunt for rational roots, or go to complex residues. Complex-residue arithmetic is correct but error-prone by hand and produces an answer you then have to convert back to sines and cosines.
+**Discard:** try to factor it, hunt for rational roots, or go to complex residues. Complex-residue arithmetic is correct but error-prone by hand and produces an answer you then have to convert back to sines and cosines.
 
 **Path:** $K_{1}$ by cover-up ($\\tfrac58$), then note that for $\\tfrac{K}{s(s^{2}+bs+c)}$ the remaining numerator is always $-K_{1}(s+b)$: here $-\\tfrac58(s+4)$. That pattern lets you skip the coefficient-balancing entirely once you trust it.
 
 Complete the square by eye: half of 4 is 2, $2^{2}=4$, $8-4=4$, so $(s+2)^{2}+2^{2}$. Then split $s+4=(s+2)+2$, and since $\\omega=2$ the sine coefficient is $\\tfrac22=1$.
 
-**The recognition worth having:** when the shift and $\\omega$ come out equal (both 2 here), the cosine and sine coefficients are equal, which means $R=\\sqrt2$ and $\\phi=45^{\\circ}$ exactly. No calculator, and you can state the single-sinusoid form immediately.
+**The recognition:** when the shift and $\\omega$ come out equal (both 2 here), the cosine and sine coefficients are equal, which means $R=\\sqrt2$ and $\\phi=45^{\\circ}$ exactly. No calculator, and you can state the single-sinusoid form immediately.
 `,
       solution: `
 **Step 1: test the quadratic first.**
@@ -1641,7 +1641,7 @@ This is a purely natural response: no input, therefore no forced response.
       expert: `
 **First glance at part (b):** $s^{2}-3s+2$. The **minus sign on the $s$ term** is the entire problem. A stable polynomial with positive constant term has all-positive coefficients; a sign change means at least one root in the right half-plane. An expert sees that and knows the answer before factoring.
 
-(This is the Routh-Hurwitz necessary condition, which you meet formally in Chapter 6 - but the "all coefficients same sign" tell is worth having now.)
+(This is the Routh-Hurwitz necessary condition, which you meet formally in Chapter 6 - but the "all coefficients same sign" check is usable now.)
 
 **Part (a), the fast path:** for a step input, steady-state output is just $G(0)$. Do not form $C(s)$, do not write the limit. $G(0)=\\tfrac{20}{(2)(5)}=2$. One line.
 
@@ -1741,7 +1741,7 @@ $$\\frac{V_{C}(s)}{V(s)}=\\frac{1/LC}{s^{2}+\\frac{R}{L}s+\\frac{1}{LC}}$$
 
 Substitute: $\\tfrac{1}{LC}=\\tfrac{1}{1\\cdot\\frac12}=2$ and $\\tfrac{R}{L}=3$, giving $\\tfrac{2}{s^{2}+3s+2}$. Five seconds, no algebra.
 
-**Discard:** writing KVL in the time domain, mesh matrices, Cramer's rule. One loop means one unknown; a voltage divider is the whole tool.
+**Discard:** writing KVL in the time domain, mesh matrices, Cramer's rule. One loop means one unknown, so a voltage divider is sufficient.
 
 **The arithmetic trap, and where everyone hits it:** $Z_{C}=\\tfrac{1}{Cs}$ with $C=\\tfrac12$ gives $\\tfrac{2}{s}$, not $\\tfrac{1}{2s}$. That is a factor-of-four error and it is the single most common mistake in this section. Say "one over $C$ times $s$" and compute $\\tfrac1C$ first.
 
@@ -1794,7 +1794,7 @@ Physically correct. In steady state a capacitor blocks dc current. With no curre
 voltage drops across $R$ ($v=Ri=0$) or $L$ ($v=L\\,di/dt=0$). Every volt appears across
 the capacitor: unity gain.
 
-**The general form, worth having.** In symbols:
+**The general form.** In symbols:
 
 $$\\frac{V_{C}(s)}{V(s)}=\\frac{1/LC}{s^{2}+\\dfrac{R}{L}s+\\dfrac{1}{LC}}$$
 
@@ -1837,7 +1837,7 @@ $\\dfrac{\\omega_{n}^{2}}{s^{2}+2\\zeta\\omega_{n}s+\\omega_{n}^{2}}$.
 
 **Cramer, not elimination.** You want $I_{2}$ only, so replace column 2 and divide. Solving for $I_{1}$ first and back-substituting is twice the work for the same answer.
 
-**Structural expectations before computing:** dc gain must be 0 (capacitor blocks dc in mesh 2) and the high-frequency limit must be finite. Getting $\\tfrac{s^{2}}{5s^{2}+8s+4}$ satisfies both - $0$ at $s=0$, $\\tfrac15$ at $s=\\infty$. Two checks, five seconds, done.
+**Structural expectations before computing:** dc gain must be 0 (capacitor blocks dc in mesh 2) and the high-frequency limit must be finite. Getting $\\tfrac{s^{2}}{5s^{2}+8s+4}$ satisfies both - $0$ at $s=0$, $\\tfrac15$ at $s=\\infty$. Two independent checks.
 `,
       solution: `
 **Step 1: impedances.**
@@ -1939,7 +1939,7 @@ number but costs you a calculator you will not have.
 
 **The trap this problem exists to teach:** you cannot cascade $\\tfrac{1}{s+1}\\cdot\\tfrac{1}{s+1}$. An expert knows before writing anything that the second stage *loads* the first, and expects the answer to differ from $(s+1)^{2}$ by exactly the coupling term. Getting $s^{2}+3s+1$ instead of $s^{2}+2s+1$ is the loading, made visible.
 
-**Substitution beats Cramer here.** The second node equation gives $V_{1}=(1+s)V_{2}$ in one line; substituting is faster than setting up a determinant. Experts pick the tool per problem rather than running the same procedure every time.
+**Substitution beats Cramer here.** The second node equation gives $V_{1}=(1+s)V_{2}$ directly; substituting is faster than setting up a determinant. Experts pick the tool per problem rather than running the same procedure every time.
 
 **Two free structural checks:**
 - dc gain must be 1 (capacitors open, no current, no drops).
@@ -2139,7 +2139,7 @@ $$Z_{2}(s)=\\frac{Z_{R_{2}}\\cdot Z_{C_{2}}}{Z_{R_{2}}+Z_{C_{2}}}=\\frac{R_{2}\\
 
 $$Z_{2}(s)=\\frac{R_{2}}{R_{2}C_{2}s+1}$$
 
-A standing result worth having: **a resistor parallel with a capacitor has impedance
+A standing result: **a resistor parallel with a capacitor has impedance
 $\\dfrac{R}{RCs+1}$.**
 
 **Step 3: substitute numbers.** $R_{2}C_{2}=\\left(100{,}000\\right)\\left(10^{-5}\\right)=1$:
@@ -2197,7 +2197,7 @@ origin than the zero. You design these deliberately in Chapter 9.
       hint: "Draw the free-body diagram first. Every element attached to the mass contributes a force opposing the assumed positive motion.",
       answer: "$$\\frac{X(s)}{F(s)}=\\frac{1}{s^{2}+5s+6}=\\frac{1}{(s+2)(s+3)}$$ Poles at $s=-2$ and $s=-3$: real and distinct, so overdamped.",
       expert: `
-**First glance:** one mass, wall-mounted spring and damper, force in, displacement out. An expert writes the answer in one line without drawing a free-body diagram:
+**First glance:** one mass, wall-mounted spring and damper, force in, displacement out. The answer can be written directly, without drawing a free-body diagram:
 
 $$\\left[Ms^{2}+f_{v}s+K\\right]X(s)=F(s)$$
 
@@ -2299,7 +2299,7 @@ That is where nearly every lost point in this section comes from. Experts consci
 
 **The algebra shortcut that makes the determinant tractable by hand:** substitute $u=s^{2}+s$. Then $(u+2)(u+1)=u^{2}+3u+2$, expand $u^{2}=s^{4}+2s^{3}+s^{2}$ once, and you are done. Multiplying two quadratics term by term invites a dropped $s^{3}$.
 
-**Symmetry check** before the determinant. **Order check** after it. **DC check** at the end: springs in series combine like capacitors, $K_{\\text{eq}}=\\tfrac{K_{1}K_{2}}{K_{1}+K_{2}}=\\tfrac12$, so $X_{2}/F\\to2$. The formula gives $\\tfrac21=2$ ✓ Three independent checks, under thirty seconds total.
+**Symmetry check** before the determinant. **Order check** after it. **DC check** at the end: springs in series combine like capacitors, $K_{\\text{eq}}=\\tfrac{K_{1}K_{2}}{K_{1}+K_{2}}=\\tfrac12$, so $X_{2}/F\\to2$. The formula gives $\\tfrac21=2$ ✓ Three independent checks.
 `,
       solution: `
 **Step 1: inventory what touches each mass.**
@@ -2406,7 +2406,7 @@ $x_{2}=f/K_{\\text{eq}}=2f\\;\\checkmark$
 
 So on sight: (a) linear, (b) affine: not linear, (c) nonlinear.
 
-**The trap this problem exists for:** "straight line" $\\ne$ "linear." $c=r+3$ plots as a perfectly straight line and fails both properties. An expert never conflates the two, because the entire point of Section 2.11 is that affine relationships require an operating point and deviation variables before the tools of this course apply.
+**The trap this problem exists for:** "straight line" $\\ne$ "linear." $c=r+3$ plots as a perfectly straight line and fails both properties. Section 2.11 exists because affine relationships require an operating point and deviation variables before the tools of this course apply.
 
 **Worth stating on an exam:** name *which* property fails and show the counterexample. "It is nonlinear" with no test earns partial credit at best.
 `,
@@ -2780,13 +2780,13 @@ a constant 8 N bias plus a small time-varying perturbation.
       expert: `
 **First glance:** a squared term in the differential equation. Nonlinear, so **nothing** from the rest of Chapter 2 applies until it is linearized - no impedances, no transfer function, no superposition.
 
-**The order is fixed and non-negotiable:** equilibrium first, then substitute, then expand, then transform. Students who jump to transforming get nowhere.
+**The order is fixed and non-negotiable:** equilibrium first, then substitute, then expand, then transform. Transforming before linearizing produces nothing usable.
 
-**Finding the operating point is an algebra problem, not a calculus one.** Set derivatives to zero and the differential equation collapses: $2x_{0}^{2}=8\\Rightarrow x_{0}=2$. Done in one line.
+**Finding the operating point is an algebra problem, not a calculus one.** Set derivatives to zero and the differential equation collapses: $2x_{0}^{2}=8\\Rightarrow x_{0}=2$.
 
-**The check that makes linearization self-verifying:** the constant terms **must cancel**. $f_{K}(x_{0})=8$ on the left, bias $=8$ on the right. If they do not cancel, your operating point is wrong - go back, do not proceed. Experts treat this as a hard gate.
+**The check that makes linearization self-verifying:** the constant terms **must cancel**. $f_{K}(x_{0})=8$ on the left, bias $=8$ on the right. If they do not cancel, the operating point is wrong. Go back and recompute it before proceeding.
 
-**Part (b) is where the concept actually lives.** The instinct is that raising the force just pushes harder on the same system. It does not: $x_{0}$ moves, so $m_{a}=4x_{0}$ moves with it, so the **model itself changes**. A nonlinear spring is stiffer the more it is compressed.
+**Part (b) carries the concept.** The instinct is that raising the force just pushes harder on the same system. It does not: $x_{0}$ moves, so $m_{a}=4x_{0}$ moves with it, so the **model itself changes**. A nonlinear spring is stiffer the more it is compressed.
 
 Note also that only stiffness moved: the real part of the pole is $-f_{v}/2M$, untouched. Decay unchanged, oscillation faster by exactly $\\sqrt3$.
 `,
@@ -2861,7 +2861,7 @@ The constant $8$ appears on **both** sides and cancels:
 
 $$\\frac{d^{2}\\delta x}{dt^{2}}+4\\frac{d\\,\\delta x}{dt}+8\\,\\delta x=\\delta f(t)$$
 
-**That cancellation is the payoff of choosing the operating point correctly.** If the
+**The cancellation confirms the operating point was chosen correctly.** If the
 constants had not cancelled, the operating point was computed wrong - go back to Step 2.
 
 ---
@@ -2899,8 +2899,8 @@ The payload sits twice as deep in the isolator.
 $$m_{a}=4x_{0}=4(4)=16\\ \\text{N/m}$$
 
 It **doubled**, from 8 to 16, because $m_{a}=4x_{0}$ is proportional to $x_{0}$ and
-$x_{0}$ doubled. A nonlinear spring is *stiffer the more it is compressed*, and this is
-that fact in one line.
+$x_{0}$ doubled. A nonlinear spring is *stiffer the more it is compressed*, and the doubled $m_{a}$ is
+that statement in numbers.
 
 **Step 3: new transfer function and poles.**
 
@@ -2954,7 +2954,7 @@ to within measurement noise. Assuming the system is linear, time-invariant, and 
       expert: `
 **First glance:** the exponents of the measured response **are** the poles. $e^{-2t}$ and $e^{-4t}$ mean poles at $-2$ and $-4$, so the denominator is $(s+2)(s+4)$: written down before any algebra.
 
-That is the whole first half of the problem, read directly off the data.
+The first half of the problem is read directly off the data.
 
 **Predict the numerator's behaviour too.** $c(0)=5-8+3=0$, so the response starts at rest, so $\\deg N<\\deg D$, so **the $s^{2}$ terms must cancel** when you combine over a common denominator. When they do, that is confirmation, not luck. If they had not, either the data or your arithmetic is wrong.
 
