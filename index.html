@@ -27,7 +27,7 @@
    ========================================================================= */
 :root{
   --paper:#EDF0F3; --panel:#FFFFFF; --panel-2:#E4E9EE; --sunk:#F5F7F9;
-  --ink:#10161C; --muted:#5B6976; --faint:#8996A3;
+  --ink:#10161C; --muted:#5B6976; --faint:#646E77;
   --line:#D3DAE1; --hair:#E4E9ED;
   --stable:#0E5F76; --stable-soft:#DCEBF1; --stable-line:#9CC6D5;
   --unstable:#A6314A; --unstable-soft:#F8E3E7; --unstable-line:#DFAFBA;
@@ -44,7 +44,7 @@
 html.dark{
   color-scheme:dark;
   --paper:#0D1218; --panel:#141B22; --panel-2:#1C252E; --sunk:#101821;
-  --ink:#E6ECF2; --muted:#8C9BA9; --faint:#697887;
+  --ink:#E6ECF2; --muted:#8C9BA9; --faint:#7E8D9C;
   --line:#25303A; --hair:#1B242C;
   --stable:#57BCD6; --stable-soft:#0F2A34; --stable-line:#2A5D6E;
   --unstable:#E97F93; --unstable-soft:#331621; --unstable-line:#6E3644;
@@ -291,7 +291,7 @@ svg.nx-schematic [fill="currentColor"]{fill:var(--ink)}
 .prob-head{
   display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:11px 16px 0;
 }
-.prob-num{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.02em}
+.prob-num{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.02em;margin:0;display:inline}
 .tag{
   font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
   padding:2.5px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);
@@ -318,11 +318,11 @@ svg.nx-schematic [fill="currentColor"]{fill:var(--ink)}
   background:var(--sunk);border:1px solid var(--line);border-left:2px solid var(--stable);
 }
 .reveal.expert{border-left-color:var(--locus);background:var(--locus-soft)}
-.reveal h4{
+.reveal h3{
   font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--faint);margin:0 0 8px;font-weight:500;
 }
-.reveal.expert h4{color:var(--locus)}
+.reveal.expert h3{color:var(--locus)}
 .reveal .body{font-family:var(--serif);font-size:16.5px;line-height:1.66}
 .reveal .body p{margin:0 0 11px}
 .reveal .body p:last-child{margin-bottom:0}
@@ -549,6 +549,7 @@ function registerReference(ref){ REFERENCE = ref; }
 <script src="chapters/ch02.js"></script>
 <script src="chapters/ch04.js"></script>
 <script src="chapters/ch05.js"></script>
+<script src="chapters/ch06.js"></script>
 <script src="widgets.js"></script>
 <script src="app.js"></script>
 </body>

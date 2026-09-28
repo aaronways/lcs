@@ -1,18 +1,26 @@
-const fs=require('fs'),vm=require('vm');
+/* Structural check across every chapter file present. Run: node smoke.js */
+const fs=require('fs'),path=require('path'),vm=require('vm');
 const CH=[];let REF=null;
 const ctx={registerChapter:c=>CH.push(c),registerReference:r=>{REF=r},console};
 vm.createContext(ctx);
-for(const f of ['reference.js','chapters/ch01.js','chapters/ch02.js','chapters/ch04.js','chapters/ch05.js'])
-  vm.runInContext(fs.readFileSync(f,'utf8'),ctx,{filename:f});
+const files=['reference.js'].concat(
+  fs.readdirSync('chapters').filter(f=>/^ch\d+\.js$/.test(f)).sort().map(f=>path.join('chapters',f)));
+for(const f of files) vm.runInContext(fs.readFileSync(f,'utf8'),ctx,{filename:f});
 let bad=0;
-CH.forEach(c=>{
-  const gp=(c.guide||[]).length,pr=(c.problems||[]).length,ex=(c.problems||[]).filter(p=>p.expert).length;
+CH.sort((a,b)=>a.id-b.id).forEach(c=>{
+  const gp=(c.guide||[]).length,pr=(c.problems||[]).length;
+  const ex=(c.problems||[]).filter(p=>p.expert).length,hn=(c.problems||[]).filter(p=>p.hint).length;
   const ids=new Set((c.sectionList||[]).map(s=>s.id));
-  const orphanG=(c.guide||[]).filter(g=>g.sec&&!ids.has(g.sec)).map(g=>g.sec);
-  const orphanP=(c.problems||[]).filter(p=>p.sec&&!ids.has(p.sec)).map(p=>p.sec);
+  const pids=new Set((c.problems||[]).map(p=>p.id));
+  const orphan=[...new Set([...(c.guide||[]),...(c.problems||[])].filter(x=>x.sec&&!ids.has(x.sec)).map(x=>x.sec))];
   const noSol=(c.problems||[]).filter(p=>!p.solution).length;
-  const dup=pr-new Set((c.problems||[]).map(p=>p.id)).size;
-  console.log(`ch${c.id} "${c.title}" sections=${c.sections} guide=${gp} problems=${pr} expert=${ex} noSolution=${noSol} dupIDs=${dup} orphanSec=[${[...new Set([...orphanG,...orphanP])]}]`);
-  if(noSol||dup||orphanG.length||orphanP.length) bad++;
+  const dup=pr-pids.size;
+  const badEx=(c.guide||[]).filter(g=>g.example&&!pids.has(g.example)).map(g=>g.example);
+  const emptySec=(c.sectionList||[]).filter(s=>
+    !(c.guide||[]).some(g=>g.sec===s.id) && !(c.problems||[]).some(p=>p.sec===s.id)).map(s=>s.id);
+  console.log(`ch${c.id} "${c.title}" ${c.sections} guide=${gp} problems=${pr} hint=${hn} expert=${ex} `+
+    `noSolution=${noSol} dupIDs=${dup} orphanSec=[${orphan}] badExample=[${badEx}] noContentSec=[${emptySec}]`);
+  if(noSol||dup||orphan.length||badEx.length||emptySec.length) bad++;
 });
-console.log('reference loaded:', !!REF, 'chapters:', CH.length, 'problem files with issues:', bad);
+console.log('reference loaded:',!!REF,'| chapters:',CH.length,'| files with issues:',bad);
+process.exit(bad?1:0);

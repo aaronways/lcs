@@ -24,7 +24,10 @@ const CONCEPTS = [
     secs:['1.3','5.1','5.2','5.3'] },
   { slug:'characteristic-equation', name:'The characteristic equation',
     blurb:'1 + G(s)H(s) = 0. The closed-loop poles are its roots.',
-    secs:['4.2','5.2','5.3'] },
+    secs:['4.2','5.2','5.3','6.2','6.4'] },
+  { slug:'stability', name:'Stability',
+    blurb:'Left half-plane or not. Counted from the coefficients, without locating a root.',
+    secs:['1.4','6.1','6.2','6.3','6.4','6.5'] },
   { slug:'laplace', name:'Laplace and the s-domain',
     blurb:'Differentiation becomes multiplication by s. Differential equations become algebra.',
     secs:['2.2','2.3'] },
@@ -37,7 +40,7 @@ const CONCEPTS = [
 ];
 
 /* Sections that get an interactive figure. */
-const WIDGET_SLOTS = { '4.6':'splane', '4.5':'splane' };
+const WIDGET_SLOTS = { '4.5':'splane', '6.1':'splane' };
 
 let state = {
   view:'home', chapter:0, tab:'guide',
@@ -341,17 +344,27 @@ function renderGuide(main, ch){
 }
 
 /* ---------- problems ------------------------------------------------------ */
+/* Reveal bodies render on first open. Printing shows them all, so they are
+   queued here and rendered on beforeprint; otherwise a printed problem set
+   carries empty headings for everything the reader never clicked. */
+const PENDING = [];
+let revealSeq = 0;
 function addReveal(body, acts, title, md, label, cls){
   const box = document.createElement('div');
   box.className = 'reveal hidden' + (cls === 'expert' ? ' expert' : '');
-  box.innerHTML = '<h4>' + title + '</h4><div class="body"></div>';
+  box.id = 'rv-' + (++revealSeq);
+  box.innerHTML = '<h3>' + title + '</h3><div class="body"></div>';
   body.appendChild(box);
+  PENDING.push({ box, md });
   const btn = document.createElement('button');
   btn.className = 'act' + (cls ? ' ' + cls : '');
   btn.textContent = label;
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', box.id);
   btn.onclick = () => {
-    box.classList.toggle('hidden');
-    btn.textContent = box.classList.contains('hidden') ? label : 'Hide';
+    const closed = box.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!closed));
+    btn.textContent = closed ? label : 'Hide';
     if (!box.dataset.rendered){ fill(box.querySelector('.body'), md); box.dataset.rendered = '1'; }
   };
   acts.appendChild(btn);
@@ -363,7 +376,7 @@ function mountProblemCard(list, p){
   card.className = 'prob' + (state.solved[p.id] ? ' done' : '');
   card.id = 'prob-' + p.id;
   card.innerHTML =
-    '<div class="prob-head"><span class="prob-num">' + esc(p.id) + '</span>' +
+    '<div class="prob-head"><h2 class="prob-num">' + esc(p.id) + '</h2>' +
     (p.sec ? '<span class="tag sec">' + esc(p.sec) + '</span>' : '') +
     (p.difficulty ? '<span class="tag ' + esc(p.difficulty) + '">' + esc(p.difficulty) + '</span>' : '') +
     (p.topic ? '<span class="tag">' + esc(p.topic) + '</span>' : '') + '</div>';
@@ -552,6 +565,25 @@ function renderSearch(main, q){
       main.appendChild(b);
     });
   });
+  if (REFERENCE){
+    const rfound = (REFERENCE.sections || []).filter(s =>
+      (s.title + ' ' + s.body).toLowerCase().indexOf(needle) >= 0);
+    if (rfound.length){
+      hits += rfound.length;
+      main.insertAdjacentHTML('beforeend',
+        '<div class="sres-grp">Reference · ' + rfound.length + '</div>');
+      rfound.forEach(s => {
+        const b = document.createElement('button');
+        b.className = 'chit sres';
+        b.innerHTML = '<div class="cw">Reference</div>' +
+          '<div class="cb">' + esc(String(s.title).replace(/\$[^$]*\$/g, '')) + '</div>' +
+          '<div class="cx">' + snippet(s.body, q) + '</div>';
+        b.onclick = () => { const i = document.getElementById('search'); if (i) i.value = '';
+                            go({ view:'reference', query:'' }); };
+        main.appendChild(b);
+      });
+    }
+  }
   if (!hits) main.insertAdjacentHTML('beforeend', '<p class="empty">Nothing found.</p>');
 }
 
@@ -650,7 +682,7 @@ const SEQUENCE = [
   { ch:5,  t:'Block diagrams — first pass', n:'A light introduction to 5.1–5.3 before the time response work.', light:true },
   { ch:4,  t:'Time response', n:'Pole location to Ts, Tp and overshoot. 4.1–4.8.' },
   { ch:5,  t:'Reduction of multiple subsystems', n:'Loading, closed-loop G/(1+GH), the second and full pass.' },
-  { ch:6,  t:'Stability', n:'Routh–Hurwitz.' },
+  { ch:6,  t:'Stability', n:'Routh-Hurwitz, its special cases, and gain ranges. 6.1\u20136.5.' },
   { ch:7,  t:'Steady-state error', n:'7.1–7.4.' },
   { ch:8,  t:'Root locus', n:'8.1–8.7.' },
   { ch:9,  t:'Design via root locus', n:'9.1–9.4.' },
@@ -665,7 +697,7 @@ function renderHome(main){
   hero.className = 'hero';
   hero.innerHTML =
     '<h1>Poles and the step response</h1>' +
-    '<p>The figure is a second-order pair. Drag the pole to change settling time, peak time, and overshoot. Chapters 1, 2, 4, and 5 work out the corresponding algebra.</p>';
+    '<p>The figure is a second-order pair. Drag the pole to change settling time, peak time, and overshoot. Chapters 1, 2, 4, 5, and 6 work out the corresponding algebra.</p>';
   main.appendChild(hero);
 
   if (typeof NXW !== 'undefined'){
@@ -718,6 +750,7 @@ function syncHash(){
 }
 function applyHash(){
   const parts = (location.hash || '#/').replace(/^#/, '').split('/').filter(Boolean);
+  state.missingChapter = null;
   if (!parts.length){ state.view = 'home'; return; }
   if (parts[0] === 'ref'){ state.view = 'reference'; return; }
   if (parts[0] === 'concepts'){ state.view = 'concepts'; state.concept = null; return; }
@@ -727,12 +760,18 @@ function applyHash(){
     return;
   }
   if (parts[0] === 'ch'){
-    const idx = CHAPTERS.findIndex(c => c.id === Number(parts[1]));
+    const id = Number(parts[1]);
+    const idx = CHAPTERS.findIndex(c => c.id === id);
     if (idx >= 0){
       state.view = 'chapter'; state.chapter = idx;
-      if (['guide','formulas','problems'].indexOf(parts[2]) >= 0) state.tab = parts[2];
+      state.tab = ['guide','formulas','problems'].indexOf(parts[2]) >= 0 ? parts[2] : 'guide';
+      return;
     }
+    state.view = 'notfound';
+    state.missingChapter = isFinite(id) ? id : null;
+    return;
   }
+  state.view = 'notfound';
 }
 
 /* ---------- render ---------------------------------------------------------- */
@@ -747,6 +786,25 @@ function render(){
   if (oldStrip) oldStrip.remove();
 
   if (state.query.trim()){ renderSearch(main, state.query.trim()); syncHash(); return; }
+  if (state.view === 'notfound'){
+    const inOrder = state.missingChapter && COURSE_ORDER.indexOf(state.missingChapter) >= 0;
+    main.insertAdjacentHTML('beforeend',
+      '<div class="eyebrow">Not found</div>' +
+      '<h1 class="chap">' +
+        (state.missingChapter ? 'Chapter ' + state.missingChapter : 'No such page') + '</h1>' +
+      '<div class="brief"><p>' +
+      (inOrder ? 'That chapter is in the course sequence but has not been written yet.'
+               : 'That address does not match anything on this site.') +
+      '</p></div>');
+    const b = document.createElement('button');
+    b.className = 'act primary';
+    b.style.marginTop = '14px';
+    b.textContent = 'Course map';
+    b.onclick = () => go({ view:'home' });
+    main.appendChild(b);
+    if (location.hash !== '#/404') history.replaceState(null, '', '#/404');
+    return;
+  }
   if (state.view === 'home'){ renderHome(main); syncHash(); return; }
   if (state.view === 'concepts'){
     const c = CONCEPTS.find(x => x.slug === state.concept);
@@ -820,6 +878,14 @@ document.addEventListener('keydown', e => {
     e.preventDefault(); document.getElementById('search').focus();
   }
   if (e.key === 'Escape'){ closeNav(); }
+});
+
+window.addEventListener('beforeprint', () => {
+  PENDING.forEach(({ box, md }) => {
+    if (box.dataset.rendered) return;
+    fill(box.querySelector('.body'), md);
+    box.dataset.rendered = '1';
+  });
 });
 
 loadProgress();

@@ -242,7 +242,11 @@ const NXW = (function(){
       ro('Tp').textContent  = s.tp ? fmt(s.tp) + ' s' : '—';
       ro('Ts').textContent  = s.stable ? fmt(s.ts) + ' s' : '—';
 
-      if (!s.stable){
+      if (!s.stable && Math.abs(sig) <= EPS){
+        note.innerHTML = '<b>On the imaginary axis.</b> The natural response is a sinusoid at ' +
+          fmt(wd) + ' rad/s that neither decays nor grows: <b>marginally stable</b>. Chapter 6 ' +
+          'reads this case off the Routh table as a row of zeros.';
+      } else if (!s.stable){
         note.innerHTML = '<b>Right half-plane.</b> The natural mode is ' +
           'e<sup>+' + fmt(Math.abs(sig)) + 't</sup>, so the response grows without bound and no ' +
           'settling time exists. No bounded input fixes this — only moving the pole does.';
