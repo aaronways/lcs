@@ -184,9 +184,9 @@ which is why the whole chapter can discuss "the" second-order response without r
 to it.`
     },
     {
-      title: "What $\zeta$ and $\omega_{n}$ actually measure",
+      title: "What $\\zeta$ and $\\omega_{n}$ actually measure",
       example: "4-06",
-      sec: "4.4",
+      sec: "4.5",
       body: `
 These are not arbitrary symbols. Each answers a specific physical question.
 
@@ -223,7 +223,7 @@ $\\omega_{n}$.** It is a shape property, and shape does not care how fast you ru
     {
       title: "The four cases as one story of pole migration",
       example: "4-05",
-      sec: "4.4",
+      sec: "4.5",
       body: `
 Fix $\\omega_{n}$ and sweep the damping from heavy to none. Watch where the poles go.
 
@@ -892,7 +892,7 @@ $\\arctan\\sqrt3=60^{\\circ}$. ✓
 
     {
       id: "4-05", difficulty: "warmup", topic: "Second-order systems",
-      sec: "4.4",
+      sec: "4.5",
       prompt: `Classify each system by its damping - undamped, underdamped, critically damped, or overdamped - and give the poles.
 
 **(a)** $\\dfrac{16}{s^{2}+10s+16}$ &nbsp;&nbsp; **(b)** $\\dfrac{16}{s^{2}+8s+16}$ &nbsp;&nbsp; **(c)** $\\dfrac{16}{s^{2}+16}$ &nbsp;&nbsp; **(d)** $\\dfrac{16}{s^{2}+4s+16}$`,
@@ -2344,7 +2344,7 @@ states the ratio, states the criterion, and states the limitation.
 
 **(a)** Translate both requirements into conditions on the pole location $-\\sigma_{d}\\pm j\\omega_{d}$, and describe the allowable region of the $s$-plane in words.
 **(b)** Determine which of these candidate pole pairs are acceptable: $-3\\pm j2$, &nbsp; $-1\\pm j1$, &nbsp; $-4\\pm j6$, &nbsp; $-2\\pm j2$.
-**(c)** One candidate fails only one of the two tests. Which one, and what would you change about it?`,
+**(c)** One candidate passes the settling-time test but fails the overshoot test. Which one, and what would you change about it?`,
       hint: "Each specification becomes a simple geometric constraint. One is a vertical boundary; the other is an angular one.",
       answer: "**(a)** $\\sigma_{d}\\ge2$ (at or left of the vertical line $\\sigma=-2$) **and** $\\omega_{d}\\le\\sigma_{d}$ (within $45^{\\circ}$ of the negative real axis). **(b)** Acceptable: $-3\\pm j2$ and $-2\\pm j2$. Rejected: $-1\\pm j1$ and $-4\\pm j6$. **(c)** $-4\\pm j6$ passes settling time easily ($T_{s}=1$ s) but fails overshoot; reduce $\\omega_{d}$ to at most 4.",
       expert: `
@@ -2851,7 +2851,7 @@ argument for Chapter 9.
 
     {
       id: "4-26", difficulty: "challenge", topic: "Second-order systems",
-      sec: "4.4",
+      sec: "4.5",
       prompt: `A classmate reads $G(s)=\\dfrac{20}{2s^{2}+4s+20}$ as $\\omega_n=\\sqrt{20}$ and $\\zeta=4/(2\\sqrt{20})$.
 
 Correct them, then compute $\\omega_n$ and $\\zeta$.`,
@@ -2877,7 +2877,7 @@ Using $\\sqrt{20}$ treats the un-normalized polynomial as if it were monic. The 
 
 Can both be met with $\\omega_n=3$? If not, what is the smallest $\\omega_n$ that works?`,
       hint: "$T_s=4/(\\zeta\\omega_n)$. The tighter $\\zeta$ makes $T_s$ larger for fixed $\\omega_n$.",
-      answer: "No. At $\\zeta=\\sqrt{2}/2$ and $\\omega_n=3$, $T_s=4/(\\tfrac{\\sqrt{2}}{2}\\cdot 3)=8/(3\\sqrt{2})\\approx 1.89>1$. Need $\\zeta\\omega_n\\ge 4$, so $\\omega_n\\ge 4\\sqrt{2}$ at this $\\zeta$.",
+      answer: "No. At $\\zeta=\\sqrt{2}/2$ and $\\omega_n=3$, $T_s=4/(\\tfrac{\\sqrt{2}}{2}\\cdot 3)=8/(3\\sqrt{2})>1$. The requirement is $\\zeta\\omega_n\\ge 4$. On the wedge boundary $\\zeta=\\sqrt{2}/2$ that needs $\\omega_n\\ge 4\\sqrt{2}$; allowing any $\\zeta\\le 1$, the smallest workable $\\omega_n$ is $4$, at $\\zeta=1$.",
       expert: `
 **First glance:** $T_s$ is a vertical line $\\sigma_d=4$. $\\zeta=\\sqrt{2}/2$ is a $45^{\\circ}$ ray. Their intersection is $\\omega_n=4\\sqrt{2}$.
 

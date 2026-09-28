@@ -297,11 +297,93 @@ registerChapter({
     },
     {
       id: "5-27", difficulty: "challenge", topic: "Moving blocks", sec: "5.2",
-      prompt: "You want to move $G$ *right* through a summer whose second input is $X$. After the move, $R$ meets $G$ before the summer. What must sit on the $X$ path?",
-      hint: "Write the output signal before and after the move, then supply whatever factor makes them match. Do not look up a rule.",
-      answer: "$1/G$. Otherwise $X$ would be added after $G$ and $C$ would gain an extra $XG$ it did not have.",
-      expert: "\n**First glance:** derive it, do not recall it. Write $C$ both ways and compare.\n\n**Before:** the summer forms $R-X$, then $G$ acts: $\\;C=G(R-X)=GR-GX$.\n**After:** $G$ acts on $R$ first, so the summer forms $GR-X$: $\\;C=GR-X$.\n\n**Mismatch:** we have $-X$ where we need $-GX$. So the $X$ branch must gain a $G$… but the\nquestion specifies that $R$ meets $G$ **before** the summer and asks what goes on the $X$\npath to keep $C$ unchanged. Supplying $G$ on the $X$ branch restores $GR-GX$ ✓\n\n**Discard:** memorizing a four-row table of block moves. Regenerate any row in\nthree seconds by writing the branch signal before and after.\n\n**The rule in the only form worth keeping:**\n\n> Cross a junction or a pickoff, and compensate the **other** branch by $G$ or $1/G$. Ask\n> what that branch carried before and after; the question answers itself.\n\n**Why moves exist at all.** Nise's warning: if a pickoff sits after the summing junction\ninside a loop, **the feedback formula cannot be applied** — that signal vanishes with nowhere\nto re-establish it. One move creates the missing familiar form. Moves are a means, never an\nend, and each one multiplies blocks, so make **one**, reduce, reassess.\n",
-      solution: "\n**Step 1 — write the output before the move.**\n\nThe summer forms $R(s)-X(s)$, and $G(s)$ acts on the result:\n\n$$C_{\\text{before}}(s)=G(s)\\Big[R(s)-X(s)\\Big]=G(s)R(s)-G(s)X(s)$$\n\n**Step 2 — write the output after the move, with no compensation.**\n\nNow $G(s)$ acts on $R(s)$ **before** the summer, and $X(s)$ enters the summer directly:\n\n$$C_{\\text{after}}(s)=G(s)R(s)-X(s)$$\n\n**Step 3 — compare and supply the missing factor.**\n\n$$G(s)R(s)-G(s)X(s)\\qquad\\text{versus}\\qquad G(s)R(s)-X(s)$$\n\nThe $R$ term already matches. The $X$ term is short by a factor of $G(s)$: we have $X$ where\nwe need $GX$.\n\n$$\\boxed{\\;\\text{Put a copy of }G(s)\\text{ on the }X\\text{ branch.}\\;}$$\n\nThen the summer receives $G(s)R(s)$ and $G(s)X(s)$, and\n\n$$C=G(s)R(s)-G(s)X(s)=C_{\\text{before}}\\;\\checkmark$$\n\n**Without it**, $C$ would be short by $G(s)X(s)-X(s)=(G-1)X$ — an error that depends on both\n$G$ and the disturbing signal, and one that is invisible unless you trace signals.\n\n---\n\n**The general principle, which replaces every block-move rule.**\n\n> **A block move is legal if and only if every signal in the diagram is unchanged.**\n\nWrite the branch signal before and after; supply the factor that restores it. This works on\narrangements you have never seen and cannot be mis-remembered.\n\n**The four standard moves, regenerated rather than memorized.**\n\n| Move | Compensation on the other branch |\n|---|---|\n| block right past a **summing junction** | insert $G(s)$ |\n| block left past a **summing junction** | insert $\\dfrac{1}{G(s)}$ |\n| block right past a **pickoff point** | insert $G(s)$ |\n| block left past a **pickoff point** | insert $\\dfrac{1}{G(s)}$ |\n\n**Why moves are needed.** The familiar forms are often *almost* present. Nise's specific\nwarning: **if there is a pickoff point after the summing junction inside a loop, the feedback\nformula cannot be used** — that signal disappears in the reduction with nowhere to\nre-establish it. A single block move creates the form you need.\n\n**A caution on $1/G$ blocks.** They are fine on paper but often unrealizable as hardware:\n$1/G$ has poles where $G$ has zeros, so a plant with a right-half-plane zero yields an\nunstable inverse. Prefer moves that avoid creating $1/G$ when you have the choice.\n"
+      prompt: `You want to move $G$ *right* through a summing junction whose second input is $X$.
+Before the move, $R$ passes through $G$ and the product enters the summer, which subtracts $X$
+from it. After the move, $G$ sits on the far side of the summer, acting on the summer's output.
+What must sit on the $X$ path so $C$ is unchanged?`,
+      hint: `Write the output signal before and after the move, then supply whatever factor makes them match. Do not look up a rule.`,
+      answer: `$1/G$. Otherwise $X$ would be subtracted before $G$ acts on it, and $C$ would lose $XG$ where it should lose only $X$.`,
+      expert: `
+**First glance:** derive it, do not recall it. Write $C$ both ways and compare.
+
+**Before:** $G$ acts on $R$, then the summer subtracts $X$: $\;C=GR-X$.
+**After:** the summer forms $R-X$, then $G$ acts: $\;C=G(R-X)=GR-GX$.
+
+**Mismatch:** we have $-GX$ where we need $-X$. The $X$ branch must be divided by $G$ before it
+reaches the summer, so put $1/G$ on it: the summer then forms $R-X/G$, and $G$ acting on that
+gives $GR-X$ again.
+
+**Discard:** memorizing a four-row table of block moves. Regenerate any row by writing the branch
+signal before and after.
+
+**The rule in the only form worth keeping:**
+
+> Cross a junction or a pickoff, and compensate the **other** branch by $G$ or $1/G$. Ask what
+> that branch carried before and after; the question answers itself.
+
+**Why moves exist at all.** Nise's warning: if a pickoff sits after the summing junction inside a
+loop, **the feedback formula cannot be applied** - that signal vanishes with nowhere to
+re-establish it. One move creates the missing familiar form. Moves are a means, never an end, and
+each one multiplies blocks, so make **one**, reduce, reassess.
+
+**A caution on $1/G$ blocks.** They are fine on paper and often unrealizable as hardware: $1/G$
+has poles where $G$ has zeros, so a plant with a right-half-plane zero yields an unstable inverse.
+Prefer moves that avoid creating $1/G$ when you have the choice.
+`,
+      solution: `
+**Step 1 - write the output before the move.**
+
+$G(s)$ acts on $R(s)$, and the summer then subtracts $X(s)$:
+
+$$C_{\\text{before}}(s)=G(s)R(s)-X(s)$$
+
+**Step 2 - write the output after the move, with no compensation.**
+
+Now the summer forms $R(s)-X(s)$ and $G(s)$ acts on the result:
+
+$$C_{\\text{after}}(s)=G(s)\\Big[R(s)-X(s)\\Big]=G(s)R(s)-G(s)X(s)$$
+
+**Step 3 - compare and supply the missing factor.**
+
+$$G(s)R(s)-X(s)\\qquad\\text{versus}\\qquad G(s)R(s)-G(s)X(s)$$
+
+The $R$ term already matches. The $X$ term has picked up an extra factor of $G(s)$, so the $X$
+branch must be divided by it before the summer.
+
+$$\\boxed{\;\\text{Put }\\frac{1}{G(s)}\\text{ on the }X\\text{ branch.}\;}$$
+
+The summer then forms $R(s)-\\dfrac{X(s)}{G(s)}$, and
+
+$$C=G(s)\\left[R(s)-\\frac{X(s)}{G(s)}\\right]=G(s)R(s)-X(s)=C_{\\text{before}}\;\\checkmark$$
+
+**Without it**, $C$ would be short by $G(s)X(s)-X(s)=(G-1)X$ - an error that depends on both $G$
+and the disturbing signal, and one that is invisible unless you trace signals.
+
+---
+
+**The general principle, which replaces every block-move rule.**
+
+> **A block move is legal if and only if every signal in the diagram is unchanged.**
+
+Write the branch signal before and after; supply the factor that restores it. This works on
+arrangements you have never seen and cannot be mis-remembered.
+
+**The four standard moves, regenerated rather than memorized.**
+
+| Move | Compensation on the other branch |
+|---|---|
+| block right past a **summing junction** | insert $\\dfrac{1}{G(s)}$ |
+| block left past a **summing junction** | insert $G(s)$ |
+| block right past a **pickoff point** | insert $G(s)$ |
+| block left past a **pickoff point** | insert $\\dfrac{1}{G(s)}$ |
+
+Problem 5-06 is the second row, 5-07 the third and 5-15 the fourth, each derived the same way.
+
+**Why moves are needed.** The familiar forms are often *almost* present. Nise's specific warning:
+**if there is a pickoff point after the summing junction inside a loop, the feedback formula
+cannot be used** - that signal disappears in the reduction with nowhere to re-establish it. A
+single block move creates the form you need.
+`
     },
     {
       id: "5-28", difficulty: "core", topic: "Closed-loop specs", sec: "5.3",
