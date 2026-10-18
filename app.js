@@ -27,16 +27,19 @@ const CONCEPTS = [
     secs:['4.2','5.2','5.3','6.2','6.4'] },
   { slug:'stability', name:'Stability',
     blurb:'Left half-plane or not. Counted from the coefficients, without locating a root.',
-    secs:['1.4','6.1','6.2','6.3','6.4','6.5'] },
+    secs:['1.4','6.1','6.2','6.3','6.4','6.5','7.1','7.4'] },
   { slug:'laplace', name:'Laplace and the s-domain',
     blurb:'Differentiation becomes multiplication by s. Differential equations become algebra.',
-    secs:['2.2','2.3'] },
+    secs:['2.2','2.3','7.2'] },
   { slug:'linearization', name:'Nonlinearity and linearization',
     blurb:'Operating point, deviation variables, and the slope you actually use.',
     secs:['2.10','2.11'] },
   { slug:'specifications', name:'Transient specifications',
     blurb:'%OS, Tp, Ts, Tr from the dominant-pair coordinates.',
-    secs:['1.4','4.6','4.7','5.3'] }
+    secs:['1.4','4.6','4.7','5.3'] },
+  { slug:'steady-state-error', name:'Steady-state error',
+    blurb:'What is left once the transient dies. Set by the input and the number of integrators in G(s).',
+    secs:['1.4','7.1','7.2','7.3','7.4'] }
 ];
 
 /* Sections that get an interactive figure. */
